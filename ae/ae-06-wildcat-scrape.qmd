@@ -1,0 +1,72 @@
+---
+title: "AE 06: Opinion articles in The Arizona Daily Wildcat"
+categories: 
+  - Application exercise
+jupyter: python3
+execute: 
+  warning: false
+  error: false
+---
+
+## Part 1 - Data scraping
+
+This will be done in the `wildcat-scrape.py` Python script within the `ae-06-wildcat-scrape` folder.
+Save the resulting data frame in the `data/` folder.
+
+## Part 2 - Data analysis
+
+Let's start by loading the packages we will need:
+
+```{python}
+#| label: load-packages
+#| message: false
+
+import pandas as pd
+```
+
+-   Load the data you saved into the `data` folder and name it `wildcat`.
+
+```{python}
+#| label: load-data
+#| message: false
+
+# add code here
+```
+
+-   Who are the most prolific authors of the 100 most recent opinion articles in The Arizona Daily Wildcat?
+
+```{python}
+#| label: union-title-abstract
+
+# add code here
+```
+
+-   Draw a line plot of the number of opinion articles published per day in The Arizona Daily Wildcat.
+
+```{python}
+#| label: articles-per-day
+
+# add code here
+```
+
+-   What percent of the most recent 100 opinion articles in The Arizona Daily Wildcat mention "climate" in their title?
+
+```{python}
+#| label: climate-title
+
+# add code here
+```
+
+-   What percent of the most recent 100 opinion articles in The Arizona Daily Wildcat mention "election" in their title or abstract?
+
+```{python}
+#| label: election-title
+
+# add code here
+```
+
+-   Come up with another question and try to answer it using the data.
+
+```{python}
+# add code here
+```

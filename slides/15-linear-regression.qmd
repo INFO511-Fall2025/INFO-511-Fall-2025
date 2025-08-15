@@ -1,0 +1,563 @@
+---
+title: "Linear regression"
+subtitle: "Lecture 15"
+format:
+  revealjs: default
+editor_options: 
+  chunk_output_type: console
+jupyter: python3
+execute:
+  warning: false
+  error: false
+---
+
+## Setup {.smaller}
+
+```{python}
+#| message: false
+
+import matplotlib.pyplot as plt
+from matplotlib.patches import Ellipse
+import pandas as pd
+import seaborn as sns
+from sklearn.linear_model import LinearRegression
+import numpy as np
+from great_tables import GT, style, loc, exibble
+
+# Setting the theme for plots
+sns.set_theme(style="whitegrid", font_scale=1.2)
+```
+
+## Goals
+
+::: incremental
+-   What is a model?
+-   Why do we model?
+-   What is correlation?
+:::
+
+# Prediction / classification
+
+## Let's drive a Tesla!
+
+{{< video https://www.youtube.com/embed/xvqQ4F7Yf2o start="150" width="900" height="600" >}}
+
+## Semi or garage? {.smaller}
+
+> i love how Tesla thinks the wall in my garage is a semi.
+> 😅
+
+![](images/tesla-get-wrong-1.png){fig-align="center" width="300"}
+
+::: aside
+Source: [Reddit](https://www.reddit.com/r/TeslaModelY/comments/vjcpte/i_love_how_tesla_thinks_the_wall_in_my_garage_is/)
+:::
+
+## Semi or garage? {.smaller}
+
+> New owner here.
+> Just parked in my garage.
+> Tesla thinks I crashed onto a semi.
+
+![](images/tesla-get-wrong-2.png){fig-align="center" width="300"}
+
+::: aside
+Source: [Reddit](https://www.reddit.com/r/TeslaModelY/comments/112520t/new_owner_here_just_parked_in_my_garage_tesla/)
+:::
+
+## Car or trash?
+
+> Tesla calls Mercedes trash
+
+![](images/tesla-get-wrong-3.png){fig-align="center" width="500"}
+
+::: aside
+Source: [Reddit](https://www.reddit.com/r/FUCKYOUINPARTICULAR/comments/hi5srx/tesla_calls_mercedes_trash/)
+:::
+
+# Description
+
+## Leisure, commute, physical activity and BP {.smaller}
+
+> [Relation Between Leisure Time, Commuting, and Occupational Physical Activity With Blood Pressure in 125,402 Adults: The Lifelines Cohort](https://www.ahajournals.org/doi/full/10.1161/JAHA.119.014313)
+>
+> Byambasukh, Oyuntugs, Harold Snieder, and Eva Corpeleijn.
+> "Relation between leisure time, commuting, and occupational physical activity with blood pressure in 125 402 adults: the lifelines cohort." *Journal of the American Heart Association* 9.4 (2020): e014313.
+
+## Leisure, commute, physical activity and BP {.smaller .scrollable}
+
+**Background:** Whether all domains of daily‐life moderate‐to‐vigorous physical activity (MVPA) are associated with lower blood pressure (BP) and how this association depends on age and body mass index remains unclear.
+
+**Methods and Results:** In the population‐based Lifelines cohort (N=125,402), MVPA was assessed by the Short Questionnaire to Assess Health‐Enhancing Physical Activity, a validated questionnaire in different domains such as commuting, leisure‐time, and occupational PA.
+BP was assessed using the last 3 of 10 measurements after 10 minutes’ rest in the supine position.
+Hypertension was defined as systolic BP ≥140 mm Hg and/or diastolic BP ≥90 mm Hg and/or use of antihypertensives.
+In regression analysis, higher commuting and leisure‐time but not occupational MVPA related to lower BP and lower hypertension risk.
+Commuting‐and‐leisure‐time MVPA was associated with BP in a dose‐dependent manner.
+β Coefficients (95% CI) from linear regression analyses were −1.64 (−2.03 to −1.24), −2.29 (−2.68 to −1.90), and finally −2.90 (−3.29 to −2.50) mm Hg systolic BP for the low, middle, and highest tertile of MVPA compared with “No MVPA” as the reference group after adjusting for age, sex, education, smoking and alcohol use.
+Further adjustment for body mass index attenuated the associations by 30% to 50%, but more MVPA remained significantly associated with lower BP and lower risk of hypertension.
+This association was age dependent.
+β Coefficients (95% CI) for the highest tertiles of commuting‐and‐leisure‐time MVPA were −1.67 (−2.20 to −1.15), −3.39 (−3.94 to −2.82) and −4.64 (−6.15 to −3.14) mm Hg systolic BP in adults \<40, 40 to 60, and \>60 years, respectively.
+
+**Conclusions:** Higher commuting and leisure‐time but not occupational MVPA were significantly associated with lower BP and lower hypertension risk at all ages, but these associations were stronger in older adults.
+
+# Modeling
+
+## Modeling cars {.smaller}
+
+::: panel-tabset
+## Questions
+
+::: question
+-   What is the relationship between cars' weights and their mileage?
+-   What is your best guess for a car's MPG that weighs 3,500 pounds?
+:::
+
+## Plot
+
+```{python}
+#| echo: false
+
+mtcars = sns.load_dataset("mpg").dropna()
+
+base = sns.lmplot(x="weight", y="mpg", data=mtcars, ci=None, fit_reg=False, scatter_kws={"s": 50, "alpha": 0.5})
+plt.xlabel("Weight (lbs)")
+plt.ylabel("Miles per gallon (MPG)")
+plt.title("MPG vs. weights of cars")
+plt.show()
+```
+:::
+
+## Modelling cars {.smaller}
+
+::: question
+**Describe:** What is the relationship between cars' weights and their mileage?
+:::
+
+```{python}
+#| echo: false
+#| message: false
+
+sns.lmplot(x="weight", y="mpg", data=mtcars, scatter_kws={"s": 50, "alpha": 0.5}, line_kws={"color": "red"})
+plt.xlabel("Weight (lbs)")
+plt.ylabel("Miles per gallon (MPG)")
+plt.title("MPG vs. weights of cars")
+plt.show()
+plt.show()
+```
+
+## Modelling cars {.smaller}
+
+::: question
+**Predict:** What is your best guess for a car's MPG that weighs 3,500 pounds?
+:::
+
+```{python}
+#| echo: false
+#| message: false
+
+sns.lmplot(x="weight", y="mpg", data=mtcars, ci=None, scatter_kws={"s": 50, "alpha": 0.5}, line_kws={"color": "gray", "linestyle": "dashed"})
+plt.axvline(x=3500, color="#E34A6F", linestyle="--")
+plt.axhline(y=19.33, color="#E34A6F", linestyle="--")
+plt.xlabel("Weight (lbs)")
+plt.ylabel("Miles per gallon (MPG)")
+plt.title("MPG vs. weights of cars")
+plt.show()
+plt.show()
+```
+
+## Modelling
+
+-   Use models to explain the relationship between variables and to make predictions
+-   For now we will focus on **linear** models (but there are *many* *many* other types of models too!)
+
+## Modelling vocabulary
+
+-   Predictor (explanatory variable)
+-   Outcome (response variable)
+-   Regression line
+    -   Slope
+    -   Intercept
+-   Correlation
+
+## Predictor (explanatory variable) {.smaller}
+
+::: columns
+::: {.column width="25%"}
+```{python}
+#| echo: false
+
+subset = mtcars[['mpg', 'weight']].head(6).copy()
+subset = subset.astype(str)
+ellipsis_row = pd.DataFrame([["...", "..."]], columns=subset.columns)
+subset = pd.concat([subset, ellipsis_row], ignore_index=True)
+
+(
+  GT(subset)
+  .tab_style(
+    style=[
+      style.fill(color="#E34A6F"),
+      style.text(color="white")
+      ],
+    locations=loc.body(columns="weight")
+  )
+  .tab_options(
+    table_font_size=1
+  )
+)
+```
+:::
+
+::: {.column width="5%"}
+:::
+
+::: {.column width="70%"}
+```{python}
+#| echo: false
+
+base = sns.lmplot(x="weight", y="mpg", data=mtcars, ci=None, scatter_kws={"s": 50, "alpha": 0.5})
+plt.xlabel("Weight (1,000 lbs)")
+plt.ylabel("Miles per gallon (MPG)")
+plt.title("MPG vs. weights of cars")
+plt.show()
+
+```
+:::
+:::
+
+## Outcome (response variable) {.smaller}
+
+::: columns
+::: {.column width="25%"}
+```{python}
+#| echo: false
+
+subset = mtcars[['mpg', 'weight']].head(6).copy()
+subset = subset.astype(str)
+ellipsis_row = pd.DataFrame([["...", "..."]], columns=subset.columns)
+subset = pd.concat([subset, ellipsis_row], ignore_index=True)
+
+(
+  GT(subset)
+  .tab_style(
+    style=[
+      style.fill(color="#E34A6F"),
+      style.text(color="white")
+      ],
+    locations=loc.body(columns="mpg")
+  )
+  .tab_options(
+    table_font_size=1
+  )
+)
+```
+:::
+
+::: {.column width="5%"}
+:::
+
+::: {.column width="70%"}
+```{python}
+#| echo: false
+
+base = sns.lmplot(x="weight", y="mpg", data=mtcars, ci=None, scatter_kws={"s": 50, "alpha": 0.5})
+plt.xlabel("Weight (1,000 lbs)")
+plt.ylabel("Miles per gallon (MPG)")
+plt.title("MPG vs. weights of cars")
+plt.show()
+```
+:::
+:::
+
+## Regression line
+
+```{python}
+#| echo: false
+#| message: false
+
+sns.lmplot(x="weight", y="mpg", data=mtcars, ci=None, scatter_kws={"s": 50, "alpha": 0.5}, line_kws={"color": "#E34A6F", "linewidth": 1.5})
+plt.xlabel("Weight (1,000 lbs)")
+plt.ylabel("Miles per gallon (MPG)")
+plt.title("MPG vs. weights of cars")
+plt.show()
+```
+
+## Regression line: slope
+
+```{python}
+#| echo: false
+#| message: false
+
+sns.lmplot(x="weight", y="mpg", data=mtcars, ci=None, scatter_kws={"s": 50, "alpha": 0.5}, line_kws={"color": "black"})
+plt.plot([4000, 5000], [16, 16], linestyle="dashed", color="#E34A6F")
+plt.plot([5000, 5000], [16, 8], color="#E34A6F")
+plt.text(5200, 13, "slope", color="#E34A6F", size=14, ha="left")
+plt.xlabel("Weight (1,000 lbs)")
+plt.ylabel("Miles per gallon (MPG)")
+plt.title("MPG vs. weights of cars")
+plt.show()
+```
+
+## Regression line: intercept
+
+```{python}
+#| echo: false
+#| message: false
+# Linear regression
+X = mtcars[['weight']]  # Predictor
+y = mtcars['mpg']       # Response
+
+# Fit the model
+model = LinearRegression()
+model.fit(X, y)
+
+# Predict values
+predictions = model.predict(X)
+
+y_intercept = model.intercept_
+
+# Plot regression line with intercept annotation
+sns.lmplot(x="weight", y="mpg", data=mtcars, ci=None, scatter_kws={"s": 50, "alpha": 0.5}, line_kws={"color": "black", "linestyle": "solid"})
+plt.scatter(0, y_intercept, facecolors='none', edgecolors="#E34A6F", s=100)
+plt.plot([0, mtcars['weight'].min()], [model.intercept_, model.intercept_ + model.coef_[0] * mtcars['weight'].min()], linestyle="dashed", color="gray")
+plt.text(500, y_intercept, "intercept", color="#E34A6F", size=14, ha="left")
+plt.xlim(0, 5500)
+plt.xlabel("Weight (1,000 lbs)")
+plt.ylabel("Miles per gallon (MPG)")
+plt.title("MPG vs. weights of cars")
+plt.show()
+```
+
+## Correlation
+
+```{python}
+#| echo: false
+# Calculate correlation
+correlation = mtcars["weight"].corr(mtcars["mpg"])
+print(f"Correlation coefficient: {correlation:.2f}")
+
+# Define function to add ellipse
+def add_ellipse(ax, data_x, data_y, edgecolor='black'):
+    mean_x, mean_y = np.mean(data_x), np.mean(data_y)
+    cov_matrix = np.cov(data_x, data_y)
+    eigenvalues, eigenvectors = np.linalg.eig(cov_matrix)
+    order = eigenvalues.argsort()[::-1]
+    eigenvalues, eigenvectors = eigenvalues[order], eigenvectors[:, order]
+    theta = np.degrees(np.arctan2(*eigenvectors[:, 0][::-1]))
+    
+    # Width and height of the ellipse, scaled by the chi-square value for 95% confidence interval
+    chi_square_val = 5.991  # For 95% confidence interval in 2D
+    width, height = 2 * np.sqrt(eigenvalues * chi_square_val)
+    
+    ellipse = Ellipse((mean_x, mean_y), width, height, angle=theta, edgecolor=edgecolor, fc='none', lw=2)
+    ax.add_patch(ellipse)
+
+# Plot the data points
+plt.figure(figsize=(10, 6))
+ax = sns.scatterplot(x='weight', y='mpg', data=mtcars, color='black')
+
+# Add ellipse
+add_ellipse(ax, mtcars['weight'], mtcars['mpg'], edgecolor='#E34A6F')
+
+# Annotate with correlation coefficient
+plt.text(4000, 27.5, f"r = {correlation:.2f}", color="#E34A6F", size=14, ha="left")
+
+# Labels and title
+plt.xlim(0, 5500)
+plt.xlabel("Weight (1000 lbs)")
+plt.ylabel("Miles per gallon (MPG)")
+plt.title("MPG vs. weights of cars")
+
+# Show plot
+plt.show()
+```
+
+## Correlation
+
+-   Ranges between -1 and 1.
+-   Same sign as the slope.
+
+![](images/corr-example.png){fig-align="center"}
+
+## Visualizing the model
+
+```{python}
+#| message: false
+#| code-fold: true
+
+sns.lmplot(x="weight", y="mpg", data=mtcars, ci=None, scatter_kws={"s": 50, "alpha": 0.5}, line_kws={"color": "#325b74"})
+plt.xlabel("Weight (1,000 lbs)")
+plt.ylabel("Miles per gallon (MPG)")
+plt.title("MPG vs. weights of cars")
+plt.show()
+```
+
+# Linear regression with a single predictor
+
+## Data prep
+
+-   Rename Rotten Tomatoes columns as `critics` and `audience`
+-   Rename the dataset as `movie_scores`
+
+```{python}
+#| label: data-prep
+#| echo: true
+
+fandango = pd.read_csv("data/fandango.csv")
+movie_scores = fandango.rename(columns={"rt_norm": "critics", "rt_user_norm": "audience"})
+```
+
+## Data overview
+
+```{python}
+#| label: data-overview
+#| echo: true
+print(movie_scores[["critics", "audience"]].head())
+```
+
+## Data visualization
+
+```{python}
+#| echo: false
+
+sns.scatterplot(x="critics", y="audience", data=movie_scores, alpha=0.5)
+plt.xlabel("Critics Score")
+plt.ylabel("Audience Score")
+plt.show()
+```
+
+## Regression model {#regression-model-1}
+
+A **regression model** is a function that describes the relationship between the outcome, $Y$, and the predictor, $X$.
+
+$$\begin{aligned} Y &= \color{black}{\textbf{Model}} + \text{Error} \\[8pt]
+&= \color{black}{\mathbf{f(X)}} + \epsilon \\[8pt]
+&= \color{black}{\boldsymbol{\mu_{Y|X}}} + \epsilon \end{aligned}$$
+
+## Regression model {.smaller}
+
+::: columns
+::: {.column width="30%"}
+$$
+\begin{aligned} Y &= \color{#325b74}{\textbf{Model}} + \text{Error} \\[8pt]
+&= \color{#325b74}{\mathbf{f(X)}} + \epsilon \\[8pt]
+&= \color{#325b74}{\boldsymbol{\mu_{Y|X}}} + \epsilon 
+\end{aligned}
+$$
+:::
+
+::: {.column width="70%"}
+```{python}
+#| echo: false
+#| message: false
+
+X = movie_scores["critics"].values.reshape(-1, 1)
+y = movie_scores["audience"].values
+model = LinearRegression().fit(X, y)
+
+# Plot the data with regression line
+sns.scatterplot(x="critics", y="audience", data=movie_scores, alpha=0.5)
+plt.plot(movie_scores["critics"], model.predict(X), color="#325b74", linewidth=2)
+plt.xlabel("Critics Score")
+plt.ylabel("Audience Score")
+plt.show()
+```
+:::
+:::
+
+## Simple linear regression {.smaller}
+
+Use **simple linear regression** to model the relationship between a quantitative outcome ($Y$) and a single quantitative predictor ($X$): $$\Large{Y = \beta_0 + \beta_1 X + \epsilon}$$
+
+::: incremental
+-   $\beta_1$: True slope of the relationship between $X$ and $Y$
+-   $\beta_0$: True intercept of the relationship between $X$ and $Y$
+-   $\epsilon$: Error (residual)
+:::
+
+## Simple linear regression
+
+$$\Large{\hat{Y} = b_0 + b_1 X}$$
+
+-   $b_1$: Estimated slope of the relationship between $X$ and $Y$
+-   $b_0$: Estimated intercept of the relationship between $X$ and $Y$
+-   No error term!
+
+## Residuals
+
+```{python}
+#| echo: false
+#| message: false
+
+# Plot residuals
+sns.scatterplot(x="critics", y="audience", data=movie_scores, alpha=0.5)
+plt.plot(movie_scores["critics"], model.predict(X), color="#325b74", linewidth=2)
+for i in range(len(X)):
+    plt.plot([X[i], X[i]], [y[i], model.predict(X)[i]], color="steelblue")
+plt.xlabel("Critics Score")
+plt.ylabel("Audience Score")
+plt.show()
+```
+
+$$\text{residual} = \text{observed} - \text{predicted} = y - \hat{y}$$
+
+## Least squares line {.smaller}
+
+-   The residual for the $i^{th}$ observation is
+
+$$e_i = \text{observed} - \text{predicted} = y_i - \hat{y}_i$$
+
+-   The **sum of squared** residuals is
+
+$$e^2_1 + e^2_2 + \dots + e^2_n$$
+
+-   The **least squares line** is the one that **minimizes the sum of squared residuals**
+
+## Least squares line
+
+```{python}
+slope, intercept = model.coef_[0], model.intercept_
+print(f"Slope: {slope:.2f}, Intercept: {intercept:.2f}")
+```
+
+# Slope and intercept
+
+## Properties of least squares regression
+
+::: incremental
+-   The regression line goes through the center of mass point (the coordinates corresponding to average $X$ and average $Y$): $b_0 = \bar{Y} - b_1~\bar{X}$
+
+-   Slope has the same sign as the correlation coefficient: $b_1 = r \frac{s_Y}{s_X}$
+
+-   Sum of the residuals is zero: $\sum_{i = 1}^n \epsilon_i = 0$
+
+-   Residuals and $X$ values are uncorrelated
+:::
+
+## Interpreting slope & intercept
+
+$$\widehat{\text{audience}} = 32.3 + 0.519 \times \text{critics}$$
+
+::: incremental
+-   **Slope:** For every one point increase in the critics score, we expect the audience score to be higher by 0.519 points, on average.
+-   **Intercept:** If the critics score is 0 points, we expect the audience score to be 32.3 points.
+:::
+
+## Is the intercept meaningful?
+
+✅ The intercept is meaningful in context of the data if
+
+-   the predictor can feasibly take values equal to or near zero or
+-   the predictor has values near zero in the observed data
+
+. . .
+
+🛑 Otherwise, it might not be meaningful!
+
+# Application exercise
+
+## Application exercise: `ae-10-modeling-fish`
+
+::: appex
+-   Go back to your project called `ae`.
+-   If there are any uncommitted files, commit them, and push.
+:::

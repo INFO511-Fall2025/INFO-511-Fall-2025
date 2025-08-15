@@ -1,0 +1,85 @@
+---
+title: "AE 16: Principal component analysis"
+categories: 
+  - Application exercise
+---
+
+In this application exercise, we will:
+
+1.  Learn about Principal Component Analysis
+
+2.  Load the Penguins Dataset: Import and explore the dataset to understand its structure and the features available for analysis.
+
+3.  Preprocess the Data: Clean the data by handling missing values and standardize the numerical features for PCA.
+
+4.  Perform PCA: Apply Principal Component Analysis to reduce the dimensionality of the data and extract the principal components.
+
+5.  Visualize the PCA Result: Create a scatter plot of the principal components to visualize the clustering of different penguin species.
+
+# Learn about PCA
+
+## Exercise 1
+
+Watch this video on Principal Component Analysis:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/FD4DeN81ODY?si=ZKBrlIsgMy-F9oq6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+
+</iframe>
+
+-   What were three takeaways from this video? Include how you think linear algebra contributes to PCA:
+
+*Add response here.*
+
+# PCA in Python
+
+## Packages
+
+We will primarily use the `seaborn` and `sklearn` packages.
+
+```{python}
+import seaborn as sns
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+```
+
+## Exercise 2
+
+**Load the Penguins Dataset using `seaborn`**
+
+```{python}
+
+# add code here
+```
+
+## Exercise 3
+
+**Preprocess the data**
+
+We need to handle missing values and select the numerical features for PCA.
+
+```{python}
+# add code here
+```
+
+## Exercise 4
+
+**Perform PCA**
+
+Use `PCA` from `sklearn` to reduce the dimensionality of the data.
+**Hint**: use two principal components
+
+```{python}
+# add code here
+```
+
+## Exercise 5
+
+**Visualize the PCA Result**
+
+Use `seaborn` to visualize the principal components.
+
+```{python}
+# add code here
+```

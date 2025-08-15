@@ -1,0 +1,339 @@
+---
+title: "Calculus II"
+subtitle: "Lecture 21"
+format:
+  revealjs: default
+editor_options: 
+  chunk_output_type: console
+jupyter: python3
+execute:
+  warning: false
+  error: false
+---
+
+##  {background-image="images/calculus.png"}
+
+## Summary of Derivative Rules {.smaller}
+
+**Differentiation rules**
+
+::: incremental
+-   Constant rule: $\frac{d}{dx} (c) = 0$
+
+-   Power rule: $\frac{d}{dx} (x^n) = nx^{n-1}$
+
+-   Constant multiple rule: $\frac{d}{dx} [c \cdot f(x)] = c \cdot f'(x)$
+
+-   Sum rule: $\frac{d}{dx} [f(x) + g(x)] = f'(x) + g'(x)$
+
+-   Difference rule: $\frac{d}{dx} [f(x) - g(x)] = f'(x) - g'(x)$
+:::
+
+# Integrals
+
+## Integration
+
+From last time:
+
+::: incremental
+-   Measures the accumulation of quantities and the area under a curve.
+
+-   Example: Used to compute the area under probability distribution functions, which is essential in statistics and data analysis.
+
+-   Symbol: $\int f(x) dx$
+
+-   Practical Application: Calculating Cumulative Distribution Functions (CDFs)
+:::
+
+## Accumulating quantities {.smaller}
+
+::: columns
+::: {.column width="50%"}
+![](images/integral.gif){fig-align="center" width="500"}
+:::
+
+::: {.column width="50%"}
+**Area under the curve**
+
+::: incremental
+-   The integral of a function represents the area under the curve of that function on a graph, between two points.
+
+-   Example: Finding the total distance traveled given a speed-time graph.
+:::
+:::
+:::
+
+## The integral
+
+::: columns
+::: {.column width="25%"}
+::: fragment
+![](images/integral-1.svg){fig-align="center"}
+:::
+:::
+
+::: {.column width="25%"}
+::: fragment
+![](images/integral-2.svg){fig-align="center"}
+:::
+:::
+
+::: {.column width="25%"}
+::: fragment
+![](images/integral-3.svg){fig-align="center"}
+:::
+:::
+
+::: {.column width="25%"}
+::: fragment
+![](images/integral-4.svg){fig-align="center"}
+:::
+:::
+:::
+
+## Integrals in Python {.smaller}
+
+**Calculating integrals using SymPy**
+
+```{python}
+from sympy import symbols, integrate
+
+x = symbols('x')
+f = x**2 + 1
+area = integrate(f, (x, 0, 1))
+print(area)  # Output: 4/3
+```
+
+## Solving integrals {.smaller}
+
+**Integration rules**
+
+::: incremental
+-   Constant rule: $\int c , dx = cx + C$
+
+-   Power rule: $\int x^n , dx = \frac{x^{n+1}}{n+1} + C$
+
+-   Constant multiple rule: $\int c \cdot f(x) , dx = c \cdot \int f(x) , dx$
+
+-   Sum rule: $\int [f(x) + g(x)] , dx = \int f(x) , dx + \int g(x) , dx$
+
+-   Difference rule: $\int [f(x) - g(x)] , dx = \int f(x) , dx - \int g(x) , dx$
+:::
+
+## Example 1: Integrating a Constant
+
+::: incremental
+-   Function: $f(x) = 7$
+
+-   Integral: $\int 7 , dx = 7x + C$
+:::
+
+## Example 2: Power rule
+
+::: incremental
+-   Function: $f(x) = x^3$
+
+-   Integral: $\int x^3 , dx = \frac{x^{4}}{4} + C$
+:::
+
+## Example 3: Constant multiple rule
+
+::: incremental
+-   Function: $f(x) = 5x^2$
+
+-   Integral: $\int 5x^2 , dx = 5 \cdot \frac{x^{3}}{3} + C = \frac{5x^{3}}{3} + C$
+:::
+
+## Example 4: Sum and difference rule
+
+::: incremental
+-   Function: $f(x) = x^3 + 4x - 5$
+
+-   Integral: $\int (x^3 + 4x - 5) , dx = \frac{x^{4}}{4} + 2x^2 - 5x + C$
+:::
+
+## Solving complex integrals {.smaller}
+
+**Complex Integrals**:
+
+::: incremental
+-   Involves functions composed of multiple simpler functions.
+
+-   Requires application of rules like integration by parts and substitution for integration.
+:::
+
+::: fragment
+**Example Function:**
+
+$$
+\int_{a}^{b} \left( e^{cx} + \frac{1}{x^n} \right) \, dx
+$$
+:::
+
+::: incremental
+-   Objective: Find the integral
+:::
+
+## Integration by parts
+
+$$
+\int u \space dv = uv - \int v \space du
+$$
+
+-   Used when integrating the product of two functions.
+
+## Integration by parts {.smaller}
+
+**Function**: $\int x e^x , dx$
+
+::: fragment
+1.  **Identify the functions**
+
+::: incremental
+-   $u = x \quad \Rightarrow \quad du = dx$
+
+-   $dv = e^x , dx \quad \Rightarrow \quad v = e^x$
+:::
+:::
+
+::: fragment
+2.  **Apply Integration by Parts**
+
+$\int xe^x \space dx=xe^x-\int e^x \space dx=xe^x-e^x + C$
+:::
+
+## Integration by parts: Example {.smaller}
+
+**Function:** $\int xe^x \space dx$
+
+::: fragment
+1.  **Identify the functions**
+
+::: incremental
+-   $\text{Let } u=x$ and $dv=e^x \space dx$
+:::
+:::
+
+::: fragment
+2.  **Differentiate and integrate**
+
+::: incremental
+-   Differentiate: $u\colon du=dx$
+
+-   Integrate: $dv\colon v = e^x$
+:::
+:::
+
+## Integration by parts: Example {.smaller}
+
+**Function:** $\int xe^x \space dx$
+
+::: fragment
+3.  **Apply the integration by parts formula**
+
+$$
+\int u \space dv = uv - \int v \space du
+$$
+:::
+
+::: fragment
+4.  **Substitute the values**
+
+$$
+\int x e^x \, dx = x e^x - \int e^x \, dx
+$$
+:::
+
+## Integration by parts: Example {.smaller}
+
+**Function:** $\int xe^x \space dx$
+
+::: fragment
+5.  **Simplify the integral**
+
+$$
+\int x e^x \, dx = x e^x - e^x + C
+$$
+:::
+
+::: fragment
+6.  **Final answer**
+
+$$
+\int x e^x \, dx = e^x (x - 1) + C
+$$
+:::
+
+## Integration by substitution {.smaller}
+
+**Function**: $\int f(g(x))g^{'}(x)dx=\int f(u)\space du$
+
+-   Used when integrating a composite function.
+
+## Integration by substitution: Example 1 {.smaller}
+
+**Function**: $\int 2x \sqrt{x^2 + 1} , dx$
+
+::: fragment
+1.  **Identify the substitution**
+
+::: incremental
+-   Let $u = x^2 + 1 \quad \Rightarrow \quad du = 2x , dx$
+:::
+:::
+
+::: fragment
+2.  **Apply the substitution**
+
+$$
+\int 2x \sqrt{x^2 + 1} \space dx=\int \sqrt{u} \space du = \frac{2}{3}(x^2 + 1)^{3/2} + C
+$$
+:::
+
+## Integration by substitution: Example 2 {.smaller}
+
+**Function**: $$\int x \ln(x) , dx$$
+
+::: fragment
+1.  **Identify the functions**
+
+::: incremental
+-   $u = \ln(x) \quad \Rightarrow \quad du = \frac{1}{x} , dx$
+
+-   $dv = x , dx \quad \Rightarrow \quad v = \frac{x^2}{2}$
+:::
+:::
+
+## Integration by substitution: Example 2 {.smaller}
+
+**Function**: $$\int x \ln(x) , dx$$
+
+::: fragment
+2.  **Apply integration by parts**
+
+$$
+\int x \ln(x) , dx = \frac{x^2}{2}\ln(x) - \int \frac{x^2}{2} \cdot \frac{1}{x} \space dx = \frac{x^2}{2} \ln(x) - \frac{1}{2} \int x \space dx
+$$
+
+$$
+= \frac{x^2}{2} \ln(x) - \frac{x^2}{4} + C
+$$
+:::
+
+## Regularization {.smaller}
+
+You'll learn more about this in [INFO 521: Introduction to Machine Learning](https://infosci.arizona.edu/course/info-521-introduction-machine-learning) and/or [INFO 523: Data Mining and Discovery](https://infosci.arizona.edu/course/info-523-data-mining-and-discovery)
+
+::: columns
+::: {.column width="35%"}
+![](images/ridge-2.png){fig-align="center"}
+:::
+
+::: {.column width="65%"}
+![](images/ridge-1.png){fig-align="center"}
+:::
+:::
+
+## `ae-14-integration`
+
+Practice integration (**you will be tested on this in Exam 2**)

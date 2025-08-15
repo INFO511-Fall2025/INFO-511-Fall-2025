@@ -1,0 +1,721 @@
+---
+title: "Hypothesis testing"
+subtitle: "Lecture 13"
+format:
+  revealjs: default
+editor_options: 
+  chunk_output_type: console
+jupyter: python3
+execute: 
+  warning: false
+  error: false
+---
+
+## Setup
+
+```{python}
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy.stats import norm
+import random
+
+sns.set(font_scale=2)
+sns.set_theme(style = "whitegrid")
+```
+
+# Hypothesis testing
+
+## How can we answer questions using statistics? {.smaller}
+
+::: question
+**Statistical hypothesis testing** is the procedure that assesses evidence provided by the data in favor of or against some claim about the population (often about a population parameter or potential associations)
+:::
+
+## The hypothesis testing framework {.smaller}
+
+![](images/pius.jpg){fig-align="center" width="40%"}
+
+::: question
+*Ei incumbit probatio qui dicit, non qui negat*
+:::
+
+## The hypothesis testing framework {.smaller}
+
+::: incremental
+1.  Start with two hypotheses about the population: the null hypothesis and the alternative hypothesis.
+2.  Choose a (representative) sample, collect data, and analyze the data.
+3.  Figure out how likely it is to see data like what we observed, **IF** the null hypothesis were in fact true.
+4.  If our data would have been extremely unlikely if the null claim were true, then we reject it and deem the alternative claim worthy of further study. Otherwise, we cannot reject the null claim.
+:::
+
+## Organ donation consultants
+
+![](images/agnew_clinic.jpg){fig-align="center"}
+
+<!-- People providing an organ for donation sometimes seek the help of a special  -->
+
+<!-- medical consultant. These consultants assist the patient in all aspects of the  -->
+
+<!-- surgery, with the goal of reducing the possibility of complications during the  -->
+
+<!-- medical procedure and recovery. Patients might choose a consultant based in part  -->
+
+<!-- on the historical complication rate of the consultant's clients. -->
+
+## Organ donation consultants {.smaller}
+
+One consultant tried to attract patients by noting that the average complication rate for liver donor surgeries in the US is about 10%, but her clients have only had 3 complications in the 62 liver donor surgeries she has facilitated.
+She claims this is strong evidence that her work meaningfully contributes to reducing complications (and therefore she should be hired!).
+
+::: fragment
+::: question
+Is this a reasonable claim to make?
+:::
+:::
+
+## Organ donation consultants
+
+![](images/vigen.png){fig-align="center"}
+
+## Organ donation consultants {.smaller}
+
+One consultant tried to attract patients by noting that the average complication rate for liver donor surgeries in the US is about 10%, but her clients have only had 3 complications in the 62 liver donor surgeries she has facilitated.
+She claims this is strong evidence that her work meaningfully contributes to reducing complications (and therefore she should be hired!).
+
+::: fragment
+::: question
+Is there sufficient evidence to suggest that her complication rate is lower than the overall US rate?
+:::
+:::
+
+## The hypothesis testing framework {.smaller}
+
+::: incremental
+1.  Start with two hypotheses about the population: the null hypothesis and the alternative hypothesis.
+
+2.  Choose a (representative) sample, collect data, and analyze the data.
+
+3.  Figure out how likely it is to see data like what we observed, **IF** the null hypothesis were in fact true.
+
+4.  If our data would have been extremely unlikely if the null claim were true, then we reject it and deem the alternative claim worthy of further study.
+    Otherwise, we cannot reject the null claim.
+:::
+
+## Two competing hypotheses {.smaller}
+
+The null hypothesis (often denoted $H_0$) states that "nothing unusual is happening" or "there is no relationship," etc.
+
+::: fragment
+On the other hand, the alternative hypothesis (often denoted $H_1$ or $H_A$) states the opposite: that there *is* some sort of relationship.
+:::
+
+::: fragment
+::: question
+In statistical hypothesis testing we **always** first assume that the null hypothesis is true and then evaluate the weight of proof we have against this claim.
+:::
+:::
+
+## 1. Defining the hypotheses {.smaller}
+
+The null and alternative hypotheses are defined for **parameters**.
+
+::: question
+What will our null and alternative hypotheses be for this example?
+:::
+
+::: fragment
+::: incremental
+-   $H_0$: the true proportion of complications among her patients is equal to the US population rate
+-   $H_1$: the true proportion of complications among her patients is **less** than the US population rate
+:::
+:::
+
+::: fragment
+Expressed in symbols:
+
+-   $H_0: p = 0.10$
+-   $H_1: p < 0.10$
+:::
+
+::: fragment
+where $p$ is the true proportion of transplants with complications among her patients.
+:::
+
+## 2. Collecting and summarizing data {.smaller}
+
+With these two hypotheses, we now take our sample and summarize the data.
+
+The choice of summary statistic calculated depends on the type of data.
+In our example, we use the sample proportion: $\widehat{p} = 3/62 \approx 0.048$:
+
+## 3. Assessing the evidence observed {.smaller}
+
+Next, we calculate the probability of getting data like ours, *or more extreme*, if $H_0$ were in fact actually true.
+
+::: fragment
+This is a conditional probability:
+
+> Given that $H_0$ is true (i.e., if $p$ were *actually* 0.10), what would be the probability of observing $\widehat{p} = 3/62$?"
+:::
+
+::: fragment
+::: question
+This probability is known as the **p-value**.
+:::
+:::
+
+## 3. Assessing the evidence observed {.smaller}
+
+Let's simulate a distribution for $\hat{p}$ such that the probability of complication for each patient is 0.10 for 62 patients.
+
+This **null distribution** for $\hat{p}$ represents the distribution of the observed proportions we might expect, if the null hypothesis were true.
+
+::: fragment
+::: question
+When sampling from the null distribution, what is the expected proportion of complications?
+What would the expected count be of patients experiencing complications?
+:::
+:::
+
+## 3. Assessing the evidence observed {.smaller}
+
+```{python}
+#| echo: false
+
+# Set seed
+random.seed(1)
+
+# Function to simulate complication rates
+def simulate_complications(n_sims, sample_size, prob):
+    boot_dist = []
+    outcomes = ["complication", "no complication"]
+    for _ in range(n_sims):
+        sim_data = random.choices(outcomes, weights=[prob, 1 - prob], k=sample_size)
+        boot_dist.append(sim_data.count("complication") / sample_size)
+    return boot_dist
+
+# Simulating the null distribution
+n_sims = 1
+sample_size = 62
+prob = 0.1
+boot_dist = simulate_complications(n_sims, sample_size, prob)
+
+boot_props = pd.DataFrame({'boot_dist': boot_dist})
+
+# Plotting the bootstrap distribution
+sns.histplot(boot_props['boot_dist'], bins=64, color="skyblue", edgecolor="darkblue")
+plt.axvline(x=0.04839, color='red', linewidth=2)
+plt.xlabel("# Complications (out of 62)")
+plt.ylabel("Single Simulation")
+plt.xticks(ticks=np.arange(0, 17/62, 1/62), labels=np.arange(0, 17))
+plt.xlim(0, 0.25)
+plt.yticks([])
+plt.gca().tick_params(axis='y', length=0)
+plt.show()
+```
+
+## 3. Assessing the evidence observed {.smaller}
+
+```{python}
+#| echo: false
+
+# Set seed
+random.seed(5)
+
+# Function to simulate complication rates
+def simulate_complications(n_sims, sample_size, prob):
+    boot_dist = []
+    outcomes = ["complication", "no complication"]
+    for _ in range(n_sims):
+        sim_data = random.choices(outcomes, weights=[prob, 1 - prob], k=sample_size)
+        boot_dist.append(sim_data.count("complication") / sample_size)
+    return boot_dist
+
+# Simulating the null distribution
+n_sims = 1
+sample_size = 62
+prob = 0.1
+boot_dist = simulate_complications(n_sims, sample_size, prob)
+
+boot_props = pd.DataFrame({'boot_dist': boot_dist})
+
+# Plotting the bootstrap distribution
+sns.histplot(boot_props['boot_dist'], bins=64, color="skyblue", edgecolor="darkblue")
+plt.axvline(x=0.04839, color='red', linewidth=2)
+plt.xlabel("# Complications (out of 62)")
+plt.ylabel("Single Simulation")
+plt.xticks(ticks=np.arange(0, 17/62, 1/62), labels=np.arange(0, 17))
+plt.xlim(0, 0.25)
+plt.yticks([])
+plt.gca().tick_params(axis='y', length=0)
+plt.show()
+```
+
+## 3. Assessing the evidence observed {.smaller}
+
+```{python}
+#| echo: false
+
+# Set seed
+random.seed(10)
+
+# Function to simulate complication rates
+def simulate_complications(n_sims, sample_size, prob):
+    boot_dist = []
+    outcomes = ["complication", "no complication"]
+    for _ in range(n_sims):
+        sim_data = random.choices(outcomes, weights=[prob, 1 - prob], k=sample_size)
+        boot_dist.append(sim_data.count("complication") / sample_size)
+    return boot_dist
+
+# Simulating the null distribution
+n_sims = 100
+sample_size = 62
+prob = 0.1
+boot_dist = simulate_complications(n_sims, sample_size, prob)
+
+boot_props = pd.DataFrame({'boot_dist': boot_dist})
+
+# Plotting the bootstrap distribution
+sns.histplot(boot_props['boot_dist'], bins=64, color="skyblue", edgecolor="darkblue")
+plt.axvline(x=0.04839, color='red', linewidth=2)
+plt.xlabel("# Complications (out of 62)")
+plt.ylabel("Single Simulation")
+plt.xticks(ticks=np.arange(0, 17/62, 1/62), labels=np.arange(0, 17))
+plt.xlim(0, 0.25)
+plt.yticks([])
+plt.gca().tick_params(axis='y', length=0)
+plt.show()
+```
+
+## 3. Assessing the evidence observed {.smaller}
+
+```{python}
+#| echo: false
+
+# Set seed
+random.seed(10)
+
+# Function to simulate complication rates
+def simulate_complications(n_sims, sample_size, prob):
+    boot_dist = []
+    outcomes = ["complication", "no complication"]
+    for _ in range(n_sims):
+        sim_data = random.choices(outcomes, weights=[prob, 1 - prob], k=sample_size)
+        boot_dist.append(sim_data.count("complication") / sample_size)
+    return boot_dist
+
+# Simulating the null distribution
+n_sims = 5000
+sample_size = 62
+prob = 0.1
+boot_dist = simulate_complications(n_sims, sample_size, prob)
+
+boot_props = pd.DataFrame({'boot_dist': boot_dist})
+
+# Plotting the bootstrap distribution
+sns.histplot(boot_props['boot_dist'], bins=64, color="skyblue", edgecolor="darkblue")
+plt.axvline(x=0.04839, color='red', linewidth=2)
+plt.xlabel("# Complications (out of 62)")
+plt.ylabel("Single Simulation")
+plt.xticks(ticks=np.arange(0, 17/62, 1/62), labels=np.arange(0, 17))
+plt.xlim(0, 0.25)
+plt.yticks([])
+plt.gca().tick_params(axis='y', length=0)
+plt.show()
+```
+
+## 3. Assessing the evidence observed {.smaller}
+
+Supposing that the true proportion of complications is 10%, if we were to take repeated samples of 62 liver transplants, about 11.5% of them would have 3 or fewer complications.
+
+::: fragment
+That is, **p = 0.115**.
+:::
+
+## 4. Making a conclusion {.smaller}
+
+If it is very unlikely to observe our data (or more extreme) if $H_0$ were actually true, then that might give us enough evidence to suggest that it is actually false (and that $H_1$ is true).
+
+::: fragment
+What is "small enough"?
+:::
+
+::: incremental
+-   We often consider a numeric cutpoint (the **significance level**) defined *prior* to conducting the analysis.
+
+-   Many analyses use $\alpha = 0.05$.
+    This means that if $H_0$ were in fact true, we would expect to make the wrong decision only 5% of the time.
+:::
+
+::: fragment
+If the p-value is less than $\alpha$, we say the results are **statistically significant**.
+In such a case, we would make the decision to **reject the null hypothesis**.
+:::
+
+## What do we conclude when $p \ge \alpha$? {.smaller}
+
+If the p-value is $\alpha$ or greater, we say the results are not statistically significant and we **fail to reject the null hypothesis**.
+
+::: fragment
+Importantly, we never "accept" the null hypothesis -- we performed the analysis assuming that $H_0$ was true to begin with and assessed the probability of seeing our observed data or more extreme under this assumption.
+:::
+
+## 4. Making a conclusion {.smaller}
+
+::: question
+There is *insufficient* evidence at $\alpha = 0.05$ to suggest that the consultant's complication rate is less than the US average.
+:::
+
+## Vacation rentals in Tucson, AZ {.smaller}
+
+![](images/tucson.jpg){fig-align="center"}
+
+::: question
+Your friend claims that the mean price per guest per night for Airbnbs in Tucson, AZ is \$100.
+What do you make of this statement?
+:::
+
+## 1. Defining the hypotheses {.smaller}
+
+Remember, the null and alternative hypotheses are defined for **parameters,** not statistics
+
+::: question
+What will our null and alternative hypotheses be for this example?
+:::
+
+::: incremental
+-   $H_0$: the true mean price per guest is \$100 per night
+
+-   $H_1$: the true mean price per guest is NOT \$100 per night
+:::
+
+::: fragment
+Expressed in symbols:
+
+-   $H_0: \mu = 100$
+-   $H_1: \mu \neq 100$
+
+where $\mu$ is the true population mean price per guest per night among Airbnb listings in Tucson.
+:::
+
+## 2. Collecting and summarizing data {.smaller}
+
+With these two hypotheses, we now take our sample and summarize the data.
+We have a representative of 50 Airbnb listings in the file `tucson.csv`.
+
+The choice of summary statistic calculated depends on the type of data.
+In our example, we use the sample proportion, $\bar{x} = 116.24$.
+
+::: fragment
+```{python}
+tucson = pd.read_csv('data/tucson.csv')
+
+mean_price = tucson['ppg'].mean()
+print(f"Sample mean price: {mean_price:.2f}")
+```
+:::
+
+## 3. Assessing the evidence observed {.smaller}
+
+We know that not every representative sample of 50 Airbnb listings in Tucson will have exactly a sample mean of exactly \$116.24.
+
+::: question
+How might we deal with this **variability** in the **sampling distribution of the mean** using only the data that we have from our original sample?
+:::
+
+::: fragment
+We can take **bootstrap samples**, formed by sampling *with replacement* from our original dataset, *of the same sample size* as our original dataset.
+:::
+
+## 3. Assessing the evidence observed
+
+```{python}
+#| echo: false
+
+# Plotting the original sample
+mean_ppg = tucson['ppg'].mean()
+sns.histplot(tucson['ppg'], bins=30, kde=False, color="skyblue", edgecolor="darkblue")
+plt.axvline(x=mean_ppg, color='red', linewidth=2)
+plt.xlabel("Price per guest per night")
+plt.ylabel("Count")
+plt.title("Original sample")
+plt.ylim(0, 12)
+plt.yticks([0, 3, 6, 9, 12])
+plt.xlim(0, 250)
+plt.show()
+print(f"Mean price per guest per night: {mean_ppg:.2f}")
+
+```
+
+## 3. Assessing the evidence observed
+
+```{python}
+#| echo: false
+
+np.random.seed(1)
+bootstrap_sample1 = tucson.sample(n=50, replace=True)
+mean_ppg_bootstrap1 = bootstrap_sample1['ppg'].mean()
+sns.histplot(bootstrap_sample1['ppg'], bins=30, kde=False, color="skyblue", edgecolor="darkblue")
+plt.axvline(x=mean_ppg_bootstrap1, color='red', linewidth=2)
+plt.xlabel("Price per guest per night")
+plt.ylabel("Count")
+plt.title("Bootstrap sample 1")
+plt.ylim(0, 12)
+plt.yticks([0, 3, 6, 9, 12])
+plt.xlim(0, 250)
+plt.show()
+print(f"Mean price per guest per night (Bootstrap 1): {mean_ppg_bootstrap1:.2f}")
+
+```
+
+## 3. Assessing the evidence observed
+
+```{python}
+#| echo: false
+
+np.random.seed(2)
+bootstrap_sample2 = tucson.sample(n=50, replace=True)
+mean_ppg_bootstrap2 = bootstrap_sample2['ppg'].mean()
+sns.histplot(bootstrap_sample2['ppg'], bins=30, kde=False, color="skyblue", edgecolor="darkblue")
+plt.axvline(x=mean_ppg_bootstrap2, color='red', linewidth=2)
+plt.xlabel("Price per guest per night")
+plt.ylabel("Count")
+plt.title("Bootstrap sample 2")
+plt.ylim(0, 12)
+plt.yticks([0, 3, 6, 9, 12])
+plt.xlim(0, 250)
+plt.show()
+print(f"Mean price per guest per night (Bootstrap 2): {mean_ppg_bootstrap2:.2f}")
+
+```
+
+## 3. Assessing the evidence observed
+
+```{python}
+#| echo: false
+
+np.random.seed(3)
+bootstrap_sample3 = tucson.sample(n=50, replace=True)
+mean_ppg_bootstrap3 = bootstrap_sample3['ppg'].mean()
+sns.histplot(bootstrap_sample3['ppg'], bins=30, kde=False, color="skyblue", edgecolor="darkblue")
+plt.axvline(x=mean_ppg_bootstrap3, color='red', linewidth=2)
+plt.xlabel("Price per guest per night")
+plt.ylabel("Count")
+plt.title("Bootstrap sample 3")
+plt.ylim(0, 12)
+plt.yticks([0, 3, 6, 9, 12])
+plt.xlim(0, 250)
+plt.show()
+print(f"Mean price per guest per night (Bootstrap 3): {mean_ppg_bootstrap3:.2f}")
+
+```
+
+## 3. Assessing the evidence observed
+
+```{python}
+#| echo: false
+
+from sklearn.utils import resample
+
+np.random.seed(12345)
+
+# Generate bootstrap samples
+bootstrap_means = []
+for _ in range(5000):
+    bootstrap_sample = resample(tucson['ppg'], n_samples=50, replace=True)
+    bootstrap_means.append(bootstrap_sample.mean())
+
+bootstrap_means_df = pd.DataFrame({'boot_means': bootstrap_means})
+
+# Plotting the bootstrap distribution of the mean
+sns.histplot(bootstrap_means_df['boot_means'], bins=30, kde=False, color="palevioletred", edgecolor="darkred")
+plt.axvline(x=np.mean(bootstrap_means), color='black', linewidth=2)
+plt.xlabel("Price per guest per night")
+plt.ylabel("Count")
+plt.title("Bootstrap distribution of the mean")
+plt.xlim(0, 250)
+plt.ylim(0, 600)
+plt.show()
+print(f"Mean of bootstrap means: {np.mean(bootstrap_means):.2f}")
+
+```
+
+## Shifting the distribution {.smaller}
+
+We've captured the variability in the sample mean among samples of size 50 from Tucson area Airbnbs, but remember that in the hypothesis testing paradigm, we must assess our observed evidence *under the assumption that* $H_0$ *is true*.
+
+```{python}
+mean_price = bootstrap_means_df['boot_means'].mean()
+print(f"Sample mean price: {mean_price:.2f}")
+```
+
+<br>
+
+::: fragment
+::: question
+Where should the bootstrap distribution of means be centered under $H_0$?
+:::
+:::
+
+## Shifting the distribution
+
+```{python}
+#| echo: false
+
+from sklearn.utils import resample
+
+np.random.seed(12345)
+
+# Generate bootstrap samples
+bootstrap_means = []
+for _ in range(5000):
+    bootstrap_sample = resample(tucson['ppg'], n_samples=50, replace=True)
+    bootstrap_means.append(bootstrap_sample.mean())
+
+bootstrap_means_df = pd.DataFrame({'boot_means': bootstrap_means})
+
+# Plotting the bootstrap distribution of the mean
+sns.histplot(bootstrap_means_df['boot_means'], bins=30, kde=False, color="palevioletred", edgecolor="darkred")
+plt.axvline(x=np.mean(bootstrap_means), color='black', linewidth=2)
+plt.xlabel("Price per guest per night")
+plt.ylabel("Count")
+plt.title("Bootstrap distribution of the mean")
+plt.xlim(0, 250)
+plt.ylim(0, 600)
+plt.show()
+print(f"Mean of bootstrap means: {np.mean(bootstrap_means):.2f}")
+
+```
+
+## Shifting the distribution
+
+```{python}
+#| echo: false
+
+# Shifting the bootstrap distribution
+shift_amount = 100 - np.mean(bootstrap_means_df['boot_means'])
+
+# Plotting the shifted bootstrap distribution
+sns.histplot(bootstrap_means_df['boot_means'] + shift_amount, bins=30, kde=False, color="palevioletred", edgecolor="darkred")
+plt.axvline(x=100, color='black', linewidth=2)
+plt.xlabel("Price per guest per night")
+plt.ylabel("Count")
+plt.title("Bootstrap distribution under null hypothesis")
+plt.xlim(0, 250)
+plt.ylim(0, 600)
+plt.show()
+
+```
+
+## 3. Assessing the evidence observed
+
+```{python}
+#| echo: false
+# Plotting the shifted bootstrap distribution with highlighted observations
+sns.histplot(bootstrap_means_df['boot_means'] + shift_amount, bins=30, kde=False, color="palevioletred", edgecolor="darkred")
+plt.axvline(x=100, color='black', linewidth=2)
+plt.axvline(x=116.24, color='red', linewidth=2)
+plt.axvline(x=123.4, color='red', linewidth=2)
+plt.xlabel("Price per guest per night")
+plt.ylabel("Count")
+plt.title("Bootstrap distribution under null hypothesis")
+plt.xlim(0, 250)
+plt.ylim(0, 600)
+plt.show()
+
+```
+
+## 3. Assessing the evidence observed
+
+```{python}
+#| echo: false
+# Plotting the shifted bootstrap distribution with highlighted observations
+sns.histplot(bootstrap_means_df['boot_means'] + shift_amount, bins=30, kde=False, color="palevioletred", edgecolor="darkred")
+plt.axvline(x=100, color='black', linewidth=2)
+plt.axvline(x=116.24, color='red', linewidth=2)
+plt.axvline(x=123.4, color='red', linewidth=2)
+plt.xlabel("Price per guest per night")
+plt.ylabel("Count")
+plt.title("Bootstrap distribution under null hypothesis")
+plt.ylim(0, 600)
+plt.show()
+
+```
+
+## 3. Assessing the evidence observed {.smaller}
+
+Supposing that the true mean price per guest were \$100 a night, about 0.16% of bootstrap sample means were as extreme or even more so than our originally observed sample mean price per guest of \$116.24.
+
+::: fragment
+That is, **p = 0.0016**.
+:::
+
+## 4. Making a conclusion {.smaller}
+
+If it is very unlikely to observe our data (or more extreme) if $H_0$ were actually true, then that might give us enough evidence to suggest that it is actually false (and that $H_1$ is true).
+
+::: question
+There is sufficient evidence at $\alpha = 0.05$ to suggest that the mean price per guest per night of Airbnb rentals in Tucson is not \$100.
+:::
+
+## Ok, so what **isn't** a p-value? {.smaller}
+
+> *"A p-value of 0.05 means the null hypothesis has a probability of only 5% of* *being true"*
+
+> *"A p-value of 0.05 means there is a 95% chance or greater that the null* *hypothesis is incorrect"*
+
+::: fragment
+<center>[NO]{style="color:red;font-size:5rem;"}</center>
+:::
+
+::: fragment
+p-values do **not** provide information on the probability that the null hypothesis is true given our observed data.
+:::
+
+## What can go wrong? {.smaller}
+
+Remember, a p-value is calculated *assuming* that $H_0$ is true.
+It cannot be used to tell us how likely that assumption is correct.
+When we fail to reject the null hypothesis, we are stating that there is **insufficient evidence** to assert that it is false.
+This could be because...
+
+::: incremental
+-   ...
+    $H_0$ actually *is* true!
+
+-   ...
+    $H_0$ is false, but we got unlucky and happened to get a sample that didn't give us enough reason to say that $H_0$ was false.
+:::
+
+::: fragment
+Even more bad news, hypothesis testing does NOT give us the tools to determine which one of the two scenarios occurred.
+:::
+
+## What can go wrong? {.smaller}
+
+Suppose we test a certain null hypothesis, which can be either true or false (we never know for sure!).
+We make one of two decisions given our data: either reject or fail to reject $H_0$.
+
+::: fragment
+We have the following four scenarios:
+
+| Decision             | $H_0$ is true    | $H_0$ is false   |
+|----------------------|------------------|------------------|
+| Fail to reject $H_0$ | Correct decision | *Type II Error*  |
+| Reject $H_0$         | *Type I Error*   | Correct decision |
+
+::: incremental
+-   $\alpha$ is the probability of making a Type I error.
+
+-   $\beta$ is the probability of making a Type II error.
+
+-   The **power** of a test is 1 - $\beta$: the probability that, if the null hypothesis is actually false, we correctly reject it.
+:::
+:::
+
+## `ae-09`
+
+Work through the Tucson Airbnb prices data in an exercise on **Quantifying uncertainty**

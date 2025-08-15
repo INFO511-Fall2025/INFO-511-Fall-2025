@@ -1,0 +1,10 @@
+/* custom_itables.css */
+.dataTables_wrapper .dataTables_filter input {
+    background-color: white !important;
+    color: black !important;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    background-color: white !important;
+    color: black !important;
+}

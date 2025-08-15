@@ -1,0 +1,352 @@
+---
+title: "Linear algebra I"
+subtitle: "Lecture 22"
+format:
+  revealjs: default
+editor_options: 
+  chunk_output_type: console
+jupyter: python3
+execute:
+  warning: false
+  error: false
+---
+
+# Linear algebra
+
+## Linear algebra {.smaller}
+
+> ::: incremental
+> -   Linear algebra is the study of vectors, vector spaces, and linear transformations.
+>
+> -   Fundamental to many fields including data science, machine learning, and statistics.
+> :::
+
+# Vectors
+
+## Vectors {.smaller}
+
+::: fragment
+**Definition:**
+
+::: incremental
+-   Vectors are objects that can be added together and multiplied by scalars to form new vectors. In a data science context, vectors are often used to represent numeric data.
+:::
+:::
+
+::: fragment
+**Examples:**
+
+::: incremental
+-   Three-dimensional vector: \[height, weight, age\] = \[70, 170, 40\]
+
+-   Four-dimensional vector: \[exam1, exam2, exam3, exam4\] = \[95, 80, 75, 62\]
+:::
+:::
+
+## Vectors in Python {.smaller}
+
+::: panel-tabset
+## Numpy
+
+```{python}
+import numpy as np
+v = np.array([3, 2])
+print(v)
+```
+
+## Visual
+
+```{python}
+#| code-fold: true
+import matplotlib.pyplot as plt
+import numpy as np
+
+v = np.array([3, 2])
+origin = np.array([0, 0])
+
+plt.quiver(*origin, *v, scale=1, scale_units='xy', angles='xy')
+plt.xlim(0, 4)
+plt.ylim(0, 3)
+plt.grid()
+plt.show()
+```
+:::
+
+## Vector addition {.smaller}
+
+::: panel-tabset
+## Example
+
+::: incremental
+-   Vectors of the same length can be added or subtracted componentwise.
+
+-   Example: $\mathbf{v} = [3,2]$ and $\mathbf{w}=[2,-1]$
+
+-   Result: $\mathbf{v}+\mathbf{w}=[5,1]$
+:::
+
+## Python
+
+```{python}
+v = np.array([3, 2])
+w = np.array([2, -1])
+v_plus_w = v + w
+print(v_plus_w) 
+```
+
+## Visual
+
+```{python}
+#| code-fold: true
+v = np.array([3, 2])
+w = np.array([2, -1])
+v_plus_w = v + w
+
+plt.quiver(*origin, *v, color='r', scale=1, scale_units='xy', angles='xy')
+plt.quiver(*origin, *w, color='b', scale=1, scale_units='xy', angles='xy')
+plt.quiver(*origin, *v_plus_w, color='g', scale=1, scale_units='xy', angles='xy')
+plt.xlim(0, 6)
+plt.ylim(-2, 3)
+plt.grid()
+plt.show()
+```
+:::
+
+## Vector subtraction {.smaller}
+
+::: panel-tabset
+## Example
+
+::: incremental
+-   Vectors of the same length can be added or subtracted componentwise.
+
+-   Example: $\mathbf{v} = [3,2]$ and $\mathbf{w}=[2,-1]$
+
+-   Result: $\mathbf{v}-\mathbf{w}=[1,3]$
+:::
+
+## Python
+
+```{python}
+v = np.array([3, 2])
+w = np.array([2, -1])
+v_plus_w = v - w
+print(v_plus_w) 
+```
+
+## Visual
+
+```{python}
+#| code-fold: true
+v = np.array([3, 2])
+w = np.array([2, -1])
+v_plus_w = v - w
+
+plt.quiver(*origin, *v, color='r', scale=1, scale_units='xy', angles='xy')
+plt.quiver(*origin, *w, color='b', scale=1, scale_units='xy', angles='xy')
+plt.quiver(*origin, *v_plus_w, color='g', scale=1, scale_units='xy', angles='xy')
+plt.xlim(0, 6)
+plt.ylim(-2, 3)
+plt.grid()
+plt.show()
+```
+:::
+
+## Vector scaling {.smaller}
+
+::: panel-tabset
+## Example
+
+::: incremental
+-   Scaling vector $\mathbf{v}=[3,2]$ by $2$
+
+-   Result: $[6,4]$
+:::
+
+## Python
+
+```{python}
+v = np.array([3, 2])
+scaled_v = 2.0 * v
+print(scaled_v)
+```
+
+## Visual
+
+```{python}
+#| code-fold: true
+
+scaled_v = 2 * v
+
+plt.quiver(*origin, *v, color='r', scale=1, scale_units='xy', angles='xy')
+plt.quiver(*origin, *scaled_v, color='g', scale=1, scale_units='xy', angles='xy', alpha=0.75)
+plt.xlim(0, 7)
+plt.ylim(0, 5)
+plt.grid()
+plt.show()
+```
+:::
+
+# Linearly independent and span
+
+## Span
+
+> The span of a set of vectors $\mathbf{v1},\mathbf{v2},...,\mathbf{vn}$ is the set of all linear combinations of the vectors.
+>
+> i.e., all the vectors $\mathbf{b}$ for which the equation $[\mathbf{v1} \space \mathbf{v2} \space... \space\mathbf{vn}]\mathbf{x=b}$
+
+## Linear independent vs. dependent {.smaller}
+
+> Vectors are **linearly independent** if each vector lies outside the span of the remaining vectors.
+> Otherwise, the vectors are said to be **linearly dependent**[^1].
+
+[^1]: For more information, see this nice [blog on the topic](https://mbernste.github.io/posts/linear_independence/)
+
+![](images/linear_independence.png){fig-align="center" width="934"}
+
+## Linear independent vs. dependent {.smaller}
+
+> The vector on th right can be constructed by any two combination of the other vectors.
+
+![](images/linear_independence_symmetry.png){fig-align="center" width="600"}
+
+# Matrices
+
+## Matrices {.smaller}
+
+::: panel-tabset
+## Definition
+
+-   Matrices are collections of vectors arranged in rows and columns.
+
+-   Represent linear transformations.
+
+-   Example Matrix:
+
+$$
+\mathbf{A} = \begin{bmatrix}3 & 0 \\0 & 2 \end{bmatrix}
+$$
+
+## Python
+
+```{python}
+A = np.array([[3,0],[0,2]])
+print(A)
+```
+:::
+
+## Matrix transposition {.smaller}
+
+-   Matrix transposition involves swapping the rows and columns.
+
+-   Notation: If $\mathbf{A}$ is a matrix, then its transpose is denoted as $\mathbf{A}^T$.
+
+-   Given the matrix $\mathbf{A}$:
+
+$$
+\mathbf{A}= \begin{bmatrix}a_{11} & a_{12} & a_{13}\\a_{21} & a_{22} & a_{23}\\a_{31} & a_{32} & a_{33}\end{bmatrix}
+$$
+
+-   The matrix $\mathbf{A}^T$ is:
+
+$$
+\mathbf{A}^T=\begin{bmatrix}a_{11} & a_{21} & a_{31}\\a_{12} & a_{22} & a_{32}\\a_{13} & a_{23} & a_{33}\end{bmatrix}
+$$
+
+## Matrix transposition: Python
+
+```{python}
+#| code-fold: true
+import numpy as np
+
+# Original matrix
+A = np.array([
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+])
+
+# Transpose of the matrix
+A_T = A.T
+
+print("Original Matrix:")
+print(A)
+print("\nTransposed Matrix:")
+print(A_T)
+```
+
+## Matrix-vector multiplication {.smaller}
+
+![](images/matrix_vec_mult_as_process.png){fig-align="center"}
+
+## Matrix-vector multiplication {.smaller}
+
+**Geometrically**
+
+![](images/matrix_vec_mult_as_linear_comb_geom.png){fig-align="center"}
+
+## Matrix-vector multiplication {.smaller}
+
+::: panel-tabset
+## Example
+
+-   Matrix-vector multiplication transforms the vector according to the basis vectors of the matrix.
+
+-   Formula: $\mathbf{A} \cdot \mathbf{v}$
+
+$$
+\mathbf{A} \cdot \mathbf{v} = \begin{bmatrix}3 & 0 \\0 & 2 \end{bmatrix} \cdot [3, 2]
+$$
+
+## Python
+
+```{python}
+A = np.array([[3,0],[0,2]])
+v = np.array([3, 2])
+new_v = A.dot(v)
+print(new_v) 
+
+```
+
+## Visual
+
+```{python}
+#| code-fold: true
+A = np.array([[3, 0], [0, 2]])
+v = np.array([3, 2])
+new_v = A.dot(v)
+
+plt.quiver(*origin, *v, color='r', scale=1, scale_units='xy', angles='xy')
+plt.quiver(*origin, *new_v, color='g', scale=1, scale_units='xy', angles='xy')
+plt.xlim(0, 10)
+plt.ylim(0, 5)
+plt.grid()
+plt.show()
+
+```
+:::
+
+## Determinants {.smaller}
+
+> The [**determinant**](https://mbernste.github.io/posts/determinants/) is a function that maps square [matrices](https://mbernste.github.io/posts/matrices/) to real numbers: $\text{Det}:ℝ^{m×m}→ℝ$
+>
+> where the absolute value of the determinant describes the volume of the parallelepided formed by the matrix’s columns.
+
+![](images/determinant_overview.png){fig-align="center" width="732"}
+
+## Determinants: Python {.smaller}
+
+-   Determinants measure the scale factor of a transformation.
+
+-   Determinant of 0 indicates linear dependence.
+
+```{python}
+from numpy.linalg import det
+A = np.array([[3, 0], [0, 2]])
+determinant = det(A)
+print(determinant)
+```
+
+## `ae-15-linear-algebra`
+
+Practice matrix operations (**you will be tested on this in Exam 2**)

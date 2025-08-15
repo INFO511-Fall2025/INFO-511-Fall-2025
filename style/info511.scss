@@ -1,0 +1,50 @@
+/*-- scss:defaults --*/
+
+@import 'https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap';
+
+$font-family: "Lexend", sans-serif;
+
+/*-- scss:rules --*/
+
+b, strong {
+color: #1E5288;
+}
+
+
+.render-commit-push {
+  padding: 0.5em 0.5em 0em 4em; /* Increased left padding from 3em to 4em */
+  margin-top: 5px;
+  margin-bottom: 5px;
+  background: #E2E9EB center left/3em no-repeat;
+  border-top: 1px solid #0C234B;
+  border-bottom: 1px solid #0C234B;
+  background-image: url("img/render-commit-push.png");
+  background-size: 1.25em;
+}
+
+.pull {
+  padding: 0.5em 0.5em 0em 3em;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  background: #F4EDE5 5px center/3em no-repeat;
+  border-top: 1px solid #A95C42;
+  border-bottom: 1px solid #A95C42;
+  background-image: url("img/pull.png");
+  background-size: 1em;
+  background-position: 1em 0.5em;
+}
+
+
+/* remove after https://github.com/quarto-dev/quarto-cli/pull/8193/files is merged */
+
+#quarto-content > #quarto-sidebar-glass {
+  padding-top: 0px;
+}
+
+.sidebar-navigation .quarto-navigation-tool {
+  color: #FFFFFF;
+}
+
+.quarto-color-scheme-toggle:not(.alternate) .bi::before {
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgba(255, 255, 255, 1)" class="bi bi-toggle-off" viewBox="0 0 16 16"><path d="M11 4a4 4 0 0 1 0 8H8a4.992 4.992 0 0 0 2-4 4.992 4.992 0 0 0-2-4h3zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5z"/></svg>') !important;
+}

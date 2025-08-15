@@ -1,0 +1,156 @@
+---
+title: "Linear algebra II"
+subtitle: "Lecture 23"
+format:
+  revealjs: default
+editor_options: 
+  chunk_output_type: console
+jupyter: python3
+execute:
+  warning: false
+  error: false
+---
+
+# Eigenvalues + Eigenvectors
+
+## Eigenvalues and Eigenvectors {.smaller}
+
+> ::: incremental
+> -   Eigenvalues and eigenvectors decompose a matrix into its fundamental components.
+> -   Eigenvalue equation: $\mathbf{A} \mathbf{v} = \lambda \mathbf{v}$
+> :::
+
+## Calculating Eigenvalues and Eigenvectors
+
+::: fragment
+We will be using Python for this...
+:::
+
+::: fragment
+```{python}
+import numpy as np
+from numpy.linalg import eig
+A = np.array([[1, 2], [4, 5]])
+eigenvals, eigenvecs = eig(A)
+print("EIGENVALUES:", eigenvals)
+print("EIGENVECTORS:", eigenvecs)
+```
+:::
+
+## Eigen decomposition
+
+-   Decomposition formula: $\mathbf{A} = \mathbf{Q} \mathbf{L} \mathbf{Q}^{-1}$
+
+-   $\mathbf{Q}$ is the matrix of eigenvectors, $\mathbf{L}$ is the diagonal matrix of eigenvalues, and $\mathbf{Q}^{-1}$ is the inverse of $\mathbf{Q}$
+
+## Recomposing matrices
+
+```{python}
+from numpy import diag
+from numpy.linalg import inv
+Q = eigenvecs
+L = diag(eigenvals)
+R = inv(Q)
+B = Q @ L @ R
+print(B)
+```
+
+## Applications in Data Science and Machine Learning
+
+-   Principal Component Analysis (PCA): Reduces dimensionality while preserving variance.
+
+-   Eigenvalues in system stability: Determine stability in control systems and differential equations.
+
+## Special Types of Matrices {.smaller}
+
+::: columns
+::: {.column width="33.3%"}
+::: fragment
+**Identity Matrix**: Diagonal of 1s, other elements are 0s.
+
+$$
+\mathbf{I} = \begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+$$
+:::
+:::
+
+::: {.column width="33.3%"}
+::: fragment
+**Diagonal Matrix**: Non-zero elements only on the diagonal.
+
+$$
+\mathbf{D} = \begin{bmatrix}
+4 & 0 & 0 \\
+0 & 5 & 0 \\
+0 & 0 & 6
+\end{bmatrix}
+$$
+:::
+:::
+
+::: {.column width="33.3%"}
+::: fragment
+**Triangular Matrix**: Triangular shape of non-zero elements (upper $\mathbf{U}$, lower $\mathbf{L}$).
+
+$$
+\mathbf{U} = \begin{bmatrix}1 & 2 & 3 \\0 & 4 & 5 \\0 & 0 & 6\end{bmatrix} \\ \mathbf{L} = \begin{bmatrix}
+1 & 0 & 0 \\
+2 & 3 & 0 \\
+4 & 5 & 6
+\end{bmatrix}
+$$
+:::
+:::
+:::
+
+## `ae-16-pca` {.smaller}
+
+**Principal Component Analysis**
+
+```{python}
+#| echo: false
+import seaborn as sns
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+
+# Load the penguins dataset
+penguins = sns.load_dataset('penguins')
+
+# Drop rows with missing values
+penguins.dropna(inplace=True)
+
+# Select numerical features for PCA
+features = ['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g']
+X = penguins[features]
+
+# Standardize the data
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Initialize PCA
+pca = PCA(n_components=2)
+
+# Fit and transform the data
+principal_components = pca.fit_transform(X_scaled)
+
+# Create a DataFrame with the principal components
+pca_df = pd.DataFrame(data=principal_components, columns=['PC1', 'PC2'])
+
+# Add species to the DataFrame for visualization
+pca_df['species'] = penguins['species']
+
+# Visualize the PCA result
+plt.figure(figsize=(8, 6))
+sns.scatterplot(data=pca_df, x='PC1', y='PC2', hue='species', palette='colorblind')
+plt.title('PCA of Penguins Dataset')
+plt.xlabel('Principal Component 1')
+plt.ylabel('Principal Component 2')
+plt.show()
+
+```

@@ -1,0 +1,12 @@
+{
+  "hash": "3bed3fc4644ba70e2e43bdffd43153be",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: 'AE 06: Opinion articles in The Arizona Daily Wildcat'\ncategories:\n  - Application exercise\nexecute:\n  warning: false\n  error: false\n---\n\n## Part 1 - Data scraping\n\nThis will be done in the `wildcat-scrape.py` Python script within the `ae-06-wildcat-scrape` folder.\nSave the resulting data frame in the `data/` folder.\n\n## Part 2 - Data analysis\n\nLet's start by loading the packages we will need:\n\n::: {#load-packages .cell message='false' execution_count=1}\n``` {.python .cell-code}\nimport pandas as pd\n```\n:::\n\n\n-   Load the data you saved into the `data` folder and name it `wildcat`.\n\n::: {#load-data .cell message='false' execution_count=2}\n``` {.python .cell-code}\n# add code here\n```\n:::\n\n\n-   Who are the most prolific authors of the 100 most recent opinion articles in The Arizona Daily Wildcat?\n\n::: {#union-title-abstract .cell execution_count=3}\n``` {.python .cell-code}\n# add code here\n```\n:::\n\n\n-   Draw a line plot of the number of opinion articles published per day in The Arizona Daily Wildcat.\n\n::: {#articles-per-day .cell execution_count=4}\n``` {.python .cell-code}\n# add code here\n```\n:::\n\n\n-   What percent of the most recent 100 opinion articles in The Arizona Daily Wildcat mention \"climate\" in their title?\n\n::: {#climate-title .cell execution_count=5}\n``` {.python .cell-code}\n# add code here\n```\n:::\n\n\n-   What percent of the most recent 100 opinion articles in The Arizona Daily Wildcat mention \"election\" in their title or abstract?\n\n::: {#election-title .cell execution_count=6}\n``` {.python .cell-code}\n# add code here\n```\n:::\n\n\n-   Come up with another question and try to answer it using the data.\n\n::: {#979d13c3 .cell execution_count=7}\n``` {.python .cell-code}\n# add code here\n```\n:::\n\n\n",
+    "supporting": [
+      "ae-06-wildcat-scrape_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

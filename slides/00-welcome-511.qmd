@@ -1,0 +1,266 @@
+---
+title: "Welcome to INFO 511"
+subtitle: "Lecture 0"
+format:
+  revealjs: default
+jupyter: python3
+---
+
+# Hello world!
+
+## Meet the prof
+
+::: columns
+::: {.column width="50%"}
+Dr. Greg Chism
+
+Assistant Professor of the Practice
+
+Harvill 420
+:::
+
+::: {.column width="50%"}
+![](images/greg.png){fig-alt="Headshot of Dr. Mine Çetinkaya-Rundel" fig-align="center"}
+:::
+:::
+
+## Meet each other!
+
+::: callout-important
+Introduce yourself via the #general channel in the course [Slack](https://info511fall2024.slack.com)
+:::
+
+## Meet data science
+
+-   Data science is an exciting discipline that allows you to turn raw data into understanding, insight, and knowledge.
+
+-   We're going to learn to do this in a formulaic way -- more on that later!
+
+-   This is a course on introduction to data science, with an emphasis on statistical thinking and mathematics.
+
+# Software
+
+## Excel - not...
+
+![](images/excel.png){fig-alt="An Excel window with data about countries" fig-align="center"}
+
+## Python
+
+![](images/python.png){fig-alt="An R shell" fig-align="center"}
+
+## VS Code
+
+![](images/vscode.png){fig-alt="An RStudio window" fig-align="center"}
+
+# Data science life cycle
+
+## Data science life cycle
+
+![](images/data-science-cycle/data-science-cycle.001.png){fig-alt="Data science life cycle"}
+
+## Import
+
+![](images/data-science-cycle/data-science-cycle.002.png){fig-alt="Data science life cycle, with import highlighted"}
+
+## Tidy + transform
+
+![](images/data-science-cycle/data-science-cycle.003.png){fig-alt="Data science life cycle, with tidy and transform highlighted"}
+
+## Visualize
+
+![](images/data-science-cycle/data-science-cycle.004.png){fig-alt="Data science life cycle, with visualize highlighted"}
+
+## Model
+
+![](images/data-science-cycle/data-science-cycle.005.png){fig-alt="Data science life cycle, with model highlighted"}
+
+## Understand
+
+![](images/data-science-cycle/data-science-cycle.006.png){fig-alt="Data science life cycle, with understand highlighted"}
+
+## 
+
+::: columns
+::: {.column width="50%"}
+![](images/google-trend-index.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+![](images/data-science-cycle/data-science-cycle.006.png){fig-align="center"}
+
+```{python}
+#| echo: false
+#| message: false
+
+import pandas as pd
+
+data = [
+    {"date": "23 January 2017", "season": "winter"},
+    {"date": "4 March 2017", "season": "spring"},
+    {"date": "14 June 2017", "season": "summer"},
+    {"date": "1 September 2017", "season": "fall"},
+    {"date": "...", "season": "..."}
+]
+
+travel = pd.DataFrame(data)
+print(travel)
+```
+:::
+:::
+
+## Communicate
+
+![](images/data-science-cycle/data-science-cycle.007.png){fig-alt="Data science life cycle, with communicate highlighted"}
+
+## Understand + communicate
+
+![](images/data-science-cycle/data-science-cycle.008.png){fig-alt="Data science life cycle, with understand and communicate highlighted"}
+
+## Program
+
+![](images/data-science-cycle/data-science-cycle.009.png){fig-alt="Data science life cycle, with program highlighted"}
+
+# Let's dive in!
+
+## Application exercise
+
+::: appex
+Or more like demo for today...
+
+📋 [github.com/INFO-511-F24/ae-00-unvotes](https://github.com/INFO-511-F24/ae-00-unvotes/)
+:::
+
+# Course overview
+
+## Homepage
+
+<https://datasciaz.netlify.app/>
+
+-   All course materials
+-   Links to GitHub, D2L, Posit Cloud (can run Jupyter), etc.
+
+## Course toolkit
+
+All linked from the course website:
+
+-   GitHub org: [github.com/INFO-511-F24](https://github.com/INFO-511-F24)
+-   Posit Cloud: [posit.cloud](https://posit.cloud/)
+-   Communication: [Slack](https://info511fall2024.slack.com)
+-   Assignment submission and feedback: Github
+
+## Activities {.smaller}
+
+-   Introduce new content and prepare for lectures by watching the videos and completing the readings
+-   Actively participate office hours, team meetings
+-   Practice applying data science concepts and computing with application exercises during lecture, graded for completion
+-   Put together what you've learned to analyze real-world data
+    -   Lab assignments x 7
+    -   Exams x 2
+    -   Term project presented in the last lab session
+
+## Exams {.smaller}
+
+-   Two exams, each 20%
+
+-   Take home: Focus on the analysis of a dataset introduced in the take home exam, or solve mathematical prompts
+
+::: callout-caution
+Exam dates cannot be changed and no make-up exams will be given.
+If you can’t take the exams on these dates, you should drop this class.
+:::
+
+## Project {.smaller}
+
+-   Dataset of your choice, method of your choice
+
+-   Teamwork
+
+-   Presentation and write-up
+
+-   Presentations in the last week (video recordings)
+
+-   Interim deadlines, peer review on content, peer evaluation for team contribution
+
+::: callout-caution
+Final presentation date cannot be changed.
+If you can’t present on that date, you should drop this class.
+You must complete the project to pass this class.
+:::
+
+## Teams
+
+-   Assigned by me
+-   Project
+-   Peer evaluation during teamwork and after completion
+-   Expectations and roles
+    -   Everyone is expected to contribute equal *effort*
+    -   Everyone is expected to understand *all* code turned in
+    -   Individual contribution evaluated by peer evaluation, commits, etc.
+
+## Grading {.smaller}
+
+| Category              | Percentage |
+|-----------------------|------------|
+| Labs                  | 30%        |
+| Project               | 25%        |
+| Exam 1                | 20%        |
+| Exam 2                | 20%        |
+| Application Exercises | 5%         |
+
+No specific points allocated to participation, but participation via Slack, particularly Discussions, will be recorded periodically throughout the semester, and this information will be used as “extra credit” if you’re in between two grades and a minor bump would help.
+
+See [course syllabus](https://datasciaz.netlify.app/course-syllabus.html) for how the final letter grade will be determined.
+
+## Support
+
+-   Attend office hours (by appointment)
+-   Ask and answer questions on the discussion forum
+-   Reserve email for questions on personal matters and/or grades
+-   Read the [course support](https://datasciaz.netlify.app/course-syllabus.html/course-support.html) page
+
+## Announcements
+
+-   Posted on D2L (Announcements tool) but [primarily sent via Slack]{.underline}, be sure to check both regularly
+-   I'll assume that you've read an announcement by the next "business" day
+
+## Diversity + inclusion {.smaller}
+
+My goal is to ensure that students from all diverse backgrounds are well-served by this course, addressing their learning needs in and out of class, and recognizing the diversity they bring as a valuable resource and strength.
+
+::: incremental
+-   Please let me know your preferred name and pronouns on the Getting to know you survey.
+-   If you feel like your performance in the class is being impacted by your experiences outside of class, please don't hesitate to come and talk with me. I want to be a resource for you. If you prefer to speak with someone outside of the course, your advisers, and deans are excellent resources.
+-   I (like many people) am still in the process of learning about diverse perspectives and identities. If something was said in class (by anyone) that made you feel uncomfortable, please talk to me.
+:::
+
+## Accessibility
+
+-   The [Disability Resource Center](https://drc.arizona.edu/) is available to ensure that students are able to engage with their courses and related assignments.
+
+-   I am committed to making all course materials accessible and I'm always learning how to do this better.
+    If any course component is not accessible to you in any way, please don't hesitate to let me know.
+
+# Course policies
+
+## Late work, waivers, regrades policy
+
+-   We have policies!
+-   Read about them on the [course syllabus](https://datasciaz.netlify.app/course-syllabus.html) and refer back to them when you need it
+
+## Academic integrity
+
+> To uphold the [UArizona InfoSci Community Standard](https://infosci.arizona.edu/students-and-career/academic-integrity):
+
+> -   I will not lie, cheat, or steal in my academic endeavors;
+> -   I will conduct myself honorably in all my endeavors; and
+> -   I will act if the Standard is compromised.
+
+# Wrap up
+
+## This week's tasks
+
+-   Complete Lab 0
+    -   Computational setup
+    -   Getting to know you survey
+-   Read the syllabus
+-   Start readings for next week

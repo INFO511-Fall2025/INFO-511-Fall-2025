@@ -1,0 +1,146 @@
+---
+title: "AE 04: NYC flights + data preprocessing"
+categories: 
+  - Application exercise
+jupyter: python3
+execute: 
+  warning: false
+  error: false
+---
+
+```{python}
+#| label: load-packages
+#| message: false
+
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler, MaxAbsScaler, MinMaxScaler
+import numpy as np
+from nycflights13 import flights
+```
+
+## Exercise 1 - Load data
+
+Fill in the blanks:
+
+```{python}
+
+# add code here
+```
+
+The `flights` data frame has \_\_ rows.
+Each row represents a \_\_.
+
+## Exercise 2 - Data cleaning
+
+Remove rows with missing values in the `arr_delay` and `distance` columns.
+
+What are the names of the variables in `flights`.
+
+```{python}
+#| label: remove-NaNs
+
+# add code here
+```
+
+## Exercise 3 - Original Data Distribution
+
+-   Plot the original distributions of `arr_delay` and `distance`.
+
+```{python}
+#| label: original-distribution
+
+# add code here
+```
+
+## Exercise 4 - Check for Skewness
+
+-   Calculate and print the skewness of `arr_delay` and `distance`.
+
+```{python}
+#| label: check-skewness
+
+# add code here
+```
+
+## Exercise 5 - Scaling
+
+-   Check the summary statistics of `arr_delay` and `distance` to see if scaling is necessary.
+
+```{python}
+#| label: describe-arr_delay
+
+# add code here
+```
+
+```{python}
+#| label:  describe-distance
+
+# add code here
+```
+
+-   Question: Do `arr_delay` and `distance` need to be scaled? Why?
+
+*add response here.*
+
+-   Apply standard scaling, maximum absolute scaling, and Min-Max Scaling to the transformed `arr_delay` and `distance`.
+-   **Hint:** use the framework `df_clean.loc[:, ['arr_delay_minmax', 'distance_minmax']]` to prevent errors
+
+```{python}
+#| label: standardize-data
+
+# add code here
+```
+
+-   Question: What are the two pros and two cons of standardizing data?
+
+*Add response here.*
+
+## Exercise 6 - Transformation
+
+-   Check the summary statistics again with your min-max standardized columns.
+
+```{python}
+
+# add code here
+```
+
+```{python}
+
+# add code here
+```
+
+-   Question: Why should you use the min-max scaled data instead of a different scaling for the transformations (hint: especially log transformation)
+
+*Add response here.*
+
+-   Apply a log transformation to `arr_delay` if it is positively skewed and apply a square root transformation to `distance` if it is negatively skewed (use `if` `else` statements).
+
+-   **Hint:** Logical operators in Python:
+
+    | operator      | definition                                               |
+    |:--------------|:---------------------------------------------------------|
+    | `<`           | is less than?                                            |
+    | `<=`          | is less than or equal to?                                |
+    | `>`           | is greater than?                                         |
+    | `>=`          | is greater than or equal to?                             |
+    | `==`          | is exactly equal to?                                     |
+    | `!=`          | is not equal to?                                         |
+    | `x and y`     | is x AND y?                                              |
+    | `x or y`      | is x OR y?                                               |
+    | `pd.isna(x)`  | is x NA?                                                 |
+    | `~pd.isna(x)` | is x not NA?                                             |
+    | `x in y`      | is x in y?                                               |
+    | `x not in y`  | is x not in y?                                           |
+    | `not x`       | is not x? (only makes sense if `x` is `True` or `False`) |
+
+```{python}
+#| label: transform-data
+
+# add code here
+```
+
+-   Question: Why do we have to add a constant when we perform a log or square-root transformation (i.e., `np.log1p(df['column' + 1])`)?
+
+*add response here.*

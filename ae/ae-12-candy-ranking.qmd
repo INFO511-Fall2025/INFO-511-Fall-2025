@@ -1,0 +1,224 @@
+---
+title: "AE 12: Ultimate candy ranking"
+categories: 
+  - Application exercise
+editor: visual
+editor_options: 
+  chunk_output_type: console
+jupyter: python3
+execute:
+  warning: false
+  error: false
+---
+
+In this application exercise, we will:
+
+-   Use backwards elimination to do model selection. Make sure to show each step of decision (though you don't have to interpret the models at each stage).
+
+-   Yes, this is tedious. And yes, there are ways of automating it. But for now, go through the process "manually", to get a good sense of how the model selection algorithm works.
+
+-   Provide interpretations for the slopes for the final model you arrive at and create at least one visualization that supports your narrative.
+
+```{python}
+import pandas as pd
+import numpy as np
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+from sklearn.metrics import mean_squared_error
+import matplotlib.pyplot as plt
+import seaborn as sns
+```
+
+# Examine the data
+
+-   We will use the `candy_rankings.csv` dataset for this analysis.
+
+```{python}
+candy_rankings = pd.read_csv('data/candy_rankings.csv')
+candy_rankings.info()
+```
+
+# Exercises
+
+Use the variables:
+
+`chocolate`, `fruity`, `nougat`, `pricepercent`, `sugarpercent`, `sugarpercent*chocolate`, `pricepercent*fruity`
+
+## Exercise 1
+
+Create the full model and show the $R^2_{adj}$:
+
+```{python}
+# add code here
+```
+
+Is the model a good fit of the data?
+
+*Add response here.*
+
+## Exercise 2
+
+Produce all possible models removing 1 term at a time from the full model. Describe what is being removed above each code cell.
+
+```{python}
+# Blank dictionary to store new models
+models = {}
+```
+
+-   *Add what is being removed here.*
+
+```{python}
+# add code here
+```
+
+-   *Add what is being removed here.*
+
+```{python}
+# add code here
+```
+
+-   *Add what is being removed here.*
+
+```{python}
+# add code here
+```
+
+-   *Add what is being removed here.*
+
+```{python}
+# add code here
+```
+
+-   *Add what is being removed here.*
+
+```{python}
+# add code here
+```
+
+-   *Add what is being removed here.*
+
+```{python}
+# add code here
+```
+
+## Exercise 3
+
+Compare all models using the framework (also use the same below):
+
+```{python}
+#| eval: false
+best_model_step1 = max(models, key=models.get)
+print(f'Best model in Exercise 2: {best_model_step1} with Adjusted R-squared: {models[best_model_step1]}')
+```
+
+-   Which model is best:
+
+*Add response here.*
+
+## Exercise 4
+
+Create all possible models removing 1 term at a time from the model selected in the previous exercise. Again, describe what is being removed above each code cell.
+
+```{python}
+# Blank dictionary to store new models
+models = {}
+```
+
+-   *Add what is being removed here.*
+
+```{python}
+# add code here
+```
+
+-   *Add what is being removed here.*
+
+```{python}
+# add code here
+```
+
+-   *Add what is being removed here.*
+
+```{python}
+# add code here
+```
+
+-   *Add what is being removed here.*
+
+```{python}
+# add code here
+```
+
+-   *Add what is being removed here.*
+
+```{python}
+# add code here
+```
+
+## Exercise 5
+
+Compare all models using the framework `best_model_step2 = max(models, key=models.get)`:
+
+```{python}
+# add code here
+```
+
+-   Which model is best:
+
+*Add response here.*
+
+## Exercise 6
+
+Create all possible models removing 1 term at a time from the model selected in the previous step. Again, describe what is being removed above each code cell.
+
+```{python}
+# Blank dictionary to store new models
+models = {}
+```
+
+-   *Add what is being removed here.*
+
+```{python}
+# add code here
+```
+
+-   *Add what is being removed here.*
+
+```{python}
+# add code here
+```
+
+-   *Add what is being removed here.*
+
+```{python}
+# add code here
+```
+
+-   *Add what is being removed here.*
+
+```{python}
+# add code here
+```
+
+-   *Add what is being removed here.*
+
+```{python}
+# add code here
+```
+
+## Exercise 7
+
+Compare all models using the framework `best_model_step3 = max(models, key=models.get)`:
+
+```{python}
+# add code here
+```
+
+-   Which model is best:
+
+*Add response here*
+
+-   Show the final model summary and coefficients:
+
+```{python}
+# add code here
+```

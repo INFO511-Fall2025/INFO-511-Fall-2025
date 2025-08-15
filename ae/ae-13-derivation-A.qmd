@@ -1,0 +1,356 @@
+---
+title: "AE 13: Derivation"
+subtitle: "Suggested answers"
+categories: 
+  - Application exercise
+  - Answers
+---
+
+In this exercise, we will:
+
+-   Practice Differentiation:
+
+    -   Apply the power rule to find the derivatives of simple polynomial functions.
+
+-   Apply the Chain Rule and Product Rule:
+
+    -   Use these rules to differentiate more complex functions involving compositions and products.
+
+-   Solve Advanced Differentiation Problems:
+
+    -   Tackle derivatives of functions with nested compositions and multiple variables, reinforcing the use of the chain rule and product rule.
+
+# Common functions + their Derivatives
+
+1.  **Power Function:**
+
+-   Function:
+
+$$
+f(x)=x^n
+$$
+
+-   Derivative:
+
+$$
+f'(x) = \frac{d}{dx} (x^n) = nx^{n-1}
+$$
+
+2.  **Exponential Function:**
+
+-   Function:
+
+$$
+f(x)=e^x
+$$
+
+-   Derivative:
+
+$$
+f'(x) = \frac{d}{dx} (e^x) = e^x
+$$
+
+-   Function:
+
+$$
+f(x)=a^x
+$$
+
+-   Derivative:
+
+$$
+f'(x) = \frac{d}{dx} (a^x) = a^x \ln(a)
+$$
+
+3.  **Natural Logarithm**
+
+-   Function:
+
+$$
+f(x) = ln(x)
+$$
+
+-   Derivative:
+
+$$
+f'(x) = \frac{d}{dx} (\ln(x)) = \frac{1}{x}
+$$
+
+4.  **Trigonometric Functions**
+
+-   Function:
+
+$$
+f(x)=\sin(x)
+$$
+
+-   Derivative:
+
+$$
+f'(x) = \frac{d}{dx} (\sin(x)) = \cos(x)
+$$
+
+-   Function:
+
+$$
+f(x)=\cos(x)
+$$
+
+-   Derivative:
+
+$$
+f'(x) = \frac{d}{dx} (\cos(x)) = -\sin(x)
+$$
+
+-   Function:
+
+$$
+f(x)=\tan(x)
+$$
+
+-   Derivative:
+
+$$
+f'(x) = \frac{d}{dx} (\tan(x)) = \sec^2(x)
+$$
+
+5.  **Hyperbolic Functions**
+
+-   Function:
+
+$$
+f(x)=\sinh(x)
+$$
+
+-   Derivative:
+
+$$
+f'(x) = \frac{d}{dx} (\sinh(x)) = \cosh(x)
+$$
+
+-   Function:
+
+$$
+f(x)=\cosh(x)
+$$
+
+-   Derivative:
+
+$$
+f'(x) = \frac{d}{dx} (\cosh(x)) = \sinh(x)
+$$
+
+# Derivatives
+
+For each problem, find the derivative of the given function.
+Show all steps clearly.
+
+## Exercise 1
+
+**Function:**
+
+$$
+f(x) = 5x^3
+$$
+
+**Solution:**
+
+-   The power rule states that $\frac{d}{dx}(x^n)=nx^{n-1}$
+
+-   Applying the power rule:
+
+$$
+f'(x) = \frac{d}{dx}(5x^3) = 15x^2
+$$
+
+## Exercise 2
+
+**Function:**
+
+$$
+g(x) = \sqrt{x}
+$$
+
+**Solution:**
+
+-   Rewrite the function with a fractional exponent: $\sqrt{x}=x^{1/2}$.
+
+-   Apply the power rule:
+
+$$
+g(x)=x^{1/2}
+$$
+
+$$
+g'(x) = \frac{1}{2}x^{1/2-1} = \frac{1}{2}x^{-1/2} = \frac{1}{2\sqrt{x}}
+$$
+
+## Exercise 3
+
+**Function:**
+
+$$
+h(x)=\ln(x)
+$$
+
+**Solution:**
+
+-   The derivative of the natural logarithm function is $\frac{1}{x}$
+
+$$
+h'(x) = \frac{d}{dx}(\ln(x)) = \frac{1}{x}
+$$
+
+# Intermediate Derivatives Using Chain Rule and Product Rule
+
+## Exercise 4
+
+**Function:**
+
+$$
+f(x)=(2x^3+3x)^4
+$$
+
+**Solution**
+
+-   Identify the outer function and inner function:
+
+    -   Outer function: $u^4$
+
+    -   Inner function: $u=2x^3+3x$
+
+-   Apply the chain rule:
+
+$$
+\frac{d}{dx}(u^4)=4u^3 \cdot \frac{d}{dx}(u)
+$$
+
+-   Differentiate the inner function:
+
+$$
+\frac{d}{dx}(2x^3+3x)=6x^2+3
+$$
+
+-   Combine the results:
+
+$$
+4(2x^3 + 3x)^3 \cdot (6x^2 + 3)
+$$
+
+## Exercise 5
+
+**Function:**
+
+$$
+\frac{d}{dx}(x^2 e^x)
+$$
+
+**Solution:**
+
+-   Identify the product of two functions: $u=x^2$ and $v=e^x$
+
+-   Apply the product rule: $(u \cdot v)^{'}=u^{'} \cdot v + u \cdot v^{'}$
+
+-   Differentiate each function:
+
+$$
+u^{'}=\frac{d}{dx}(x^2)=2x
+$$
+
+$$
+v^{'}=\frac{d}{dx}(e^x)=e^x
+$$
+
+-   Combine the results:
+
+$$
+g^{'}=x^2 \cdot e^x + e^x \cdot 2x = e^x(x^2+2x)
+$$
+
+## Exercise 6
+
+**Function:**
+
+$$
+h(x)=\sin (x^2)
+$$
+
+**Solution:**
+
+-   Identify the outer function and inner function:
+
+    -   Outer function: $\sin (u)$
+
+    -   Inner function: $u = x^2$
+
+-   Apply the chain rule: $\frac{d}{dx}(\sin (u))=\cos (u) \cdot \frac{d}{dx}(u)$
+
+-   Differentiate the inner function:
+
+$$
+\frac{d}{dx}(x^2)=2x
+$$
+
+-   Combine the results:
+
+$$
+h^{'}(x)=2x\cos (x^2)
+$$
+
+# Advanced Derivatives
+
+## Exercise 7
+
+**Function:**
+
+$$
+f(x)=(\ln (x) \cdot e^{2x})^3
+$$
+
+**Solution**
+
+-   Identify the outer function and inner function
+
+    -   Outer function: $u^3$
+
+    -   Inner function: $u=\ln (x) \cdot e^{2x}$
+
+-   Apply the chain rule: $\frac{d}{dx}(u^3)=3u^2 \cdot \frac{d}{dx}(u)$
+
+-   Use the product rule to differentiate the inner function:
+
+$$
+u=\ln (x), v=e^{2x}
+$$
+
+-   Differentiate each function:
+
+$$
+u^{'}=\frac{d}{dx}(\ln (x)) = \frac{1}{x}
+$$
+
+$$
+v^{'}=\frac{d}{dx}(e^{2x}) = 2e^{2x}
+$$
+
+-   Apply the product rule:
+
+$$
+\frac{d}{dx}(\ln(x) \cdot e^{2x}) = \left( \frac{1}{x} \cdot e^{2x} \right) + \left( \ln(x) \cdot 2e^{2x} \right)
+$$
+
+$$
+= e^{2x} \left( \frac{1}{x} + 2 \ln(x) \right)
+$$
+
+-   Combine the outer function derivative:
+
+$$
+f'(x) = 3 \left( \ln(x) \cdot e^{2x} \right)^2 \cdot e^{2x} \left( \frac{1}{x} + 2 \ln(x) \right)
+$$
+
+-   Simplify:
+
+$$
+f'(x) = 3e^{4x} (\ln(x))^2 \left( \frac{1}{x} + 2 \ln(x) \right)
+$$

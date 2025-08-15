@@ -1,0 +1,87 @@
+---
+title: "AE 02: Diwali sales + EDA"
+categories: 
+  - Application exercise
+jupyter: python3
+execute: 
+  warning: false
+  error: false
+---
+
+## Exercise 1
+
+### Reading and Examining the Data
+
+1.  **Read in the data:**
+
+    -   Read the Diwali sales data into a Pandas DataFrame and display the first few rows.
+    -   **Hint:** use `, encoding = 'iso-8859-1'` within the `pd.___()` function.
+
+```{python}
+#| label: read-data
+
+import pandas as pd
+
+# add code here
+```
+
+2.  **Examine the Data:**
+    -   Display basic information about the dataset using the `.info()` method.
+
+    -   Display summary statistics for the numerical columns using the `.describe()` method.
+
+```{python}
+#| label: info-describe
+
+# add code here
+```
+
+*Add narrative here.*
+
+::: callout-important
+Now is a good time to render, commit, and push.
+Make sure that you commit and push all changed documents and your Git pane is completely empty before proceeding.
+:::
+
+## Exercise 2
+
+### Exploring unique levels, outliers, and missing values
+
+1.  **Exploring Unique Levels:**
+
+    -   Identify and display the unique values in each categorical column.
+
+```{python}
+#| label: unique-levels
+
+# add code here
+```
+
+2.  **Identifying and Visualizing Outliers:**
+
+    -   Create a box plot to visualize outliers in the `Amount` column.
+
+    -   Identify outliers using the IQR method and count the number of outliers for each numerical column.
+
+```{python}
+#| label: outliers
+
+# add code here
+```
+
+2.  **Handling Missing Values:**
+
+    -   Check for missing values in the dataset.
+
+```{python}
+#| label: NaNs
+
+# add code here
+```
+
+*Add narrative here.*
+
+::: callout-important
+Now is a good time to render, commit, and push.
+Make sure that you commit and push all changed documents and your Git pane is completely empty before proceeding.
+:::

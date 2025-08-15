@@ -1,0 +1,97 @@
+---
+title: "AE 03: Tucson Housing + data visualization"
+categories: 
+  - Application exercise
+jupyter: python3
+execute: 
+  warning: false
+  error: false
+---
+
+```{python}
+#| label: load-packages
+#| message: false
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+```
+
+## Exercise 1
+
+Suppose you're helping some family friends who are looking to buy a house in Tucson.
+As they browse Zillow listings, they realize some houses have garages and others don't, and they wonder: **Does having a garage make a difference?**
+
+Luckily, you can help them answer this question with data visualization!
+
+-   Make histograms of the prices of houses in Tucson based on whether they have a garage.
+
+    -   In order to do this, you will first need to create a new variable called `garage` (with levels `"Garage"` and `"No garage"`).
+
+    -   Below is the code for creating this new variable.
+        Here, we transform the `tucson_housing` data frame to add a new variable called `garage` which takes the value `"Garage"` if the house type is "Single Family" or "Townhouse" and takes the value `"No garage"` otherwise.
+
+```{python}
+#| label: garage
+#| eval: false
+tucson_housing = pd.read_csv("data/tucson_housing.csv")
+
+garage_types = ["Single Family", "Townhouse"]
+
+tucson_housing['garage'] = tucson_housing['type'].apply(lambda x: 'Garage' if x in garage_types else 'No garage')
+```
+
+-   Then, facet by `garage` and use different colors for the two facets.
+-   Choose an appropriate binwidth and decide whether a legend is needed, and turn it off if not.
+-   Include informative title and axis labels.
+-   Finally, include a brief (2-3 sentence) narrative comparing the distributions of prices of Tucson houses that do and don't have garages. Your narrative should touch on whether having a garage "makes a difference" in terms of the price of the house.
+
+```{python}
+#| label: price-garage
+
+# add code here
+```
+
+*Add narrative here.*
+
+::: callout-important
+Now is a good time to render, commit, and push.
+Make sure that you commit and push all changed documents and your Git pane is completely empty before proceeding.
+:::
+
+## Exercise 2
+
+It's expected that within any given market, larger houses will be priced higher.
+It's also expected that the age of the house will have an effect on the price.
+However, in some markets new houses might be more expensive while in others new construction might mean "no character" and hence be less expensive.
+So your family friends ask: "In Tucson, do houses that are bigger and more expensive tend to be newer ones than those that are smaller and cheaper?"
+
+Once again, data visualization skills to the rescue!
+
+-   Create a scatter plot to explore the relationship between `price` and `area`, conditioning for `year_built`.
+
+-   Use `sns.scatterplot()` to create the scatter plot and `lowess` from `statsmodels` to add a LOWESS smooth curve fit to the data.
+
+-   Include informative title, axis, and legend labels.
+
+-   Discuss each of the following claims (1-2 sentences per claim).
+    Your discussion should touch on specific things you observe in your plot as evidence for or against the claims.
+
+    -   Claim 1: Larger houses are priced higher.
+
+    -   Claim 2: Newer houses are priced higher.
+
+    -   Claim 3: Bigger and more expensive houses tend to be newer ones than smaller and cheaper ones.
+
+```{python}
+#| label: price-area
+
+# add code here
+```
+
+*Add narrative here.*
+
+::: callout-important
+Now is a good time to render, commit, and push.
+Make sure that you commit and push all changed documents and your Git pane is completely empty before proceeding.
+:::

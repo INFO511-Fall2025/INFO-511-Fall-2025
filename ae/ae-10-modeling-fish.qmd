@@ -1,0 +1,156 @@
+---
+title: "AE 10: Modelling fish"
+categories: 
+  - Application exercise
+editor: visual
+jupyter: python3
+execute: 
+  warning: false
+  error: false
+---
+
+For this application exercise, we will work with data on fish.
+The dataset we will use, called `fish`, is on two common fish species in fish market sales.
+
+```{python}
+#| label: load-packages-data
+#| message: false
+
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+import numpy as np
+
+fish = pd.read_csv("data/fish.csv")
+```
+
+The data dictionary is below:
+
+| **variable**      | **description**        |
+|-------------------|------------------------|
+| `species`         | Species name of fish   |
+| `weight`          | Weight, in grams       |
+| `length_vertical` | Vertical length, in cm |
+| `length_diagonal` | Diagonal length, in cm |
+| `length_cross`    | Cross length, in cm    |
+| `height`          | Height, in cm          |
+| `width`           | Diagonal width, in cm  |
+
+## Visualizing the model
+
+We're going to investigate the relationship between the weights and heights of fish.
+
+-   Create an appropriate plot to investigate this relationship. Add appropriate labels to the plot.
+
+```{python}
+#| label: plot-hw
+
+# add code here
+```
+
+-   If you were to draw a a straight line to best represent the relationship between the heights and weights of fish, where would it go?
+    Why?
+
+    *Add response here.*
+
+    -   Now, let Python draw the line for you. Refer to the documentation at <https://seaborn.pydata.org/generated/seaborn.lmplot.html>. Specifically, refer to the `method` section.
+
+    ```{python}
+    #| label: plot-hw-lm
+
+    # add code here
+    ```
+
+    -   What types of questions can this plot help answer?
+
+    *Add response here.*
+
+-   We can use this line to make predictions.
+    Predict what you think the weight of a fish would be with a height of 10 cm, 15 cm, and 20 cm.
+    Which prediction is considered extrapolation?
+
+    *Add response here.*
+
+    -   What is a residual?
+
+    *Add response here.*
+
+## Model fitting
+
+-   Fit a model to predict fish weights from their heights.
+
+```{python}
+#| label: fit-model
+
+# add code here
+```
+
+-   Predict what the weight of a fish would be with a height of 10 cm, 15 cm, and 20 cm using this model.
+
+```{python}
+#| label: predict-by-hand
+
+# add code here
+```
+
+-   Calculate predicted weights for all fish in the data and visualize the residuals under this model.
+
+```{python}
+#| label: residuals
+
+# add code here
+```
+
+## Model summary
+
+-   Display the model summary including estimates for the slope and intercept along with measurements of uncertainty around them. Show how you can extract these values from the model output.
+
+```{python}
+#| label: model-summary
+
+# add code here
+```
+
+-   Write out your model using mathematical notation.
+
+*Add response here.*
+
+## Correlation
+
+We can also assess correlation between two quantitative variables.
+
+-   What is correlation?
+    What are values correlation can take?
+
+    *Add response here.*
+
+    -   Are you good at guessing correlation? Give it a try! <https://www.rossmanchance.com/applets/2021/guesscorrelation/GuessCorrelation.html>
+
+-   What is the correlation between heights and weights of fish?
+
+```{python}
+#| label: correlation
+
+# add code here
+```
+
+## Adding a third variable
+
+-   Does the relationship between heights and weights of fish change if we take into consideration species? Plot two separate straight lines for the Bream and Roach species.
+
+```{python}
+#| label: plot-hws-lm
+
+# add code here
+```
+
+## Fitting other models
+
+-   We can fit more models than just a straight line. Change the `sns.regplot()` code you previously used to include `lowess=True`. What is different from the plot created before?
+
+```{python}
+#| label: plot-hw-loess
+
+# add code here
+```

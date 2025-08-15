@@ -1,0 +1,8 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+/summative/*-A.qmd
+/.quarto/
+_site/
+.DS_Store

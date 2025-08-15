@@ -1,0 +1,348 @@
+---
+title: "Exam 1 review"
+subtitle: "Lecture 9"
+format:
+  revealjs: default
+editor_options: 
+  chunk_output_type: console
+jupyter: python3
+execute:
+  warning: false
+  error: false
+---
+
+## Setup
+
+```{python}
+#| label: load-packages
+#| message: false
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+sns.set(style="whitegrid", font_scale=1.2)
+```
+
+# Type coercion
+
+## Explicit vs. implicit type coercion
+
+-   Explicit type coercion: You ask Python to change the type of a variable
+
+-   Implicit type coercion: Python changes / makes assumptions for you about the type of a variable without you asking for it
+
+    -   This happens because in a series, you can't have multiple types of values
+
+## Vectors {.smaller}
+
+::: incremental
+-   A vector is a collection of values
+
+    -   Atomic vectors can only contain values of the same type
+
+    -   Lists can contain values of different types
+
+-   Why do we care?
+    Because each column of a data frame is a vector.
+:::
+
+. . .
+
+```{python}
+#| code-line-numbers: "|2|3|4"
+
+df = pd.DataFrame({
+    'x': [1, 2, 3],          # numeric (int)
+    'y': ['a', 'b', 'c'],    # character
+    'z': [True, False, True] # boolean
+})
+df
+```
+
+## Explicit coercion
+
+✅ From numeric to character
+
+```{python}
+
+df['x_new'] = df['x'].astype(str)
+df
+```
+
+## Explicit coercion
+
+❌ From character to numeric
+
+```{python}
+
+df['y_new'] = pd.to_numeric(df['y'], errors='coerce')
+df
+```
+
+## Implicit coercion {.smaller}
+
+::: question
+Which of the column types were implicitly coerced?
+:::
+
+```{python}
+#| code-line-numbers: "|2|3"
+
+df = pd.DataFrame({
+    'w': [1, 2, 3],
+    'x': ['a', 'b', 4],
+    'y': ['c', 'd', np.nan],
+    'z': [5, 6, np.nan],
+})
+df
+```
+
+## Collecting data {.smaller}
+
+::: question
+Suppose you conduct a survey and ask students their student ID number and number of credits they're taking this semester.
+What is the type of each variable?
+:::
+
+. . .
+
+```{python}
+#| code-line-numbers: "|2|3"
+
+survey_raw = pd.DataFrame({
+    'student_id': [273674, 298765, 287129, "I don't remember"],
+    'n_credits': [4, 4.5, "I'm not sure yet", "2 - underloading"]
+})
+survey_raw
+```
+
+## Cleaning data {.smaller}
+
+```{python}
+#| code-line-numbers: "2|3-6"
+
+survey = survey_raw.copy()
+survey['student_id'] = survey['student_id'].replace("I don't remember", np.nan)
+survey['n_credits'] = survey['n_credits'].replace({
+    "I'm not sure yet": np.nan,
+    "2 - underloading": "2"
+})
+survey['n_credits'] = pd.to_numeric(survey['n_credits'])
+survey
+```
+
+## Cleaning data -- alternative {.smaller}
+
+```{python}
+#| code-line-numbers: "|2|3"
+
+survey = survey_raw.copy()
+survey['student_id'] = pd.to_numeric(survey['student_id'], errors='coerce')
+survey['n_credits'] = pd.to_numeric(survey['n_credits'], errors='coerce')
+survey
+```
+
+## Recap: Type coercion {.smaller}
+
+::: incremental
+-   If variables in a DataFrame have multiple types of values, Python will coerce them into a single type, which may or may not be what you want.
+
+-   If what Python does by default is not what you want, you can use explicit coercion functions like `pd.to_numeric()`, `astype()`, etc., to turn them into the types you want them to be, which will generally also involve cleaning up the features of the data that caused the unwanted implicit coercion in the first place.
+:::
+
+# Aesthetic mappings
+
+## `loan50` example DataFrame
+
+```{python}
+loan50 = pd.read_csv("data/loan50.csv")
+loan50.head()
+```
+
+## Aesthetic mappings
+
+::: question
+What will the following code result in?
+:::
+
+```{python}
+#| label: mapping
+#| eval: false
+plt.figure(figsize=(8, 6))
+sns.scatterplot(data=loan50, x='annual_income', y='interest_rate', hue='homeownership', style='homeownership', palette='colorblind')
+plt.show()
+```
+
+## Aesthetic mappings {.smaller}
+
+```{python}
+#| label: mapping-show
+
+plt.figure(figsize=(8, 6))
+sns.scatterplot(data=loan50, x='annual_income', y='interest_rate', hue='homeownership', style='homeownership', palette='colorblind')
+plt.show()
+
+```
+
+## Multiple plot layers
+
+::: question
+What will the following code result in?
+:::
+
+```{python}
+#| label: multi-plot
+#| eval: false
+
+plt.figure(figsize=(8, 6))
+sns.scatterplot(data=loan50, x='annual_income', y='interest_rate', hue='homeownership', style='homeownership', palette='colorblind')
+sns.lineplot(data=loan50, x='annual_income', y='interest_rate', hue='homeownership', legend=False, palette='colorblind')
+plt.show()
+```
+
+## Multiple plot layers {.smaller}
+
+```{python}
+#| label: multi-plot-show
+
+plt.figure(figsize=(8, 6))
+sns.scatterplot(data=loan50, x='annual_income', y='interest_rate', hue='homeownership', style='homeownership', palette='colorblind')
+sns.lineplot(data=loan50, x='annual_income', y='interest_rate', hue='homeownership', legend=False, palette='colorblind')
+plt.show()
+
+```
+
+## Mapping vs. setting
+
+::: question
+What will the following code result in?
+:::
+
+```{python}
+#| label: mapping-setting
+#| eval: false
+
+plt.figure(figsize=(8, 6))
+sns.scatterplot(data=loan50, x='annual_income', y='interest_rate', hue='homeownership', palette='colorblind')
+sns.lineplot(data=loan50, x='annual_income', y='interest_rate', color='red', legend=False)
+plt.show()
+```
+
+## Mapping vs. setting {.smaller}
+
+```{python}
+#| label: mapping-setting-show
+
+plt.figure(figsize=(8, 6))
+sns.scatterplot(data=loan50, x='annual_income', y='interest_rate', hue='homeownership', palette='colorblind')
+sns.lineplot(data=loan50, x='annual_income', y='interest_rate', color='red', legend=False)
+plt.show()
+
+```
+
+## Recap: Aesthetic mappings
+
+::: incremental
+-   Aesthetic *mapping* defined at the local level will be used only by the elements they're defined for.
+
+-   *Setting* colors produces a manual color aesthetic, while *mapping* assigns colors automatically based on the qualifier.
+:::
+
+## Aside: Legends {.smaller}
+
+```{python}
+#| label: legends-plot
+plt.figure(figsize=(8, 6))
+sns.scatterplot(data=loan50, x='annual_income', y='interest_rate', hue='homeownership', style='homeownership')
+plt.legend(title='Home ownership')
+plt.show()
+```
+
+# Categories
+
+## Categorical
+
+-   Categorical variables — variables that have a fixed and known set of possible values — are used in the **pandas** library.
+
+<!-- -->
+
+-   They are also useful when you want to display character vectors in a non-alphabetical order.
+
+::: aside
+**pandas**: <https://pandas.pydata.org/pandas-docs/stable/user_guide/categorical.html>
+:::
+
+## Bar plot
+
+```{python}
+plt.figure(figsize=(8, 6))
+sns.countplot(data=loan50, x='homeownership')
+plt.show()
+```
+
+## Bar plot - reordered {.smaller}
+
+```{python}
+loan50['homeownership'] = pd.Categorical(loan50['homeownership'], categories=['mortgage', 'rent', 'own'])
+plt.figure(figsize=(8, 6))
+sns.countplot(data=loan50, x='homeownership')
+plt.show()
+```
+
+## Frequency table
+
+```{python}
+loan50['homeownership'].value_counts()
+```
+
+## Under the hood
+
+```{python}
+print(type(loan50['homeownership']))
+```
+
+. . .
+
+```{python}
+print(loan50['homeownership'].dtype)
+```
+
+. . .
+
+```{python}
+print(loan50['homeownership'].cat.categories)
+```
+
+. . .
+
+```{python}
+print(loan50['homeownership'])
+```
+
+## Recap: Categorical
+
+::: incremental
+-   The `pandas.Categorical` type is useful for dealing with categorical data and their levels.
+
+-   Factors and the order of their levels are relevant for displays (tables, plots) and they'll be relevant for modeling (later in the course).
+
+-   `Categorical` is a data **class** in **pandas**.
+:::
+
+## Aside: `==`
+
+```{python}
+loan50['homeownership_new'] = loan50['homeownership'].apply(lambda x: "don't own" if x == 'rent' else x)
+loan50[['homeownership', 'homeownership_new']].drop_duplicates()
+```
+
+## Aside: Filtering
+
+```{python}
+loan50['homeownership_new'] = loan50['homeownership'].apply(lambda x: "don't own" if x in ['rent', 'mortgage'] else x)
+loan50[['homeownership', 'homeownership_new']].drop_duplicates()
+```
+
+# Other questions?

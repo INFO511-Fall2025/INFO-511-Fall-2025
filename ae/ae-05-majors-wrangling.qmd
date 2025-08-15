@@ -1,0 +1,131 @@
+---
+title: "AE 05: Wrangling College Majors"
+categories: 
+  - Application exercise
+jupyter: python3
+execute: 
+  warning: false
+  error: false
+---
+
+## Goal
+
+Our ultimate goal in this application exercise is to make the following data visualization.
+
+![](images/degrees_plot_final.png){fig-align="center"}
+
+## Data
+
+For this exercise you will work with data on the proportions of Bachelor’s degrees awarded in the US between 2005 and 2015.
+The dataset you will use is in your `data/` folder and it’s called `degrees.csv`.
+
+```{python}
+#| label: load-packages-data
+#| message: false
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.ticker import FormatStrFormatter
+import seaborn as sns
+
+degrees = pd.read_csv("data/degrees.csv")
+
+```
+
+And let's take a look at the data.
+
+```{python}
+degrees.head()
+```
+
+## Pivoting
+
+-   Pivot the `degrees` data frame *longer* such that each row represents a degree type / year combination and `year` and `n`umber of graduates for that year are columns in the data frame.
+
+```{python}
+#| label: pivot
+
+# add your code here
+```
+
+-   **Question:** What is the type of the `year` variable? Why? What should it be?
+
+*Add your response here.*
+
+-   Start over with pivoting, and this time also make sure `year` is a numerical variable in the resulting data frame.
+
+```{python}
+#| label: pivot-with-transform
+# add your code here
+```
+
+-   **Question:** What would an `NA` mean in this context? *Hint:* The data come from the university registrars, and they have records on every single graduates, there shouldn't be anything "unknown" to them about who graduated when.
+
+*Add your response here.*
+
+-   Add on to your pipeline that you started with pivoting and convert `NA`s in `n` to `0`s.
+
+```{python}
+#| label: convert-na
+
+# add your code here
+```
+
+-   In our plot the degree types are BA, BS, MA, MS, and PhD. This information is in our dataset, in the `degree` column, but this column also has additional characters we don’t need. Create a new column called `degree_type` with levels BA, BS, MA, MS, and PhD (in this order) based on `degree`. Do this by adding on to your pipeline from earlier.
+
+```{python}
+#| label: degree-type
+
+# add your code here
+```
+
+-   Now we start making our plot, but let's not get too fancy right away.
+    Create the following plot, which will serve as the "first draft" on the way to our [Goal].
+    Do this by adding on to your pipeline from earlier.
+
+-   **Hint**: Make sure to state `ci=None` when using `sns.lineplot()`
+
+![](images/degrees_start.png){fig-align="center"}
+
+```{python}
+#| label: plot-draft
+
+# add your code here
+```
+
+-   What aspects of the plot need to be updated to go from the draft you created above to the [Goal] plot at the beginning of this application exercise.
+
+*Add your response here.*
+
+-   Update x-axis scale such that the years displayed go from 2019 to 2023 in unique years. Do this by adding on to your pipeline from earlier.
+
+```{python}
+
+# add your code here
+```
+
+-   Update line colors using the following level / color assignments.
+    Once again, do this by adding on to your pipeline from earlier.
+
+    -   BA: "#53868B"
+
+    -   BS: "#7AC5CD"
+
+    -   MA: "#89a285"
+
+    -   MS: "#8B814C"
+
+    -   PhD: "#CDBE70"
+
+```{python}
+#| label: plot-improve-1
+
+# add your code here
+```
+
+-   Update the plot labels (`title`, `x`, and `y`) and use `sns.set_style("white_grid")`. Once again, do this by adding on to your pipeline from earlier.
+
+```{python}
+#| label: plot-improve-2
+
+# add your code here
+```

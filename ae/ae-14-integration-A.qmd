@@ -1,0 +1,334 @@
+---
+title: "AE 14: Integration"
+subtitle: "Suggested answers"
+categories: 
+  - Application exercise
+  - Answers
+---
+
+In this exercise, we will:
+
+-   Practice Integration:
+
+    -   Apply the basic integration rules to find the integrals of simple polynomial functions.
+
+-   Apply Integration by Parts and Substitution:
+
+    -   Use these techniques to integrate more complex functions involving products and compositions.
+
+-   Solve Advanced Integration Problems:
+
+    -   Tackle integrals of functions with nested compositions and multiple variables, reinforcing the use of integration by parts and substitution.
+
+# Common functions + their Integrals
+
+1.  **Power Function:**
+
+-   Function:
+
+$$
+f(x)=x^n
+$$
+
+-   Integral:
+
+$$
+\int x^n \, dx = \frac{x^{n+1}}{n+1} + C \quad (n \neq -1)
+$$
+
+2.  **Exponential Function:**
+
+-   Function:
+
+$$
+f(x)=e^x
+$$
+
+-   Integral:
+
+$$
+\int e^x \, dx = e^x + C
+$$
+
+-   Function:
+
+$$
+f(x)=a^x
+$$
+
+-   Integral:
+
+$$
+\int a^x \, dx = \frac{a^x}{\ln(a)} + C
+$$
+
+3.  **Natural Logarithm**
+
+-   Function:
+
+$$
+f(x) = ln(x)
+$$
+
+-   Integral:
+
+$$
+\int \ln(x) \, dx = x \ln(x) - x + C
+$$
+
+4.  **Trigonometric Functions**
+
+-   Function:
+
+$$
+f(x)=\sin(x)
+$$
+
+-   Integral:
+
+$$
+\int \sin(x) \, dx = -\cos(x) + C
+$$
+
+-   Function:
+
+$$
+f(x)=\cos(x)
+$$
+
+-   Integral:
+
+$$
+\int \cos(x) \, dx = \sin(x) + C
+$$
+
+-   Function:
+
+$$
+f(x)=\tan(x)
+$$
+
+-   Integral:
+
+$$
+\int \tan(x) \, dx = -\ln|\cos(x)| + C = \ln|\sec(x)| + C
+$$
+
+5.  **Hyperbolic Functions**
+
+-   Function:
+
+$$
+f(x)=\sinh(x)
+$$
+
+-   Integral:
+
+$$
+\int \sinh(x) \, dx = \cosh(x) + C
+$$
+
+-   Function:
+
+$$
+f(x)=\cosh(x)
+$$
+
+-   Integral:
+
+$$
+\int \cosh(x) \, dx = \sinh(x) + C
+$$
+
+# Integrals
+
+For each problem, find the integral of the given function.
+Show all steps clearly.
+
+## Exercise 1
+
+**Function:**
+
+$$
+f(x) = 5x^3
+$$
+
+**Solution:**
+
+-   The power rule for integration states that $\int x^n \space dx = \frac{x^{n+1}}{n+1}+C$
+
+-   Applying the power rule:
+
+$$
+\int 5x^3 \, dx = 5 \cdot \frac{x^{3+1}}{3+1} + C = \frac{5x^4}{4} + C
+$$
+
+## Exercise 2
+
+**Function:**
+
+$$
+g(x) = \sqrt{x}
+$$
+
+**Solution:**
+
+-   Rewrite the function with a fractional exponent: $\sqrt{x}=x^{1/2}$.
+
+-   Apply the power rule:
+
+$$
+g(x)=x^{1/2}
+$$
+
+$$
+\int x^{1/2} \, dx = \int x^{1/2} \, dx = \frac{x^{1/2+1}}{1/2+1} + C = \frac{x^{3/2}}{3/2} + C = \frac{2}{3} x^{3/2} + C
+$$
+
+## Exercise 3
+
+**Function:**
+
+$$
+h(x)=\ln(x)
+$$
+
+**Solution:**
+
+-   Use the integral of the natural logarithm function:
+
+$$
+\int \ln(x) \, dx = x \ln(x) - x + C
+$$
+
+# Intermediate Derivatives Using Chain Rule and Product Rule
+
+## Exercise 4
+
+**Function:**
+
+$$
+\int xe^x \space dx
+$$
+
+**Solution**
+
+-   Identify the parts: Let $u=x$ and $dv=e^x \space dx$
+
+-   Differentiate and integrate:
+
+    -   Differentiate: $du = dx$
+
+    -   Integrate: $v = e^x$
+
+-   Apply the integration by parts formula: $\int u \space dv = uv - \int v \space du$
+
+$$
+\int x e^x \, dx = x e^x - \int e^x \, dx
+$$
+
+-   Simplify the integral:
+
+$$
+\int x e^x \, dx = x e^x - e^x + C
+$$
+
+-   Final answer:
+
+$$
+\int x e^x \, dx = e^x (x - 1) + C
+$$
+
+## Exercise 5
+
+**Function:**
+
+$$
+\int x \ln(x) \space dx
+$$
+
+**Solution:**
+
+-   Identify the parts: $u=\ln(x)$ and $dv=x \space dx$
+
+-   Differentiate and integrate:
+
+    -   Differentiate: $du=\frac{1}{x}\space dx$
+
+    -   Integrate: $v=\frac{x^{2}}{2}$
+
+-   Apply the integration by parts formula: $\int u \space dv = uv - \int v \space du$
+
+-   Substitute the parts:
+
+$$
+\int x \space \ln(x) \space dx = \ln(x)  \cdot \frac{x^2}{2} - \int \frac{x^2}{2} \cdot \frac{1}{x} \space dx
+$$
+
+-   Simplify the integral:
+
+$$
+\int x \ln(x) \space dx = \frac{x^{2} \ln(x)}{2} - \frac{1}{2} \int x \space dx
+$$
+
+-   Integrate the remaining part:
+
+$$
+\frac{1}{2} \int x \space dx = \frac{1}{2} \cdot \frac{x^2}{2} = \frac{x^2}{4}
+$$
+
+-   Combine the results:
+
+$$
+\int x \ln(x) \space dx = \frac{x^2 \ln(x)}{2} - \frac{x^2}{4} + C
+$$
+
+-   Final answer:
+
+$$
+\int x \ln(x) \space dx = \frac{x^2}{2} \ln(x) - \frac{x^2}{4} + C
+$$
+
+# Advanced Integral
+
+## Exercise 6
+
+**Function:**
+
+$$
+\int x \sin (x^2) \space dx
+$$
+
+**Solution:**
+
+-   Identify the substitution: Let $u = x^2$
+
+-   Differentiate and solve for $du$:
+
+    -   $du = 2x \space dx$
+
+    -   $\frac{1}{2}du = x \space dx$
+
+-   Substitute into the integral
+
+$$
+\int x sin(x^2) \space dx = \int \sin(u) \cdot \frac{1}{2} \space du
+$$
+
+-   Integrate:
+
+$$
+\frac{1}{2} \int \sin(u) \space du = \frac{1}{2}(-\cos(u)) + C
+$$
+
+-   Substitute back into the original variable:
+
+$$
+\frac{1}{2}(-\cos(u)) + C = -\frac{1}{2}\cos(x^2) + C
+$$
+
+-   Final answer
+
+$$
+\int x sin(x^2) \space dx = -\frac{1}{2}\cos(x^2) + C
+$$

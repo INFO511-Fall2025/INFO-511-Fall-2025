@@ -1,0 +1,168 @@
+---
+title: "Setting up Python"
+execute:
+  eval: false
+---
+
+## Introduction
+
+The steps to installing Python are seemingly straightforward but can result in an array of different bugs.
+For INFO 511, I've chosen a workflow that will standardize your installations and (hopefully) prevent these bugs.
+
+## Installing VS Code {#installing-vs-code}
+
+### For all OS:
+
+1.  See the following link: <https://code.visualstudio.com/download>
+
+![](images/vs-code.png){fig-align="center"}
+
+2.  Run through your device's appropriate installation.
+
+## Installing Bash
+
+### For PC
+
+1.  Open Windows PowerShell as Administrator
+2.  Type `wsl –install` and press `Enter`
+3.  Restart your computer
+4.  Open the Microsoft Store.
+5.  Install a Linux distribution (e.g., Ubuntu).
+    1.  Search for "Ubuntu" (or any other preferred distribution) and click "Install".
+6.  Set up your Linux environment.
+    1.  Once installed, open the Linux distribution from the Start menu and follow the setup instructions.
+
+### For Mac:
+
+1.  You already have `zsh`, which is a Bash Shell 😊
+
+## Open a Bash Shell terminal
+
+### For PC:
+
+1.  Press `CTRL + ALT + T` simultaneously to open the terminal.
+2.  Type `bash` then press `Enter`
+3.  You should have a Bash shell ready.
+
+### For Mac:
+
+Do one of the following:
+
+1.  Click the Launchpad icon ![](https://help.apple.com/assets/63FFD63D71728623E706DB4F/63FFD63E71728623E706DB56/en_AU/a1f94c9ca0de21571b88a8bf9aef36b8.png){alt="" width="21"} in the Dock, type Terminal in the search field, then click Terminal.
+2.  In the Finder ![](https://help.apple.com/assets/63FFD63D71728623E706DB4F/63FFD63E71728623E706DB56/en_AU/058e4af8e726290f491044219d2eee73.png){alt="" width="15"}, open the /Applications/Utilities folder, then double-click Terminal.
+
+## Install Homebrew
+
+### For Mac and PC:
+
+1.  Homebrew is a package manager for macOS and Linux that makes it easy to install software. In open Bash Terminal, type:
+
+```{bash}
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+2.  Run through any installation steps found within the terminal.
+
+## Install Miniconda (via Homebrew)
+
+### For both Mac and PC
+
+1.  Type the install command into the open terminal:
+
+```{bash}
+brew install --cask miniconda
+```
+
+2.  Fun the following to setup your shell:
+
+```{bash}
+conda init "$(basename "${SHELL}")"
+```
+
+## Install Python3
+
+### For Mac and PC:
+
+1.  Run the following in your terminal (check the [latest Python3 version](https://www.python.org/downloads/)):
+
+```{bash}
+conda create -y -n py38 python=3.12.4 pip
+```
+
+### For PC (Bash)
+
+2.  Run the following in your terminal (this step may not work given permissions):
+
+```{bash}
+echo "conda activate py38" >> ~/.bashrc
+```
+
+### For Mac (Zsh)
+
+2.  Run the following in your terminal (this step may not work given permissions):
+
+```{bash}
+echo "conda activate py38" >> ~/.zshrc
+```
+
+### For Mac and PC:
+
+3.  Run the following in your terminal:
+
+```{bash}
+conda activate py38
+pip install -U pip
+pip install pytest
+pip cache purge
+conda clean -y -av
+python -V
+pip -V
+```
+
+4.  Restart your computer + Open VSCode
+
+## Prepare VS Code for Python
+
+1.  Once VS Code is open, click on the Explorer:
+
+![](images/vs-code-1.png){fig-align="center"}
+
+2.  Click "Clone Repository":
+
+![](images/vs-code-2.png){fig-align="center"}
+
+3.  Paste the following into the text input that pops up in the top-middle: <https://github.com/INFO-511-F24/ae-00-unvotes.git>, which can be found at the [`ae-00-unvotes`](/ae/ae-00-unvotes.qmd) exercise [GitHub page](https://github.com/INFO-511-F24/ae-00-unvotes):
+
+![](images/vs-code-3.png){fig-align="center"}
+
+4.  Click "Open":
+
+![](images/vs-code-4.png){fig-align="center"}
+
+5.  Select the `unvotes.ipynb` file:
+
+![](images/vs-code-5.png){fig-align="center"}
+
+6.  Click the "Select Kernel" button in the top-right above the Jupyter Notebook:
+
+![](images/vs-code-6.png){fig-align="center"}
+
+7.  Select "Python Environments" from the middle-center drop-down options:
+
+![](images/vs-code-7.png){fig-align="center"}
+
+8.  From the options, select the one with "Homebrew" or "Miniconda" within in (this may look different for you than me:
+
+![](images/vs-code-8.png){fig-align="center"}
+
+## Install Python Packages
+
+1.  Type the following into your terminal:
+
+```{bash}
+pip install numpy pandas matplotlib seaborn scikit-learn scipy statsmodels nltk jupyter notebook jupyterlab ipython plotly xlrd openpyxl requests beautifulsoup4 lxml
+```
+
+![](images/vs-code-9.png){fig-align="center"}
+
+## Move onto [setting up Git](/computing/computing-git.qmd)

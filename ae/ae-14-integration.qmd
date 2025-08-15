@@ -1,0 +1,298 @@
+---
+title: "AE 14: Integration"
+categories: 
+  - Application exercise
+---
+
+In this exercise, we will:
+
+-   Practice Integration:
+
+    -   Apply the basic integration rules to find the integrals of simple polynomial functions.
+
+-   Apply Integration by Parts and Substitution:
+
+    -   Use these techniques to integrate more complex functions involving products and compositions.
+
+-   Solve Advanced Integration Problems:
+
+    -   Tackle integrals of functions with nested compositions and multiple variables, reinforcing the use of integration by parts and substitution.
+
+# Common functions + their Integrals
+
+1.  **Power Function:**
+
+-   Function:
+
+$$
+f(x)=x^n
+$$
+
+-   Integral:
+
+$$
+\int x^n \, dx = \frac{x^{n+1}}{n+1} + C \quad (n \neq -1)
+$$
+
+2.  **Exponential Function:**
+
+-   Function:
+
+$$
+f(x)=e^x
+$$
+
+-   Integral:
+
+$$
+\int e^x \, dx = e^x + C
+$$
+
+-   Function:
+
+$$
+f(x)=a^x
+$$
+
+-   Integral:
+
+$$
+\int a^x \, dx = \frac{a^x}{\ln(a)} + C
+$$
+
+3.  **Natural Logarithm**
+
+-   Function:
+
+$$
+f(x) = ln(x)
+$$
+
+-   Integral:
+
+$$
+\int \ln(x) \, dx = x \ln(x) - x + C
+$$
+
+4.  **Trigonometric Functions**
+
+-   Function:
+
+$$
+f(x)=\sin(x)
+$$
+
+-   Integral:
+
+$$
+\int \sin(x) \, dx = -\cos(x) + C
+$$
+
+-   Function:
+
+$$
+f(x)=\cos(x)
+$$
+
+-   Integral:
+
+$$
+\int \cos(x) \, dx = \sin(x) + C
+$$
+
+-   Function:
+
+$$
+f(x)=\tan(x)
+$$
+
+-   Integral:
+
+$$
+\int \tan(x) \, dx = -\ln|\cos(x)| + C = \ln|\sec(x)| + C
+$$
+
+5.  **Hyperbolic Functions**
+
+-   Function:
+
+$$
+f(x)=\sinh(x)
+$$
+
+-   Integral:
+
+$$
+\int \sinh(x) \, dx = \cosh(x) + C
+$$
+
+-   Function:
+
+$$
+f(x)=\cosh(x)
+$$
+
+-   Integral:
+
+$$
+\int \cosh(x) \, dx = \sinh(x) + C
+$$
+
+# Integrals
+
+For each problem, find the integral of the given function.
+Show all steps clearly.
+
+## Exercise 1
+
+**Function:**
+
+$$
+f(x) = 5x^3
+$$
+
+**Solution:**
+
+-   The power rule for integration states that $\int x^n \space dx = \frac{x^{n+1}}{n+1}+C$
+
+-   Applying the power rule:
+
+*add response here.*
+
+## Exercise 2
+
+**Function:**
+
+$$
+g(x) = \sqrt{x}
+$$
+
+**Solution:**
+
+-   Rewrite the function with a fractional exponent: *add response here.*
+
+-   Apply the power rule:
+
+*add response here.*
+
+## Exercise 3
+
+**Function:**
+
+$$
+h(x)=\ln(x)
+$$
+
+**Solution:**
+
+-   Use the integral of the natural logarithm function:
+
+*add response here.*
+
+# Intermediate Derivatives Using Chain Rule and Product Rule
+
+## Exercise 4
+
+**Function:**
+
+$$
+\int xe^x \space dx
+$$
+
+**Solution**
+
+-   Identify the parts: Let $u=x$ and $dv=e^x \space dx$
+
+-   Differentiate and integrate:
+
+    -   Differentiate: *add response here.*
+
+    -   Integrate: *add response here.*
+
+-   Apply the integration by parts formula: $\int u \space dv = uv - \int v \space du$
+
+*add response here.*
+
+-   Simplify the integral:
+
+*add response here.*
+
+-   Final answer:
+
+*add response here.*
+
+## Exercise 5
+
+**Function:**
+
+$$
+\int x \ln(x) \space dx
+$$
+
+**Solution:**
+
+-   Identify the parts: \_\_\_ and \_\_\_
+
+-   Differentiate and integrate:
+
+    -   Differentiate: *add response here.*
+
+    -   Integrate: *add response here.*
+
+-   Apply the integration by parts formula: $\int u \space dv = uv - \int v \space du$
+
+-   Substitute the parts:
+
+*add response here.*
+
+-   Simplify the integral:
+
+*add response here.*
+
+-   Integrate the remaining part:
+
+*add response here.*
+
+-   Combine the results:
+
+*add response here.*
+
+-   Final answer:
+
+*add response here.*
+
+# Advanced Integral
+
+## Exercise 6
+
+**Function:**
+
+$$
+\int x \sin (x^2) \space dx
+$$
+
+**Solution:**
+
+-   Identify the substitution: Let \_\_\_
+
+-   Differentiate and solve for \_\_\_:
+
+    -   *add response here.*
+
+    -   *add response here.*
+
+-   Substitute into the integral
+
+*add response here.*
+
+-   Integrate:
+
+*add response here.*
+
+-   Substitute back into the original variable:
+
+*add response here.*
+
+-   Final answer
+
+*add response here.*

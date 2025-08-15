@@ -1,0 +1,111 @@
+---
+title: "AE 08: Understanding Probabilities with COVID-19 Rapid Self-Administered Tests"
+categories: 
+  - Application exercise
+---
+
+## Goal
+
+Learn to calculate and interpret the probability of having a disease given a positive test result using sensitivity, specificity, and prevalence data.
+
+## Scenario:
+
+You are provided with the following data for COVID-19 rapid self-administered tests and population statistics from Pima County, Arizona found in Lecture 12.
+
+## **Understand the Definitions**:
+
+-   **Sensitivity** $P(T | D)$: Probability of a positive test given the person has the disease.
+
+-   **Specificity** $P(T^c | D^c)$: Probability of a negative test given the person does not have the disease.
+
+-   **Prevalence** $P(D)$: Probability that a randomly selected person has the disease.
+
+### **Formulate Bayes' Rule**:
+
+$$
+P(D | T) = \frac{P(T \text{ and } D)}{P(T)}
+$$
+
+We know that:
+
+$$
+P(T \text{ and } D) = P(T | D) ⋅ P(D)
+$$
+
+And:
+
+$$
+P(T) = P(T | D) ⋅ P(D) + P(T | D^c) ⋅ P(D^c)
+$$
+
+Where:
+
+$$
+P(T | D^c) = 1-P(T^c | D^c)
+$$
+
+## Exercises
+
+Using the given data, calculate the probability that an individual has COVID-19 given a positive test result $P(T | D)$.
+
+1.  **Substitute the Given Values:**
+
+    -   **Sensitivity**: $P(T | D)$ = \_\_\_
+    -   **Specificity**: $P(T^c | D^c)$ = \_\_\_
+    -   **Prevalence**: $P(D)$ = \_\_\_ among persons aged 10 years and older.
+
+2.  **Calculate the Complementary Probabilities**
+
+    -   $P(T | D^c)$: Probability of a positive test given no disease.
+
+        $$P(T | D^c)=1-P(T^c | D^c)=$$
+
+    -   $P(D^c)$: Probability of not having the disease.
+
+        $$P(D^c) = 1-P(D)$$
+
+3.  **Calculate the Probability of a Positive Test** $P(T)$:
+
+$$P(T)=$$
+
+4.  **Calculate the Posterior Probability** $P(D | T)$
+
+$$
+P(D | T)=\frac{P(T | D) ⋅ P(D)}{P(T | D) ⋅ P(D) + (1-P(T^c | D^c)) ⋅ (1-P(D))}
+$$
+
+$$
+=
+$$
+
+### Discussion Questions:
+
+1.  **Is this calculation surprising?**
+
+    -   Considering the given sensitivity, specificity, and prevalence, is the high probability of having the disease given a positive test result unexpected? Why or why not?
+
+*Add response here.*
+
+2.  **What is the explanation?**
+
+    -   Explain why the probability of having the disease given a positive test result is so high. Consider the impact of sensitivity, specificity, and prevalence.
+
+*Add response here.*
+
+3.  **Was this calculation actually reasonable to perform?**
+
+    -   Discuss whether it is reasonable to calculate the probability of having the disease based on the given data. Are there any limitations or assumptions in this calculation?
+
+*Add response here.*
+
+4.  **What if we tested in a different population, such as high-risk individuals?**
+
+    -   How might the probability of having the disease given a positive test result change if the test was administered to a population with a higher prevalence of COVID-19?
+
+*Add response here.*
+
+5.  **What if we were to test a random individual in a county where the prevalence of COVID-19 is approximately 25%?**
+
+    -   Recalculate the probability of having the disease given a positive test result for a population with a 25% prevalence of COVID-19. How does this compare to the original calculation?
+
+*Add response here.*

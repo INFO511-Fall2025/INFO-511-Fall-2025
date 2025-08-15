@@ -1,0 +1,32 @@
+---
+title: "Final review"
+subtitle: "Lecture 25"
+format:
+  revealjs: default
+editor_options: 
+  chunk_output_type: console
+---
+
+## Final Assignment
+
+Same as Midterm assignment!
+
+-   Assignment format / flow
+
+-   Asking questions!
+
+# Final Review
+
+## Concepts covered (+ Midterm) {.xsmall}
+
+::: incremental
+-   A hypothesis test is a statistical technique used to evaluate competing claims (null and alternative hypotheses) using data.
+-   We simulate a null distribution using our original data.
+-   We use our sample statistic and direction of the alternative hypothesis to calculate the p-value.
+-   We use the p-value to determine conclusions about the alternative hypotheses.
+-   Derivative Calculation: Computing the derivative of a given function.
+-   Integral Calculation: Solving an integral involving exponential and power functions.
+-   Vector and Matrix Transpose: Writing down the transpose of vectors and matrices.
+-   Matrix Dimensions: Determining the dimensions of matrices and the validity of matrix products.
+-   Matrix Multiplication: Performing matrix multiplication and understanding the resulting matrix dimensions.
+:::

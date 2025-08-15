@@ -1,0 +1,12 @@
+{
+  "hash": "a63c721e1d6a57cdcfd479d4c70561f4",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: 'AE 01: Meet the penguins'\ncategories:\n  - Application exercise\nexecute:\n  warning: false\n  error: false\n---\n\nFor this application exercise, we'll use the **pandas** and **seaborn** packages.\n\n::: {#load-packages .cell execution_count=1}\n``` {.python .cell-code}\nimport pandas as pd\nimport seaborn as sns\n```\n:::\n\n\nThe dataset we will visualize is called `penguins`.\nLet's `.info()` it.\n\n-   **Your turn:** Replace `#add code here` with the code for \"info\"ing at the data `penguins` data frame – `penguins.info()`. Render the document and view the output.\n\n::: {#glimpse-penguins .cell execution_count=2}\n``` {.python .cell-code}\npenguins = sns.load_dataset(\"data/penguins\")\n# add code here\n```\n:::\n\n\n-   **Demo:** First, replace the blank below with the number of rows in the `penguins` data frame based on the output of the chunk below. Then, replace it with \"inline code\" and render again.\n\n::: {#cell-nrow-penguins .cell execution_count=3}\n``` {.python .cell-code}\nnum_rows = len(penguins)\nnum_rows\n```\n\n::: {#nrow-penguins .cell-output .cell-output-display execution_count=3}\n```\n344\n```\n:::\n:::\n\n\nThere are \\_\\_\\_ penguins in the `penguins` data frame.\n\n::: {#77ec81bb .cell execution_count=4}\n``` {.python .cell-code}\nx = 2\nx * 3\n```\n\n::: {.cell-output .cell-output-display execution_count=4}\n```\n6\n```\n:::\n:::\n\n\n",
+    "supporting": [
+      "ae-01-meet-the-penguins_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

@@ -1,0 +1,784 @@
+---
+title: "Data preprocessing"
+subtitle: "Lecture 6"
+format:
+  revealjs: default
+editor_options: 
+  chunk_output_type: console
+jupyter: python3
+execute:
+  warning: false
+  error: false
+---
+
+## Setup
+
+```{python}
+#| label: setup
+
+# Import all required libraries
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler, MaxAbsScaler, MinMaxScaler
+from sklearn.impute import SimpleImputer
+import statsmodels.api as sm
+import scipy.stats as stats
+
+# Increase font size of all Seaborn plot elements
+sns.set(font_scale = 1.25)
+
+# Set Seaborn theme
+sns.set_theme(style = "whitegrid")
+```
+
+# Data preprocessing
+
+## Data preprocessing
+
+> **Data preprocessing** refers to the manipulation, filtration, or augmentation of data before it is analyzed.
+> It is a crucial step in the data science process.
+
+::: fragment
+It's essentially data cleaning.
+:::
+
+## Dataset {.smaller}
+
+```{python}
+#| echo: false
+hfi = pd.read_csv("data/hfi.csv")
+```
+
+**Human Freedom Index**
+
+The Human Freedom Index is a report that attempts to summarize the idea of "freedom" through variables for many countries around the globe.
+
+```{python}
+#| echo: false
+plt.figure(figsize = (5, 3))
+ax = sns.scatterplot(data = hfi, x = "pf_score", y = "ef_score",
+                hue = "region", palette = "colorblind")
+ax.legend(title = "Region",
+          bbox_to_anchor = (1.02, 1), loc = 'upper left', borderaxespad = 0)
+ax.set(xlabel = "Economic Freedom")
+ax.set(ylabel = "Personal Freedom")
+ax.set(title = "Human Freedom Index")
+plt.show()
+```
+
+## Question {.smaller}
+
+What trends are there within **human freedom indices** in different regions?
+
+![](images/human-freedom.jpg){fig-align="center" width="1214"}
+
+## Dataset: Human Freedom Index
+
+```{python}
+hfi = pd.read_csv("data/hfi.csv")
+hfi.head()
+```
+
+## Understanding the data {.smaller}
+
+::: panel-tabset
+## `.info()`
+
+```{python}
+hfi.info(verbose = True)
+```
+
+## `.describe()`
+
+```{python}
+hfi.describe()
+```
+:::
+
+## Identifying missing values
+
+```{python}
+hfi.isna().sum()
+```
+
+::: fragment
+> A lot of missing values 🙃
+:::
+
+# Data cleaning
+
+## Handling missing data
+
+**Options**
+
+::: incremental
+-   Do nothing...
+
+-   Remove them
+
+-   **Imputate**
+:::
+
+::: fragment
+We will use the `hf_score` from `hfi`: 80 missing values
+:::
+
+## Imputation
+
+> In statistics, **imputation** is the process of replacing missing data with substituted values.
+
+::: incremental
+-   Mean imputation
+
+-   Median imputation
+
+-   Mode imputation
+
+-   [Several other methods](https://datamineaz.org/tables/model-cheatsheet.html)
+:::
+
+## Mean imputation {.smaller}
+
+::: panel-tabset
+## Definition
+
+**How it Works**: Replace missing values with the arithmetic **mean** of the non-missing values in the same variable.
+
+::: fragment
+**Pros**:
+
+::: incremental
+-   Easy and fast.
+-   Works well with small numerical datasets
+:::
+
+**Cons**:
+
+::: incremental
+-   It only works on the column level.
+-   Will give poor results on encoded categorical features.
+-   Not very accurate.
+-   Doesn't account for the uncertainty in the imputations.
+:::
+:::
+
+## Visual
+
+```{python}
+#| echo: false
+#| fig.asp: 0.625
+hfi_copy = hfi
+
+mean_imputer = SimpleImputer(strategy = 'mean')
+hfi_copy['mean_hf_score'] = mean_imputer.fit_transform(hfi_copy[['hf_score']])
+
+mean_plot = sns.kdeplot(data = hfi_copy, x = 'hf_score', linewidth = 2, label = "Original")
+mean_plot = sns.kdeplot(data = hfi_copy, x = 'mean_hf_score', linewidth = 2, label = "Mean Imputated")
+
+plt.legend()
+
+plt.show()
+```
+
+## Code
+
+```{python}
+#| eval: false
+#| code-line-numbers: "|1|3,4|6,7"
+hfi_copy = hfi.copy()
+
+mean_imputer = SimpleImputer(strategy = 'mean')
+hfi_copy['mean_hf_score'] = mean_imputer.fit_transform(hfi_copy[['hf_score']])
+
+mean_plot = sns.kdeplot(data = hfi_copy, x = 'hf_score', linewidth = 2, label = "Original")
+mean_plot = sns.kdeplot(data = hfi_copy, x = 'mean_hf_score', linewidth = 2, label = "Mean Imputed")
+
+plt.legend()
+plt.show()
+```
+:::
+
+## Median imputation {.smaller}
+
+::: panel-tabset
+## Definition
+
+**How it Works**: Replace missing values with the arithmetic **median** of the non-missing values in the same variable.
+
+::: fragment
+**Pros** (same as mean):
+
+::: incremental
+-   Easy and fast.
+-   Works well with small numerical datasets
+:::
+
+**Cons** (same as mean):
+
+::: incremental
+-   It only works on the column level.
+-   Will give poor results on encoded categorical features.
+-   Not very accurate.
+-   Doesn't account for the uncertainty in the imputations.
+:::
+:::
+
+## Visual
+
+```{python}
+#| echo: false
+#| fig.asp: 0.625
+hfi_copy = hfi
+
+median_imputer = SimpleImputer(strategy = 'median')
+hfi_copy['median_hf_score'] = median_imputer.fit_transform(hfi_copy[['hf_score']])
+
+median_plot = sns.kdeplot(data = hfi_copy, x = 'hf_score', linewidth = 2, label = "Original")
+median_plot = sns.kdeplot(data = hfi_copy, x = 'median_hf_score', linewidth = 2, label = "Median Imputed")
+
+plt.legend()
+plt.show()
+```
+
+## Code
+
+```{python}
+#| eval: false
+#| code-line-numbers: "|1|3,4|6,7"
+hfi_copy = hfi.copy()
+
+median_imputer = SimpleImputer(strategy = 'median')
+hfi_copy['median_hf_score'] = median_imputer.fit_transform(hfi_copy[['hf_score']])
+
+median_plot = sns.kdeplot(data = hfi_copy, x = 'hf_score', linewidth = 2, label = "Original")
+median_plot = sns.kdeplot(data = hfi_copy, x = 'median_hf_score', linewidth = 2, label = "Median Imputed")
+
+plt.legend()
+plt.show()
+```
+:::
+
+## Mode imputation {.smaller}
+
+::: panel-tabset
+## Definition
+
+**How it Works**: Replace missing values with the **mode** of the non-missing values in the same variable.
+
+::: fragment
+**Pros**
+
+::: incremental
+-   Easy and fast.
+-   Works well with categorical features.
+:::
+
+**Cons**:
+
+::: incremental
+-   Doesn't factor the correlations between features.
+-   Can introduce bias in the data.
+:::
+:::
+
+## Visual
+
+```{python}
+#| echo: false
+#| fig.asp: 0.625
+hfi_copy = hfi
+
+mode_imputer = SimpleImputer(strategy = 'most_frequent')
+hfi_copy['mode_hf_score'] = mode_imputer.fit_transform(hfi_copy[['hf_score']])
+
+mode_plot = sns.kdeplot(data = hfi_copy, x = 'hf_score', linewidth = 2, label = "Original")
+mode_plot = sns.kdeplot(data = hfi_copy, x = 'mode_hf_score', linewidth = 2, label = "Mode Imputated")
+
+plt.legend()
+
+plt.show()
+```
+
+## Code
+
+```{python}
+#| eval: false
+#| code-line-numbers: "|1|3,4|6,7"
+hfi_copy = hfi.copy()
+
+mode_imputer = SimpleImputer(strategy = 'most_frequent')
+hfi_copy['mode_hf_score'] = mode_imputer.fit_transform(hfi_copy[['hf_score']])
+
+mode_plot = sns.kdeplot(data = hfi_copy, x = 'hf_score', linewidth = 2, label = "Original")
+mode_plot = sns.kdeplot(data = hfi_copy, x = 'mode_hf_score', linewidth = 2, label = "Mode Imputated")
+
+plt.legend()
+
+plt.show()
+```
+:::
+
+# Data type conversion
+
+## Logical operators {.smaller}
+
+| operator | definition                   |
+|:---------|:-----------------------------|
+| `<`      | is less than?                |
+| `<=`     | is less than or equal to?    |
+| `>`      | is greater than?             |
+| `>=`     | is greater than or equal to? |
+| `==`     | is exactly equal to?         |
+| `!=`     | is not equal to?             |
+
+## Logical operators cont. {.smaller}
+
+| operator        | definition                                               |
+|:---------------------|:-------------------------------------------------|
+| `x and y`       | is x AND y?                                              |
+| `x or y`        | is x OR y?                                               |
+| `x is None`     | is x None?                                               |
+| `x is not None` | is x not None?                                           |
+| `x in y`        | is x in y?                                               |
+| `x not in y`    | is x not in y?                                           |
+| `not x`         | is not x? (only makes sense if `x` is `True` or `False`) |
+
+## Looking at our data {.smaller}
+
+```{python}
+hfi_copy = hfi
+hfi_copy.info(verbose=True)
+```
+
+## Converting `year` to `Datetime` {.smaller}
+
+```{python}
+hfi_copy['year'] = pd.to_datetime(hfi_copy['year'], format='%Y')
+print(hfi_copy.info(verbose=True))
+```
+
+## Converting `ISO_code`, `countries`, and `region` to Categorical {.smaller}
+
+```{python}
+hfi_copy['ISO_code'] = hfi_copy['ISO_code'].astype('category')
+hfi_copy['countries'] = hfi_copy['countries'].astype('category')
+hfi_copy['region'] = hfi_copy['region'].astype('category')
+print(hfi_copy.info(verbose=True))
+```
+
+## Creating a `boolean` column from `hf_score` {.smaller}
+
+Let's say we want to know whether countries are "free" or not.
+
+```{python}
+threshold = 8.5
+hfi_copy['hf_score_above_threshold'] = hfi_copy['hf_score'] > threshold
+```
+
+# Filtering + subsetting
+
+## Filter out `True` values
+
+```{python}
+filtered_hfi_copy = hfi_copy[hfi_copy['hf_score_above_threshold'] == True][['hf_score_above_threshold', 'countries']]
+
+print(filtered_hfi_copy[['hf_score_above_threshold', 'countries']])
+```
+
+::: fragment
+> That's a lot of data...
+> 🤔
+:::
+
+## Filter out `True` values for newest `year`
+
+```{python}
+newest_year = hfi_copy['year'].max()
+filtered_hfi_copy = hfi_copy[(hfi_copy['year'] == newest_year) & (hfi_copy['hf_score_above_threshold'] == True)]
+
+result = filtered_hfi_copy[['hf_score_above_threshold', 'countries']]
+
+print(result)
+```
+
+## Filtering categories
+
+```{python}
+#| code-line-numbers: "|1-3|4"
+options = ['United States', 'India', 'Canada', 'China']
+filtered_hfi = hfi[hfi['countries'].isin(options)]
+filtered_hfi['countries'] = filtered_hfi['countries'].cat.remove_unused_categories()
+unique_countries = filtered_hfi['countries'].unique()
+print(unique_countries)
+```
+
+# Transformations
+
+## Normalizing {.smaller}
+
+::: panel-tabset
+## Standard deviation
+
+```{python}
+#| echo: false
+import numpy as np
+from scipy.stats import norm
+import random
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+random.seed(123)
+
+np.set_printoptions(linewidth=130)
+
+sns.set_context("paper", font_scale=1.5)
+
+mean = 5
+std = 2
+X = np.random.randn(10000)
+X = (X - X.mean())/X.std()*std + mean
+
+print("Mean:", mean)
+print("Standard Deviation:", std)
+
+plt.figure(figsize=(10, 5))
+
+ax = sns.kdeplot(X, shade=True)
+
+N = 10
+for i in [1, 2, 3]:
+    x1 = np.linspace(mean - i*std, mean - (i - 1)*std, N)
+    x2 = np.linspace(mean - (i - 1)*std, mean + (i - 1)*std, N)
+    x3 = np.linspace(mean + (i - 1)*std, mean + i*std, N)
+    x = np.concatenate((x1, x2, x3))
+    x = np.where((mean - (i - 1)*std < x) & (x < mean + (i - 1)*std), np.nan, x)
+    y = norm.pdf(x, mean, std)
+    ax.fill_between(x, y, alpha=0.5)
+
+ax.plot([mean - std, mean - std], [0, 0.21], linewidth=1.25, color='#bfc1c2')
+ax.plot([mean - (2*std), mean - (2*std)], [0, 0.23], linewidth=1.25, color='#bfc1c2')
+ax.plot([mean - (3*std), mean - (3*std)], [0, 0.25], linewidth=1.25, color='#bfc1c2')
+ax.plot([mean + std, mean + std], [0, 0.21], linewidth=1.25, color='#bfc1c2')
+ax.plot([mean + (2*std), mean + (2*std)], [0, 0.23], linewidth=1.25, color='#bfc1c2')
+ax.plot([mean + (3*std), mean + (3*std)], [0, 0.25], linewidth=1.25, color='#bfc1c2')
+
+ax.annotate('', xy=(mean - std - 0.1, 0.206), xytext=(mean + std + 0.1, 0.206),
+            arrowprops=dict(arrowstyle="<->", color='#bfc1c2'))
+ax.annotate('', xy=(mean - (2*std) - 0.1, 0.226), xytext=(mean + (2*std) + 0.1, 0.226),
+            arrowprops=dict(arrowstyle="<->", color='#bfc1c2'))
+ax.annotate('', xy=(mean - (3*std) - 0.1, 0.246), xytext=(mean + (3*std) + 0.1, 0.246),
+            arrowprops=dict(arrowstyle="<->", color='#bfc1c2'))
+ax.annotate('68.2% / Z-Score 1', xy=(mean, 0.215), ha='center', va='center', color = 'gray', fontweight = "bold", fontname = "Helvetica")
+ax.annotate('95.4% / Z-Score 2', xy=(mean, 0.235), ha='center', va='center', color = 'gray', fontweight = "bold", fontname = "Helvetica")
+ax.annotate('99.7% / Z-Score 3', xy=(mean, 0.255), ha='center', va='center', color = 'gray', fontweight = "bold", fontname = "Helvetica")
+
+plt.xlabel("Normal Distribution", fontname = "Helvetica")
+plt.ylabel("Probability Density Function", fontname = "Helvetica")
+ax.set_ylim([0, 0.275])
+ax.set_xticks([(mean - (3 * std)), 
+               (mean - (2 * std)), 
+               (mean - std), 
+               mean, 
+               (mean + std), 
+               (mean + (2 * std)), 
+               (mean + (3 * std))])
+ax.set_xticklabels(['$\\mu$ - 3$\\sigma$','$\\mu$ - 2$\\sigma$','$\\mu$ - $\\sigma$','$\\mu$','$\\mu$ + $\\sigma$','$\\mu$ + 2$\\sigma$','$\\mu$ + 3$\\sigma$'])
+plt.grid()
+
+plt.show()
+```
+
+## Z-score
+
+```{python}
+hfi_copy = hfi.copy()
+
+scaler = StandardScaler()
+hfi_copy[['ef_score_scale', 'pf_score_scale']] = scaler.fit_transform(hfi_copy[['ef_score', 'pf_score']])
+
+hfi_copy[['ef_score_scale', 'pf_score_scale']].describe()
+```
+
+## Min-max
+
+```{python}
+min_max_scaler = MinMaxScaler()
+hfi_copy[['ef_score_minmax', 'pf_score_minmax']] = min_max_scaler.fit_transform(hfi_copy[['ef_score', 'pf_score']])
+
+hfi_copy[['ef_score_minmax', 'pf_score_minmax']].describe()
+```
+
+## Maximum absolute
+
+```{python}
+max_abs_scaler = MaxAbsScaler()
+hfi_copy[['ef_score_maxabs', 'pf_score_maxabs']] = max_abs_scaler.fit_transform(hfi_copy[['ef_score', 'pf_score']])
+
+hfi_copy[['ef_score_maxabs', 'pf_score_maxabs']].describe()
+```
+:::
+
+## Visual comparison {.smaller}
+
+```{python}
+#| echo: false
+# Plotting the distributions
+fig, axes = plt.subplots(4, 2, figsize=(14, 7))
+
+# Original data
+sns.histplot(hfi_copy['ef_score'], bins=30, kde=True, ax=axes[0, 0]).set(title='Original ef_score')
+sns.histplot(hfi_copy['pf_score'], bins=30, kde=True, ax=axes[0, 1]).set(title='Original pf_score')
+
+# Standard Scaled data
+sns.histplot(hfi_copy['ef_score_scale'], bins=30, kde=True, ax=axes[1, 0]).set(title='Standard Scaled ef_score')
+sns.histplot(hfi_copy['pf_score_scale'], bins=30, kde=True, ax=axes[1, 1]).set(title='Standard Scaled pf_score')
+
+# MaxAbs Scaled data
+sns.histplot(hfi_copy['ef_score_maxabs'], bins=30, kde=True, ax=axes[2, 0]).set(title='MaxAbs Scaled ef_score')
+sns.histplot(hfi_copy['pf_score_maxabs'], bins=30, kde=True, ax=axes[2, 1]).set(title='MaxAbs Scaled pf_score')
+
+# MinMax Scaled data
+sns.histplot(hfi_copy['ef_score_minmax'], bins=30, kde=True, ax=axes[3, 0]).set(title='MinMax Scaled ef_score')
+sns.histplot(hfi_copy['pf_score_minmax'], bins=30, kde=True, ax=axes[3, 1]).set(title='MinMax Scaled pf_score')
+
+plt.tight_layout()
+plt.show()
+```
+
+## Pros + cons (`StandardScaler`) {.smaller}
+
+**Pros:**
+
+::: incremental
+-   **Normalization of Variance**: Centers data around zero with a standard deviation of one, suitable for algorithms assuming normally distributed data (e.g., linear regression, logistic regression, neural networks).
+
+-   **Preserves Relationships**: Maintains ratios and differences between data points.
+:::
+
+**Cons:**
+
+::: incremental
+-   **Sensitive to Outliers**: Outliers can distort scaled values.
+
+-   **Assumes Normality**: Assumes data follows a Gaussian distribution.
+:::
+
+## Pros + cons (`MaxAbsScaler`) {.smaller}
+
+**Pros:**
+
+::: incremental
+-   **Outlier Resistant**: Less sensitive to outliers, scales based on the absolute maximum value.
+
+-   **Preserves Sparsity**: Does not center data, preserving the sparsity pattern.
+:::
+
+**Cons:**
+
+::: incremental
+-   **Scale Limitation**: Scales to the range \[-1, 1\], which may not suit all algorithms.
+
+-   **Not Zero-Centered**: May be a limitation for algorithms preferring zero-centered data.
+:::
+
+## Pros + cons (`MinMaxScaler`) {.smaller}
+
+**Pros:**
+
+::: incremental
+-   **Fixed Range**: Scales data to a fixed range (usually \[0, 1\]), beneficial for algorithms sensitive to feature scales (e.g., neural networks, k-nearest neighbors).
+
+-   **Preserves Relationships**: Maintains relationships between data points.
+:::
+
+**Cons:**
+
+::: incremental
+-   **Sensitive to Outliers**: Outliers can skew scaled values.
+
+-   **Range Dependence**: Scaling depends on the min and max values in the training data, which may not generalize well to new data.
+:::
+
+# Normality
+
+## Normality test: Q-Q plot {.smaller}
+
+::: panel-tabset
+## Q-Q Plot
+
+```{python}
+#| code-fold: true
+
+hfi_clean = hfi_copy.dropna(subset = ['pf_score'])
+
+sns.set_style("white")
+
+fig, (ax1, ax2) = plt.subplots(ncols = 2, nrows = 1)
+
+sns.kdeplot(data = hfi_clean, x = "hf_score", linewidth = 5, ax = ax1)
+ax1.set_title('Human Freedom Score')
+
+sm.qqplot(hfi_clean['hf_score'], line = 's', ax = ax2, dist = stats.norm, fit = True)
+ax2.set_title('Human Freedom Score Q-Q plot')
+
+plt.tight_layout()
+plt.show()
+```
+
+## Issues
+
+**There were some issues in our plots**:
+
+::: incremental
+-   **Left Tail**: Points deviate downwards from the line, indicating more extreme low values than a normal distribution (**negative skewness**).
+
+-   **Central Section**: Points align closely with the line, suggesting the central data is *similar to a normal distribution*.
+
+-   **Right Tail**: Points curve upwards, showing potential for **extreme high values (positive skewness)**.
+:::
+:::
+
+## Correcting skew {.smaller}
+
+::: fragment
+[Square-root transformation](https://en.wikipedia.org/wiki/Square_root).
+$\sqrt x$ Used for **moderately** right-skew **(positive skew)**
+
+::: incremental
+-   Cannot handle negative values (but can handle zeros)
+:::
+:::
+
+::: fragment
+[Log transformation](https://en.wikipedia.org/wiki/Logarithm).
+$log(x + 1)$ Used for **substantial** right-skew **(positive skew)**
+
+::: incremental
+-   Cannot handle negative or zero values
+:::
+:::
+
+::: fragment
+[Squared transformation](https://en.wikipedia.org/wiki/Quadratic_function).
+$x^2$ Used for **moderately** left-skew **(negative skew)**
+
+::: incremental
+-   Effective when lower values are densely packed together
+:::
+:::
+
+## Comparing transformations {.smaller}
+
+::: panel-tabset
+## Original
+
+```{python}
+#| echo: false
+
+hfi_clean = hfi_copy.dropna(subset = ['hf_score'])
+
+fig, (ax1, ax2) = plt.subplots(ncols = 2, nrows = 1)
+
+sns.kdeplot(data = hfi_clean, x = "hf_score", linewidth = 5, ax = ax1)
+ax1.set_title('Personal Freedom Score')
+
+sm.qqplot(hfi_clean['hf_score'], line = 's', ax = ax2, dist = stats.norm, fit = True)
+ax2.set_title('Personal Freedom Score Q-Q plot')
+
+plt.tight_layout()
+plt.show()
+```
+
+::: fragment
+**Moderate negative skew, no zeros or negative values**
+:::
+
+## Square-root
+
+```{python}
+#| code-fold: true
+#| code-line-numbers: 1-13|1|2,7,10
+hfi_clean['hf_score_sqrt'] = np.sqrt(hfi_clean['hf_score'])
+
+col = hfi_clean['hf_score_sqrt']
+
+fig, (ax1, ax2) = plt.subplots(ncols = 2, nrows = 1)
+
+sns.kdeplot(col, linewidth = 5, ax = ax1)
+ax1.set_title('Square-root Density plot')    
+
+sm.qqplot(col, line = 's', ax = ax2)
+ax2.set_title('Square-root Q-Q plot')    
+plt.tight_layout()
+plt.show()
+```
+
+## Log
+
+```{python}
+#| code-fold: true
+#| code-line-numbers: 1-13|1
+hfi_clean['hf_score_log'] = np.log(hfi_clean['hf_score'] + 1)
+
+col = hfi_clean['hf_score_log']
+
+fig, (ax1, ax2) = plt.subplots(ncols = 2, nrows = 1)
+
+sns.kdeplot(col, linewidth = 5, ax = ax1)
+ax1.set_title('Log Density plot')    
+
+sm.qqplot(col, line = 's', ax = ax2)
+ax2.set_title('Log Q-Q plot')    
+plt.tight_layout()
+plt.show()
+```
+
+## Squared
+
+```{python}
+#| code-fold: true
+#| code-line-numbers: 1-13|1
+hfi_clean['hf_score_square'] = pow(hfi_clean.hf_score, 2)
+
+col = hfi_clean['hf_score_square']
+
+fig, (ax1, ax2) = plt.subplots(ncols = 2, nrows = 1)
+
+sns.kdeplot(col, linewidth = 5, ax = ax1)
+ax1.set_title('Squared Density plot')    
+
+sm.qqplot(col, line = 's', ax = ax2)
+ax2.set_title('Squared Q-Q plot')    
+plt.tight_layout()
+plt.show()
+```
+:::
+
+## What did we learn?
+
+::: incremental
+-   Negative skew excluded all but **Squared** transformation
+
+-   ...
+    thus, **Squared** transformation was the best
+
+-   The data is **bimodal**, so no transformation is perfect
+:::
+
+## Answering our question {.smaller}
+
+What trends are there within **human freedom indices** in different regions?
+
+```{python}
+#| echo: false
+hfi_clean['region'] = hfi_clean['region'].astype('category')
+ax = sns.kdeplot(data=hfi_clean, x='hf_score_square', hue='region', fill=True, palette="colorblind")
+
+plt.show()
+```
+
+:::fragment
+Probably...
+:::

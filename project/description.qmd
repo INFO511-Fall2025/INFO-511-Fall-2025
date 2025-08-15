@@ -1,0 +1,127 @@
+---
+title: "Flood Risk Prediction Challenge"
+---
+
+# Overview
+
+Flooding is one of the most common and destructive natural disasters in the United States, causing billions of dollars in damage each year.
+Accurate flood risk prediction is essential for disaster preparedness, resource allocation, and mitigation efforts.
+
+This project challenges you to analyze a real-world dataset of environmental and geospatial features and build a machine learning model that predicts flood risk scores for various regions.
+You will apply your skills in data cleaning, exploratory data analysis (EDA), feature engineering, and predictive modeling to solve this practical problem.
+
+# **Objectives**
+
+In this project, you will:
+
+1.  **Explore and Analyze**: Conduct exploratory data analysis to uncover patterns and relationships in the dataset.
+
+2.  **Clean and Prepare**: Preprocess the data to handle missing values, outliers, and inconsistencies.
+
+3.  **Engineer Features**: Create new features to improve model performance.
+
+4.  **Build a Predictive Model**: Train a regression model to predict flood risk scores.
+
+5.  **Evaluate and Communicate**: Assess your model’s performance using metrics like Mean Absolute Error (MAE) and present your findings.
+
+### **Dataset**
+
+*Subject to change up to the project announcement.*
+
+The dataset includes environmental and historical data about regions in the United States.
+Each row represents a region, and the columns contain features relevant to flood risk prediction:
+
+| **Feature Name**    | **Description**                                     |
+|---------------------|-----------------------------------------------------|
+| `region_id`         | Unique identifier for each region                   |
+| `rainfall`          | Average annual rainfall (mm)                        |
+| `river_flow`        | Average river flow rate (m³/s)                      |
+| `urban_density`     | Percentage of urban area in the region              |
+| `elevation`         | Average elevation above sea level (meters)          |
+| `historical_floods` | Number of floods recorded in the last decade        |
+| `flood_risk_score`  | (Target variable) Normalized flood risk score (0-1) |
+
+# **Deliverables** {#project-proposal}
+
+You will submit the following:
+
+1.  **Jupyter Notebook**:
+
+    -   Document your workflow with clear explanations and visualizations.
+
+    -   Include data preprocessing, EDA, feature engineering, and model development.
+
+2.  **Prediction CSV File**:
+
+    -   File containing your predictions for the test dataset in the required format.
+
+    -   Format: `region_id`, `flood_risk_score`.
+
+3.  **Summary of Findings**:
+
+    -   A concise explanation of your approach, insights, and key results (can be included in the notebook).
+
+# **Evaluation Criteria** {#peer-review}
+
+Your submission will be graded based on the following criteria:
+
+1.  **Data Preprocessing (25%)**: Handling of missing values, outliers, and overall data cleaning process.
+
+2.  **Exploratory Data Analysis (20%)**: Quality of visualizations and insights derived from the data.
+
+3.  **Feature Engineering (20%)**: Creativity and relevance of new features and their impact on model performance.
+
+4.  **Model Development (25%)**: Accuracy of predictions based on MAE, justification of chosen model, and optimization techniques.
+
+5.  **Communication (10%)**: Clarity of the notebook, organization of the workflow, and explanation of findings.Other
+
+### **Bonus Points**
+
+-   **Cross-Validation**: Applying cross-validation for more robust model evaluation.
+
+-   **Feature Importance Analysis**: Using SHAP or feature importance tools to interpret your model.
+
+-   **Advanced Techniques**: Exploring innovative methods to improve predictions.
+
+A general breakdown of scoring is as follows:
+
+-   *90%-100%*: Outstanding effort. Student understands how to apply all data science concepts, can put the results into a cogent argument, can identify weaknesses in the argument, and can clearly communicate the results to others.
+-   *80%-89%*: Good effort. Student understands most of the concepts, puts together an adequate argument, identifies some weaknesses of their argument, and communicates most results clearly to others.
+-   *70%-79%*: Passing effort. Student has misunderstanding of concepts in several areas, has some trouble putting results together in a cogent argument, and communication of results is sometimes unclear.
+-   *60%-69%*: Struggling effort. Student is making some effort, but has misunderstanding of many concepts and is unable to put together a cogent argument. Communication of results is unclear.
+-   *Below 60%*: Student is not making a sufficient effort.
+
+## Reproducibility + organization {#reproducibility-organization}
+
+All written work (with exception of presentation slides) should be reproducible, and the GitHub repo should be neatly organized.
+
+Points for reproducibility + organization will be based on the reproducibility of the write-up and the organization of the project GitHub repo.
+The repo should be neatly organized as described above, there should be no extraneous files, all text in the README should be easily readable.
+
+## **Getting Started**
+
+1.  **Download the Dataset**: Access the training and test datasets from the project repository.
+
+2.  **Set Up Your Environment**: Ensure you have Python and essential libraries installed (e.g., Pandas, NumPy, Scikit-learn, Matplotlib).
+
+3.  **Follow the Workflow**: Preprocess the data, conduct EDA, engineer features, train your model, and make predictions.
+
+4.  **Submit Your Work**: Upload your notebook and predictions to the provided submission platform.
+
+# **Timeline**
+
+-   **Start Date**: TBD
+
+-   **Submission Deadline**: TBD
+
+## **Tools and Resources**
+
+-   **Programming Language**: Python
+
+-   **Key Libraries**: Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn
+
+-   **Resources**: Documentation on regression models, MAE, and data visualization techniques.
+
+# Late work policy
+
+**There is no late work accepted on this project.** Be sure to turn in your work early to avoid any technological mishaps.

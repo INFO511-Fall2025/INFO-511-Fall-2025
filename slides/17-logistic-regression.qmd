@@ -1,0 +1,302 @@
+---
+title: "Logistic regression"
+subtitle: "Lecture 17"
+format:
+  revealjs: default
+editor_options: 
+  chunk_output_type: console
+jupyter: python3
+execute:
+  warning: false
+  error: false
+---
+
+## Setup
+
+```{python}
+#| message: false
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.linear_model import LinearRegression
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+
+sns.set_theme(style="whitegrid", rc={"figure.figsize": (10, 6), "axes.labelsize": 16, "xtick.labelsize": 14, "ytick.labelsize": 14})
+
+```
+
+
+## Recap: Modeling Loans{.smaller}
+
+-   What is the practical difference between a model with parallel and non-parallel lines?
+
+-   What is the definition of R-squared?
+
+-   Why do we choose models based on adjusted R-squared and not R-squared?
+
+## Predict interest rate... {.smaller}
+
+from credit utilization and homeownership
+
+```{python}
+#| include: false
+
+loans = pd.read_csv('data/loans_full_schema.csv')
+
+loans['credit_util'] = loans['total_credit_utilized'] / loans['total_credit_limit']
+loans['bankruptcy'] = loans['public_record_bankrupt'].apply(lambda x: 0 if x == 0 else 1).astype('category')
+loans['verified_income'] = loans['verified_income'].astype('category')
+loans['homeownership'] = loans['homeownership'].str.title()
+loans['homeownership'] = pd.Categorical(loans['homeownership'], categories=["Rent", "Mortgage", "Own"])
+loans = loans.rename(columns={'inquiries_last_12m': 'credit_checks'})
+loans = loans[['interest_rate', 'loan_amount', 'verified_income', 'debt_to_income', 'credit_util', 'bankruptcy', 'term', 'credit_checks', 'issue_month', 'homeownership']]
+loans.dropna(subset=['credit_util', 'homeownership', 'interest_rate'], inplace=True)
+```
+
+```{python}
+#| label: rate-util-home-fit
+X = loans[['credit_util', 'homeownership']]
+X = pd.get_dummies(X, drop_first=True).astype(float)
+y = loans['interest_rate']
+
+X = sm.add_constant(X)  
+model = sm.OLS(y, X).fit()
+
+```
+
+```{python}
+#| label: rate-util-home-tidy
+print(model.summary2())
+```
+
+## Intercept {.smaller}
+
+```{python}
+#| ref.label: rate-util-home-tidy
+#| echo: false
+
+print(model.summary2())
+
+```
+
+-   Intercept: Loan applicants who rent and have 0 credit utilization are predicted to receive an interest rate of 9.93%, on average.
+
+## Slopes {.smaller}
+
+::: panel-tabset
+## Model
+
+```{python}
+#| ref.label: rate-util-home-tidy
+#| echo: false
+
+print(model.summary2())
+```
+
+## Slope
+
+::: incremental
+-   All else held constant, for each additional percent credit utilization is higher, interest rate is predicted to be higher, on average, by 0.0534%.
+
+-   All else held constant, the model predicts that loan applicants who have a mortgage for their home receive 0.696% higher interest rate than those who rent their home, on average.
+
+-   All else held constant, the model predicts that loan applicants who own their home receive 0.128% higher interest rate than those who rent their home, on average.
+:::
+:::
+
+# Transformations
+
+## Predict log(interest rate)
+
+```{python}
+#| label: rate-log-cc-fit
+X_log = loans[['credit_checks']]
+X_log = sm.add_constant(X_log)
+y_log = np.log(loans['interest_rate'])
+
+model_log = sm.OLS(y_log, X_log).fit()
+```
+
+## Model {.smaller}
+
+```{python}
+#| ref.label: rate-log-cc-fit
+#| echo: false
+
+print(model_log.summary())
+
+```
+
+. . .
+
+$$
+\widehat{log(interest~rate)} = 2.39 + 0.0236 \times credit~checks
+$$
+
+## Slope {.smaller}
+
+```{python}
+#| ref.label: rate-log-cc-fit
+#| echo: false
+
+print(model_log.summary())
+
+```
+
+. . .
+
+For each additional credit check, log of interest rate is predicted to be higher, on average, by 0.0236%.
+
+## Slope {.smaller}
+
+$$
+log(interest~rate_{x+1}) - log(interest~rate_{x}) =  0.0236
+$$
+
+. . .
+
+$$
+log(\frac{interest~rate_{x+1}}{interest~rate_{x}}) = 0.0236
+$$
+
+. . .
+
+$$
+e^{log(\frac{interest~rate_{x+1}}{interest~rate_{x}})} = e^{0.0236}
+$$
+
+. . .
+
+$$
+\frac{interest~rate_{x+1}}{interest~rate_{x}} = 1.024
+$$
+
+. . .
+
+For each additional credit check, interest rate is predicted to be higher, on average, by **a factor of 1.024**.
+
+# Logistic regression
+
+## What is logistic regression?
+
+::: columns
+::: {.column width="50%"}
+::: incremental
+-   Similar to linear regression....
+    but
+
+-   Modeling tool when our response is categorical
+:::
+:::
+
+::: {.column width="50%"}
+![](images/logistic.png){fig-align="center"}
+:::
+:::
+
+## Modelling binary outcomes
+
+::: incremental
+-   Variables with binary outcomes follow the **Bernouilli distribution**:
+
+    -   $y_i \sim Bern(p)$
+
+    -   $p$: Probability of success
+
+    -   $1-p$: Probability of failure
+
+-   We can't model $y$ directly, so instead we model $p$
+:::
+
+## Linear model
+
+$$
+p_i = \beta_o + \beta_1 \times X_1 + \cdots + \epsilon
+$$
+
+::: incremental
+-   But remember that $p$ must be between 0 and 1
+
+-   We need a **link function** that transforms the linear model to have an appropriate range
+:::
+
+## Logit link function
+
+The **logit** function take values between 0 and 1 (probabilities) and maps them to values in the range negative infinity to positive infinity:
+
+$$
+logit(p) = log \bigg( \frac{p}{1 - p} \bigg)
+$$
+
+```{python}
+#| include: false
+
+x = np.linspace(0.001, 0.999, 1000)
+y = np.log(x / (1 - x))
+plt.plot(x, y)
+plt.xlabel('p')
+plt.ylabel('logit(p)')
+plt.title('logit(p) vs. p')
+plt.show()
+```
+
+## This isn't exactly what we need though.....
+
+::: incremental
+-   Recall, the goal is to take values between -$\infty$ and $\infty$ and map them to probabilities.
+
+-   We need the opposite of the link function...
+    or the *inverse*
+
+-   Taking the inverse of the logit function will map arbitrary real values back to the range \[0, 1\]
+:::
+
+## Generalized linear model {.smaller}
+
+::: fragment
+-   We model the logit (log-odds) of $p$ :
+:::
+
+::: fragment
+$$
+logit(p) = log \bigg( \frac{p}{1 - p} \bigg) = \beta_o + \beta_1 \times X1_i + \cdots + \epsilon 
+$$
+:::
+
+::: fragment
+-   Then take the inverse to obtain the predicted $p$:
+:::
+
+::: fragment
+$$
+p_i = \frac{e^{\beta_o + \beta_1 \times X1_i + \cdots + \epsilon}}{1 + e^{\beta_o + \beta_1 \times X1_i + \cdots + \epsilon}}
+$$
+:::
+
+## A logistic model visualized
+
+```{python}
+#| echo: false
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x + 10))
+
+x = np.linspace(0, 20, 100)
+y = sigmoid(x)
+plt.plot(x, y, linewidth=3)
+plt.xlabel('X (predictor)')
+plt.ylabel('P(Y = 1)')
+plt.title('Predicted probability Y = 1')
+plt.show()
+```
+
+## Takeaways
+
+::: incremental
+-   Generalized linear models allow us to fit models to predict non-continuous outcomes
+
+-   Predicting binary outcomes requires modeling the log-odds of success, where p = probability of success
+:::

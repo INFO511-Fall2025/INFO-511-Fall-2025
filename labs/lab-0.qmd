@@ -1,0 +1,77 @@
+---
+title: "Lab 0 - Hello, World and INFO 511!"
+categories: "Lab"
+execute:
+  eval: false
+---
+
+This lab will set you up for the computing workflow and give you an opportunity to introduce yourselves to each other and the teaching team.
+
+# `Hello, World!`
+
+You may have heard/seen this phrase, `Hello, World!`, elsewhere before.
+It's usually the first thing you learn in programming – to learn to write a computer program to print this sentence to screen.
+Things will be different in this course, as it's not a programming, but a data science course.
+So, starting tomorrow in class, you'll learn to use a computer program (called Python) to work with data.
+
+But today, we need to set you up for success!
+Let's first briefly review the components of the computational toolkit for the course:
+
+1.  Python: The programming language you'll learn in this course.
+
+2.  VSCode: The piece of software (a.k.a. the integrated development environment, IDE) you'll use to write Python code in.
+
+::: callout-note
+Python is the name of the programming language itself and VSCode is a convenient interface.
+:::
+
+3.  Jupyter Notebook: The tool you'll use to create reproducible computational documents that contain both your narrative (i.e., words in English) and your code (i.e., code in Python). Every piece of assignment you hand in will be a Jupyter Notebook.
+
+::: callout-note
+You might be familiar with word processors like MS Word or Google Docs.
+We will not be using these in this class.
+Instead, the words you would write in such a document as well as the code will go into a Jupyter Notebook, and when you *render* the document (more on what this means later) you will get a document out that has your words, your code, and the output of that code.
+Everything in one place, beautifully formatted!
+:::
+
+4.  Git: Version control system.
+5.  GitHub: A web hosting service for the Git version control system that also allows for transparent collaboration between team members.
+
+::: callout-note
+Git is a version control system (like "Track Changes" features from Microsoft Word but more powerful) and GitHub is the home for your Git-based projects on the internet (like DropBox but much better).
+:::
+
+## Access Python and VSCode
+
+-   **Python**: Follow the directions in <https://datasciaz.netlify.app/computing/computing-python.html>.
+
+## Create a GitHub account
+
+Go to <https://github.com/> and walk through the steps for creating an account.
+You do not have to use your U of A email address, but I recommend doing so.[^1]
+
+[^1]: GitHub has some perks for students you can take advantage of later in the course or in your future work, and it helps to have a .edu address to get verified as a student.
+
+::: callout-note
+You'll need to choose a user name.
+I recommend reviewing the user name advice at <https://happygitwithr.com/github-acct#username-advice> before choosing a username.
+:::
+
+::: {.callout-important collapse="true"}
+## What if I already have a GitHub account?
+
+If you already have a GitHub account, you do not need to create a new one for this course.
+Just log in to that account to make sure you still remember your username and password.
+:::
+
+## Set up Git
+
+Follow the [**Setting up Git**](https://datasciaz.netlify.app/computing/computing-git.html#setting-up-git) directions on the course website.
+
+# Hello INFO 511!
+
+Fill out the course "Getting to know you" survey:
+
+<https://forms.gle/p7CCY6HdfaSy8KhA8>
+
+We will use the information collected in this survey for a variety of goals, from inviting you to the course GitHub organization (more on that later) to getting to know you as a person and your course goals and concerns.

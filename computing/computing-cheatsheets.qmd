@@ -1,0 +1,55 @@
+---
+title: "Python cheatsheets"
+---
+
+The following cheatsheets come from [tsinghua-gongjing.github.io/posts/cheatsheet_collections](https://tsinghua-gongjing.github.io/posts/cheatsheet_collections.html){.uri}. We will not covered every function and functionality listed on them, but you might still find them useful as references.
+
+::: columns
+::: {.column width="50%"}
+[![](cheatsheets/pandas1.png){fig-alt="ggplot2 cheat sheet" fig-align="left" width="300"}](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf)
+
+<br>
+
+[![](cheatsheets/numpy.png){fig-alt="ggplot2 cheat sheet" fig-align="left" width="300"}](https://raw.githubusercontent.com/rstudio/cheatsheets/main/tidyr.pdf)
+
+<br>
+
+[![](cheatsheets/seaborn.png){fig-alt="ggplot2 cheat sheet" fig-align="left" width="300"}](https://raw.githubusercontent.com/rstudio/cheatsheets/main/strings.pdf)
+
+<br>
+
+[![](cheatsheets/scikit-learn.png){fig-alt="ggplot2 cheat sheet" fig-align="left" width="300"}](https://raw.githubusercontent.com/rstudio/cheatsheets/main/lubridate.pdf)
+
+<br>
+
+![](cheatsheets/git1.png){fig-align="left" width="300"}
+
+<br>
+
+![](cheatsheets/markdown1.png){fig-align="left" width="300"}
+:::
+
+::: {.column width="50%"}
+[![](cheatsheets/pandas2.png){fig-alt="ggplot2 cheat sheet" fig-align="right" width="300"}](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf)
+
+<br>
+
+[![](cheatsheets/data-import.png){fig-alt="ggplot2 cheat sheet" fig-align="right" width="300"}](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-import.pdf)
+
+<br>
+
+[![](cheatsheets/matplotlib.png){fig-alt="ggplot2 cheat sheet" fig-align="right" width="300"}](https://raw.githubusercontent.com/rstudio/cheatsheets/main/factors.pdf)
+
+<br>
+
+[![](cheatsheets/jupyter.png){fig-alt="ggplot2 cheat sheet" fig-align="right" width="300"}](https://raw.githubusercontent.com/rstudio/cheatsheets/main/rstudio-ide.pdf)
+
+<br>
+
+![](cheatsheets/git2.png){fig-align="right" width="300"}
+
+<br>
+
+![](cheatsheets/markdown2.png){fig-align="right" width="300"}
+:::
+:::

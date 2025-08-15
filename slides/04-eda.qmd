@@ -1,0 +1,466 @@
+---
+title: "Exploratory data analysis"
+subtitle: "Lecture 4"
+format:
+  revealjs: default
+editor_options: 
+  chunk_output_type: console
+jupyter: python3
+execute:
+  warning: false
+  message: false
+---
+
+## Setup
+
+```{python}
+#| label: setup
+#| message: false
+
+# Import all required libraries
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+import scipy.stats as stats
+from scipy.stats import skewnorm
+from scipy.stats import kurtosis, norm
+from scipy.stats import gamma
+import missingno as msno
+import random
+import statsmodels.api as sm
+
+# Load in UK Smoking Data
+births14 = pd.read_csv("data/births14.csv")
+
+# Set seed
+random.seed(123)
+```
+
+# Exploratory Data Analysis
+
+## What is exploratory data analysis? {.smaller}
+
+> Exploratory Data Analysis is a statistical approach to analyzing datasets to summarize their main characteristics, often using visual methods.
+
+## Examining data {.smaller}
+
+::: panel-tabset
+## Head
+
+```{python}
+births14.head()
+```
+
+## Info
+
+```{python}
+births14.info()
+```
+
+## Describe
+
+```{python}
+births14.describe()
+```
+:::
+
+## Visualizing data relationships {.smaller}
+
+```{python}
+#| warning: false
+sns.pairplot(births14[['fage', 'mage', 'weeks', 'mature']], hue='mature', height=2)
+plt.show()
+```
+
+## Group descriptive statistics {.smaller}
+
+```{python}
+# Example with the premie column
+births14.groupby('premie').describe()
+```
+
+## Outliers {.smaller}
+
+Outliers are data points that are significantly different from others.
+Identifying and handling outliers is important in data analysis.
+
+![](images/outliers.png){fig-align="center" width="877"}
+
+::: fragment
+> Outliers = 1.5 \* Interquartile range
+:::
+
+## Assess outliers visually {.smaller}
+
+```{python}
+#| fig-align: "center"
+
+sns.boxplot(data = births14, x = 'weight', width = 0.20)
+plt.show()
+```
+
+## Find outliers {.smaller}
+
+::: panel-tabset
+## Output
+
+```{python}
+#| echo: false
+
+for column in births14.select_dtypes(include=np.number).columns:
+    q25 = births14[column].quantile(0.25)
+    q75 = births14[column].quantile(0.75)
+    iqr = q75 - q25
+    lower_bound = q25 - 1.5 * iqr
+    upper_bound = q75 + 1.5 * iqr
+    outliers = births14[(births14[column] < lower_bound) | (births14[column] > upper_bound)]
+    print(f"{column}: {outliers.shape[0]} outliers")
+```
+
+## Code
+
+```{python}
+#| eval: false
+
+for column in births14.select_dtypes(include=np.number).columns:
+    q25 = births14[column].quantile(0.25)
+    q75 = births14[column].quantile(0.75)
+    iqr = q75 - q25
+    lower_bound = q25 - 1.5 * iqr
+    upper_bound = q75 + 1.5 * iqr
+    outliers = births14[(births14[column] < lower_bound) | (births14[column] > upper_bound)]
+    print(f"{column}: {outliers.shape[0]} outliers")
+```
+:::
+
+::: fragment
+-   `q25`: 1/4 quartile, 25th percentile; `q75`: 3/4 quartile, 75th percentile
+
+-   `IQR`: interquartile range, $IQR = q75-q25$
+
+-   `lower`; `upper`: lower, upper limit of $1.5\times IQR$ used to calculate outliers
+:::
+
+## Remove outliers {.smaller}
+
+::: panel-tabset
+## Cleaning
+
+```{python}
+#| code-line-numbers: "1-14|2|4|6,7,8|10,11|13"
+# Select numerical columns
+numerical_cols = births14.select_dtypes(include = ['number']).columns
+
+for col in numerical_cols:
+    # Find Q1, Q3, and interquartile range (IQR) for each column
+    Q1 = births14[col].quantile(0.25)
+    Q3 = births14[col].quantile(0.75)
+    IQR = Q3 - Q1
+    # Upper and lower bounds for each column
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+    # Filter out the outliers from the DataFrame
+    births14_clean = births14[(births14[col] >= lower_bound) & (births14[col] <= upper_bound)]
+```
+
+## Plot
+
+```{python}
+#| echo: false
+#| fig-align: "center"
+
+sns.boxplot(data = births14_clean, x = 'weight', width = 0.20)
+plt.show()
+```
+:::
+
+::: fragment
+#### Why are there still outliers?
+:::
+
+## Missing values (`NaN`)
+
+```{python}
+# Count missing values in each column
+births14.isnull().sum()
+```
+
+## Visualizing (`NaN`) {.smaller}
+
+We can use the `missingno` library to visualize missing data.
+
+```{python}
+#| fig-align: "center"
+msno.bar(births14, figsize = (7, 5), fontsize = 10)
+plt.show()
+```
+
+## Describe categorical variables {.smaller}
+
+::: panel-tabset
+## Describe
+
+```{python}
+births14.describe(exclude = [np.number])
+```
+
+## Unique levels
+
+```{python}
+#| echo: false
+for column in births14.select_dtypes(include=['object', 'category']).columns:
+    print(f"{column}: {births14[column].unique()}")
+```
+
+## Code
+
+```{python}
+#| eval: false
+#| code-line-numbers: "|1|2"
+for column in births14.select_dtypes(include=['object', 'category']).columns:
+    print(f"{column}: {births14[column].unique()}")
+```
+:::
+
+# Normality check
+
+::: fragment
+Checking if the data follows a normal distribution is a common step in EDA.
+:::
+
+## Normality check {.smaller}
+
+```{python}
+#| echo: false
+#| fig-align: center
+# Parameters for the normal distribution
+mu = 0  # Mean
+sigma = 1  # Standard deviation
+
+# Setting up the plot font scale
+sns.set_theme(font_scale = 1.25)
+
+# Setting seaborn style
+sns.set_style("whitegrid")
+
+# Generate a sample from a normal distribution
+data = np.random.normal(loc = mu, scale = sigma, size = 10000)
+
+# Plot the distribution using seaborn's distplot
+plt.figure(figsize = (6, 3))
+sns.histplot(data, kde = True, color = 'steelblue', bins = 30, stat = 'density', edgecolor = 'black')
+
+# Add labels and title to the plot
+plt.title('Normal Distribution')
+plt.xlabel('Value')
+plt.ylabel('Probability Density')
+
+# Show the plot
+plt.show()
+```
+
+::: fragment
+::: incremental
+-   **Histogram**: bell-shaped curve
+
+-   **Skewness**: Close to 0 for symmetry; **Kurtosis**: Close to 3 for normal "tailedness."
+
+-   **Sample Size**: Larger samples are less sensitive to non-normality.
+
+-   **Empirical Rule**: 68-95-99.7% rule (1, 2, and 3 st dev. of the mean).
+:::
+:::
+
+## Skewness {.smaller}
+
+```{python}
+#| echo: false
+#| fig-align: "center"
+# Parameters for the distributions
+params = {
+    'Negative Skewness': -5,  # Negative skewness parameter for skewnorm
+    'Zero Skewness': 0,       # Zero skewness (normal distribution) for skewnorm
+    'Positive Skewness': 5    # Positive skewness parameter for skewnorm
+}
+
+# Set up the matplotlib figure and axes
+fig, axs = plt.subplots(1, 3, figsize = (10, 4))
+
+# Generate and plot the data for each type of skewness
+for ax, (label, param) in zip(axs, params.items()):
+    # Generate a skewed dataset
+    data = skewnorm.rvs(a = param, loc = 0.5, scale = 0.15, size = 1000)
+
+    # Plot the histogram of the data
+    ax.hist(data, bins = 30, density=True, color = 'steelblue', alpha = 0.6, edgecolor='black')
+    
+    # Set title and labels
+    ax.set_title(label)
+    
+# Set common labels
+fig.text(0.5, 0, 'Value', ha = 'center', va = 'center', fontsize = 16)
+fig.text(0, 0.5, 'Frequency', ha = 'center', va = 'center', rotation = 'vertical', fontsize = 16)
+
+
+# Adjust the layout
+plt.tight_layout()
+
+# Show the plot
+plt.show()
+
+```
+
+::: fragment
+::: incremental
+-   Several definitions
+-   Sensitive to outliers
+-   Designed for one peak (*unimodal*)
+:::
+:::
+
+## Kurtosis {.smaller}
+
+```{python}
+#| echo: false
+#| fig-align: "center"
+x = np.linspace(-5, 5, 100)
+ax = plt.subplot()
+distnames = ['laplace', 'norm', 'uniform']
+
+# Create kurtosis plots
+for distname in distnames:
+    if distname == 'uniform':
+        dist = getattr(stats, distname)(loc=-2, scale=4)
+    else:
+        dist = getattr(stats, distname)
+    data = dist.rvs(size = 1000)
+    kur = kurtosis(data, fisher=True)
+    y = dist.pdf(x)
+    ax.plot(x, y, label="{}, {}".format(distname, round(kur, 3)))
+    ax.legend()
+    ax.set_xlabel("Value")
+    ax.set_ylabel("Frequency")
+    
+# Show the plot
+plt.show()
+```
+
+::: fragment
+::: incremental
+-   Sensitive to outliers
+-   Designed for one peak (*unimodal*)
+:::
+:::
+
+## Q-Q plot {.smaller}
+
+```{python}
+#| echo: false
+# Define skewness parameters
+skew_params = {
+    'Negative Skew': -10,
+    'Normal Distn': 0,
+    'Positive Skew': 10
+}
+
+# Number of samples
+n_samples = 100
+
+# Generate data for each skewness parameter
+data = {skew_type: skewnorm.rvs(a = skew_param, size = n_samples) for skew_type, skew_param in skew_params.items()}
+
+# Create DataFrame
+df = pd.DataFrame(data)
+```
+
+::: panel-tabset
+## Normal
+
+```{python}
+#| fig.width: 10
+#| fig.asp: 0.618
+#| fig-align: center
+#| echo: false
+# Change theme to "white"
+sns.set_style("white")
+
+# Q-Q plot of normal distribution
+sm.qqplot(data['Normal Distn'], line = 's')
+
+# Display the plot
+plt.show()
+```
+
+## Negative skew
+
+```{python}
+#| fig.width: 10
+#| fig.asp: 0.618
+#| fig-align: center
+#| echo: false
+# Change theme to "white"
+sns.set_style("white")
+
+# Q-Q plot of negative skew
+sm.qqplot(data['Negative Skew'], line = 's')
+
+# Display the plot
+plt.show()
+```
+
+## Positive skew
+
+```{python}
+#| fig.width: 10
+#| fig.asp: 0.618
+#| fig-align: center
+#| echo: false
+
+# Change theme to "white"
+sns.set_style("white")
+
+# Q-Q plot of positive skew
+sm.qqplot(data['Positive Skew'], line = 's')
+
+# Display the plot
+plt.show()
+```
+:::
+
+## Testing normality: data shape {.smaller}
+
+```{python}
+#| code-fold: true
+#| code-line-numbers: "1-24|2,5|8|11|14|17,18|21-24"
+#| fig-align: center
+
+# Make a copy of the data 
+dataCopy = births14.copy()
+
+# Remove NAs
+dataCopyFin = dataCopy.dropna()
+
+# Q-Q plot
+sm.qqplot(dataCopyFin.weight, line='s')
+plt.title('Newborn Weight Q-Q plot')
+plt.show()
+```
+
+::: fragment
+**Negative-skew (left-tailed)**
+:::
+
+## Conclusions
+
+::: incremental
+-   Always inspect your data first.
+
+-   Visualize relationships and distributions.
+
+-   Identify and handle outliers and missing values.
+
+-   Check for normality and understand the distribution of your data.
+:::
+
+# We will add to this!

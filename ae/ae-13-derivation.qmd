@@ -1,0 +1,308 @@
+---
+title: "AE 13: Derivation"
+categories: 
+  - Application exercise
+---
+
+In this exercise, we will:
+
+-   Practice Basic Differentiation:
+
+    -   Apply the power rule to find the derivatives of simple polynomial functions.
+
+-   Apply the Chain Rule and Product Rule:
+
+    -   Use these rules to differentiate more complex functions involving compositions and products.
+
+-   Solve Advanced Differentiation Problems:
+
+    -   Tackle derivatives of functions with nested compositions and multiple variables, reinforcing the use of the chain rule and product rule.
+
+# Common functions + their Derivatives
+
+1.  **Power Function:**
+
+-   Function:
+
+$$
+f(x)=x^n
+$$
+
+-   Derivative:
+
+$$
+f'(x) = \frac{d}{dx} (x^n) = nx^{n-1}
+$$
+
+2.  **Exponential Function:**
+
+-   Function:
+
+$$
+f(x)=e^x
+$$
+
+-   Derivative:
+
+$$
+f'(x) = \frac{d}{dx} (e^x) = e^x
+$$
+
+-   Function:
+
+$$
+f(x)=a^x
+$$
+
+-   Derivative:
+
+$$
+f'(x) = \frac{d}{dx} (a^x) = a^x \ln(a)
+$$
+
+3.  **Natural Logarithm**
+
+-   Function:
+
+$$
+f(x) = ln(x)
+$$
+
+-   Derivative:
+
+$$
+f'(x) = \frac{d}{dx} (\ln(x)) = \frac{1}{x}
+$$
+
+4.  **Trigonometric Functions**
+
+-   Function:
+
+$$
+f(x)=\sin(x)
+$$
+
+-   Derivative:
+
+$$
+f'(x) = \frac{d}{dx} (\sin(x)) = \cos(x)
+$$
+
+-   Function:
+
+$$
+f(x)=\cos(x)
+$$
+
+-   Derivative:
+
+$$
+f'(x) = \frac{d}{dx} (\cos(x)) = -\sin(x)
+$$
+
+-   Function:
+
+$$
+f(x)=\tan(x)
+$$
+
+-   Derivative:
+
+$$
+f'(x) = \frac{d}{dx} (\tan(x)) = \sec^2(x)
+$$
+
+5.  **Hyperbolic Functions**
+
+-   Function:
+
+$$
+f(x)=\sinh(x)
+$$
+
+-   Derivative:
+
+$$
+f'(x) = \frac{d}{dx} (\sinh(x)) = \cosh(x)
+$$
+
+-   Function:
+
+$$
+f(x)=\cosh(x)
+$$
+
+-   Derivative:
+
+$$
+f'(x) = \frac{d}{dx} (\cosh(x)) = \sinh(x)
+$$
+
+# Derivatives
+
+For each problem, find the derivative of the given function.
+Show all steps clearly.
+
+## Exercise 1:
+
+**Function:**
+
+$$
+f(x) = 5x^3
+$$
+
+**Solution:**
+
+-   The power rule states that $\frac{d}{dx}(x^n)=nx^{n-1}$
+
+-   Applying the power rule:
+
+*add response here.*
+
+## Exercise 2
+
+**Function:**
+
+$$
+g(x) = \sqrt{x}
+$$
+
+**Solution:**
+
+-   Rewrite the function with a fractional exponent: $\sqrt{x}=x^{1/2}$.
+
+-   Apply the power rule:
+
+*add response here.*
+
+## Exercise 3
+
+**Function:**
+
+$$
+h(x)=\ln(x)
+$$
+
+**Solution:**
+
+-   The derivative of the natural logarithm function is \_\_\_
+
+*add response here.*
+
+# Intermediate Derivatives Using Chain Rule and Product Rule
+
+## Exercise 4
+
+**Function:**
+
+$$
+f(x)=(2x^3+3x)^4
+$$
+
+**Solution**
+
+-   Identify the outer function and inner function:
+
+    -   Outer function: *add response here.*
+
+    -   Inner function: *add response here.*
+
+-   Apply the chain rule:
+
+*add response here.*
+
+-   Differentiate the inner function:
+
+*add response here.*
+
+-   Combine the results:
+
+add response here.
+
+## Exercise 5
+
+**Function:**
+
+$$
+\frac{d}{dx}(x^2 e^x)
+$$
+
+**Solution:**
+
+-   Identify the product of two functions: \_\_\_ and \_\_\_
+
+-   Apply the product rule: $(u \cdot v)^{'}=u^{'} \cdot v + u \cdot v^{'}$
+
+-   Differentiate each function:
+
+*add response here.*
+
+-   Combine the results:
+
+*add response here.*
+
+## Exercise 6
+
+**Function:**
+
+$$
+h(x)=\sin (x^2)
+$$
+
+**Solution:**
+
+-   Identify the outer function and inner function:
+
+    -   Outer function: *add response here.*
+
+    -   Inner function: *add response here.*
+
+-   Apply the chain rule: *add response here.*
+
+-   Differentiate the inner function:
+
+*add response here.*
+
+-   Combine the results:
+
+*add response here.*
+
+# Advanced Derivatives
+
+## Exercise 7
+
+**Function:**
+
+$$
+f(x)=(\ln (x) \cdot e^{2x})^3
+$$
+
+**Solution**
+
+-   Identify the outer function and inner function
+
+    -   Outer function: *add response here.*
+
+    -   Inner function: *add response here.*
+
+-   Apply the chain rule: *add response here.*
+
+-   Use the product rule to differentiate the inner function:
+
+*add response here.*
+
+-   Differentiate each function:
+
+*add response here.*
+
+-   Apply the product rule:
+
+*add response here.*
+
+-   Combine the outer function derivative:
+
+*add response here.*
+
+-   Simplify:
+
+*add response here.*

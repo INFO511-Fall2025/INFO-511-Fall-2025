@@ -1,0 +1,345 @@
+---
+title: "Model validation"
+subtitle: "Lecture 19"
+format:
+  revealjs: default
+editor_options: 
+  chunk_output_type: console
+jupyter: python3
+execute:
+  warning: false
+  error: false
+---
+
+## Setup {.smaller}
+
+```{python}
+#| message: false
+
+import pandas as pd
+import numpy as np
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+from sklearn.model_selection import train_test_split, KFold
+from sklearn.metrics import mean_squared_error
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+sns.set_theme(style="whitegrid", rc={"figure.figsize": (8, 6), "axes.labelsize": 16, "xtick.labelsize": 14, "ytick.labelsize": 14})
+```
+
+## Data: Candy Rankings {.smaller}
+
+```{python}
+candy_rankings = pd.read_csv("data/candy_rankings.csv")
+
+candy_rankings.info()
+```
+
+# Model validation
+
+## Overfitting {.smaller}
+
+::: incremental
+-   The data we are using to construct our models come from a larger population.
+
+-   Ultimately we want our model to tell us how the population works, not just the sample we have.
+
+-   If the model we fit is too tailored to our sample, it might not perform as well with the remaining population.
+    This means the model is "overfitting" our data.
+
+-   We measure this using **model validation** techniques.
+
+-   Note: Overfitting is not a huge concern with linear models with low level interactions, however it can be with more complex and flexible models.
+    The following is just an example of model validation, even though we're using it in a scenario where the concern for overfitting is not high.
+:::
+
+## Model validation {.smaller}
+
+::: incremental
+-   One commonly used model validation technique is to partition your data into training and testing set
+
+-   That is, fit the model on the training data
+
+-   And test it on the testing data
+
+-   Evaluate model performance using $RMSE$, root-mean squared error
+:::
+
+::: fragment
+$$ RMSE = \sqrt{\frac{\sum_{i = 1}^n (y_i - \hat{y}_i)^2}{n}} $$
+:::
+
+::: fragment
+::: question
+Do you think we should prefer low or high RMSE?
+:::
+:::
+
+## Random sampling and reproducibility {.smaller}
+
+Gotta set a seed!
+
+```{python}
+np.random.seed(1234)
+```
+
+::: incremental
+-   Use different seeds from each other
+
+-   Need inspiration?
+    <https://www.random.org/>
+:::
+
+## Cross validation {.smaller}
+
+More specifically, **k-fold cross validation**
+
+::: columns
+::: {.column width="50%"}
+::: incremental
+-   Split your data into k folds.
+
+-   Use 1 fold for testing and the remaining (k - 1) folds for training.
+
+-   Repeat k times.
+:::
+:::
+
+::: {.column width="50%"}
+![](images/kfold.webp)
+:::
+:::
+
+## Prepping your data for 5-fold CV {.smaller}
+
+```{python}
+candy_rankings['id'] = np.arange(len(candy_rankings))
+candy_rankings = candy_rankings.sample(frac=1).reset_index(drop=True)
+candy_rankings['fold'] = (np.arange(len(candy_rankings)) % 5) + 1
+
+candy_rankings_cv = candy_rankings.groupby('fold').size().reset_index(name='count')
+print(candy_rankings_cv)
+```
+
+## CV 1 {.smaller}
+
+```{python}
+test_fold = 1
+test = candy_rankings[candy_rankings['fold'] == test_fold]
+train = candy_rankings[candy_rankings['fold'] != test_fold]
+
+model = smf.ols('winpercent ~ chocolate + fruity + peanutyalmondy + crispedricewafer + hard + sugarpercent', data=train).fit()
+rmse_test1 = np.sqrt(mean_squared_error(test['winpercent'], model.predict(test)))
+print(f'RMSE Test 1: {rmse_test1}')
+```
+
+## RMSE on training vs. testing {.smaller}
+
+::: question
+Would you expect the RMSE to be higher for your training data or your testing data?
+Why?
+:::
+
+## RMSE on training vs. testing {.smaller}
+
+RMSE for testing:
+
+```{python}
+rmse_test1 = np.sqrt(mean_squared_error(test['winpercent'], model.predict(test)))
+print(f'RMSE Test 1: {rmse_test1}')
+```
+
+RMSE for training:
+
+```{python}
+rmse_train1 = np.sqrt(mean_squared_error(train['winpercent'], model.predict(train)))
+print(f'RMSE Train 1: {rmse_train1}')
+```
+
+## CV 2 {.smaller}
+
+```{python}
+test_fold = 2
+test = candy_rankings[candy_rankings['fold'] == test_fold]
+train = candy_rankings[candy_rankings['fold'] != test_fold]
+model = smf.ols('winpercent ~ chocolate + fruity + peanutyalmondy + crispedricewafer + hard + sugarpercent', data=train).fit()
+```
+
+```{python}
+rmse_test2 = np.sqrt(mean_squared_error(test['winpercent'], model.predict(test)))
+rmse_train2 = np.sqrt(mean_squared_error(train['winpercent'], model.predict(train)))
+print(f'RMSE Test 2: {rmse_test2}')
+print(f'RMSE Train 2: {rmse_train2}')
+```
+
+## CV 3 {.smaller}
+
+```{python}
+test_fold = 3
+test = candy_rankings[candy_rankings['fold'] == test_fold]
+train = candy_rankings[candy_rankings['fold'] != test_fold]
+model = smf.ols('winpercent ~ chocolate + fruity + peanutyalmondy + crispedricewafer + hard + sugarpercent', data=train).fit()
+```
+
+```{python}
+rmse_test3 = np.sqrt(mean_squared_error(test['winpercent'], model.predict(test)))
+rmse_train3 = np.sqrt(mean_squared_error(train['winpercent'], model.predict(train)))
+print(f'RMSE Test 3: {rmse_test3}')
+print(f'RMSE Train 3: {rmse_train3}')
+```
+
+## CV 4 {.smaller}
+
+```{python}
+test_fold = 4
+test = candy_rankings[candy_rankings['fold'] == test_fold]
+train = candy_rankings[candy_rankings['fold'] != test_fold]
+model = smf.ols('winpercent ~ chocolate + fruity + peanutyalmondy + crispedricewafer + hard + sugarpercent', data=train).fit()
+
+```
+
+```{python}
+rmse_test4 = np.sqrt(mean_squared_error(test['winpercent'], model.predict(test)))
+rmse_train4 = np.sqrt(mean_squared_error(train['winpercent'], model.predict(train)))
+print(f'RMSE Test 4: {rmse_test4}')
+print(f'RMSE Train 4: {rmse_train4}')
+```
+
+## CV 5 {.smaller}
+
+```{python}
+test_fold = 5
+test = candy_rankings[candy_rankings['fold'] == test_fold]
+train = candy_rankings[candy_rankings['fold'] != test_fold]
+model = smf.ols('winpercent ~ chocolate + fruity + peanutyalmondy + crispedricewafer + hard + sugarpercent', data=train).fit()
+
+```
+
+```{python}
+rmse_test5 = np.sqrt(mean_squared_error(test['winpercent'], model.predict(test)))
+rmse_train5 = np.sqrt(mean_squared_error(train['winpercent'], model.predict(train)))
+print(f'RMSE Test 5: {rmse_test5}')
+print(f'RMSE Train 5: {rmse_train5}')
+```
+
+## Putting it altogether {.smaller}
+
+```{python}
+#| code-fold: true
+#| code-summary: "Dataframe"
+rmse_candy = pd.DataFrame({
+    'test_fold': np.arange(1, 6),
+    'rmse_train': [rmse_train1, rmse_train2, rmse_train3, rmse_train4, rmse_train5],
+    'rmse_test': [rmse_test1, rmse_test2, rmse_test3, rmse_test4, rmse_test5]
+})
+```
+
+```{python}
+#| code-fold: true
+#| code-summary: "Visual"
+
+plt.figure(figsize=(8, 5))
+sns.lineplot(data=rmse_candy, x='test_fold', y='rmse_test', marker='o', label='Test RMSE')
+plt.xlabel('Fold')
+plt.ylabel('RMSE')
+plt.title('Test RMSE for each fold')
+plt.legend()
+plt.show()
+```
+
+## How does RMSE compare to y? {.smaller}
+
+::: fragment
+-   `winpercent` summary stats:
+
+```{python echo=FALSE}
+#| echo: false
+winpercent_summary = candy_rankings['winpercent'].describe()
+print(winpercent_summary)
+```
+:::
+
+::: fragment
+-   `rmse_test` summary stats:
+
+```{python}
+#| echo: false
+rmse_summary = rmse_candy['rmse_test'].describe()
+print(rmse_summary)
+```
+:::
+
+## `model_selection` in scikit-learn {.smaller}
+
+::: columns
+::: {.column width="40%"}
+![](images/scikit-learn.png)
+:::
+
+::: {.column width="60%"}
+The **scikit-learn** package provides functions that help you create pipelines when modeling.
+
+```{python}
+from sklearn.model_selection import KFold
+```
+:::
+:::
+
+::: aside
+[model selection via scikit-learn](https://scikit-learn.org/stable/model_selection.html)
+:::
+
+## Cross Validation - Faster {.smaller}
+
+-   **`sklearn.model_selection.KFold`**: Partition data into k folds
+
+-   Calculate RMSEs for each of the models on the testing set
+
+## Partition data into k folds {.smaller}
+
+k = 5:
+
+```{python}
+kf = KFold(n_splits=5, shuffle=True, random_state=102319)
+folds = list(kf.split(candy_rankings))
+```
+
+## Fit model on each of training set {.smaller}
+
+```{python}
+rmses = []
+for train_index, test_index in folds:
+    train_data = candy_rankings.iloc[train_index]
+    test_data = candy_rankings.iloc[test_index]
+    model = smf.ols('winpercent ~ chocolate + fruity + peanutyalmondy + crispedricewafer + hard + sugarpercent', data=train_data).fit()
+    rmse = np.sqrt(mean_squared_error(test_data['winpercent'], model.predict(test_data)))
+    rmses.append(rmse)
+```
+
+## Calculate RMSEs {.smaller}
+
+::: columns
+::: {.column width="60%"}
+```{python}
+#| code-fold: true
+fold_ids = list(range(1, 6))
+plt.figure(figsize=(8, 5))
+plt.plot(fold_ids, rmses, marker='o', label='Test RMSE')
+plt.xlabel('Fold')
+plt.ylabel('RMSE')
+plt.title('Test RMSE for each fold')
+plt.legend()
+plt.show()
+```
+:::
+
+::: {.column width="40%"}
+<br> <br>
+
+```{python}
+rmse_summary = pd.Series(rmses).describe()
+print(rmse_summary)
+```
+:::
+:::

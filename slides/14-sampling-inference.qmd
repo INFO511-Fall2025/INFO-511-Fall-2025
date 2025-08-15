@@ -1,0 +1,603 @@
+---
+title: "Sampling distributions + inference"
+subtitle: "Lecture 14"
+format:
+  revealjs: default
+editor_options: 
+  chunk_output_type: console
+jupyter: python3
+execute: 
+  warning: false
+  error: false
+---
+
+## Setup
+
+```{python}
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import scipy.stats as stats 
+import seaborn as sns
+
+np.random.seed(1)
+```
+
+# Sample Statistics and Sampling Distributions
+
+## Variability of sample statistics
+
+::: incremental
+-   We've seen that each sample from the population yields a slightly different sample statistic (sample mean, sample proportion, etc.)
+
+-   Previously we've quantified this value via simulation
+
+-   Today we talk about some of the theory underlying **sampling distributions**, particularly as they relate to sample means.
+:::
+
+------------------------------------------------------------------------
+
+## Statistical inference
+
+::: incremental
+-   Statistical inference is the act of generalizing from a sample in order to make conclusions regarding a population.
+
+-   We are interested in population parameters, which we do not observe.
+    Instead, we must calculate statistics from our sample in order to learn about them.
+
+-   As part of this process, we must quantify the degree of uncertainty in our sample statistic.
+:::
+
+------------------------------------------------------------------------
+
+## Sampling distribution of the mean {.smaller}
+
+Suppose we’re interested in the mean resting heart rate of students at U of A, and are able to do the following:
+
+::: incremental
+1.  Take a random sample of size $n$ from this population, and calculate the mean resting heart rate in this sample, $\bar{X}_1$
+
+2.  Put the sample back, take a second random sample of size $n$, and calculate the mean resting heart rate from this new sample, $\bar{X}_2$
+
+3.  Put the sample back, take a third random sample of size $n$, and calculate the mean resting heart rate from this sample, too...
+:::
+
+::: fragment
+...and so on.
+:::
+
+## Sampling distribution of the mean {.smaller}
+
+After repeating this many times, we have a data set that has the sample means from the population: $\bar{X}_1$, $\bar{X}_2$, $\cdots$, $\bar{X}_K$ (assuming we took $K$ total samples).
+
+::: fragment
+::: question
+Can we say anything about the distribution of these sample means (that is, the **sampling distribution** of the mean?)
+:::
+:::
+
+::: fragment
+*(Keep in mind, we don't know what the underlying distribution of mean resting heart rate of U of A students looks like!)*
+:::
+
+# Central Limit Theorem {style="text-align: center;"}
+
+::: {.fragment .large}
+😱
+:::
+
+## The Central Limit Theorem
+
+A quick caveat...
+
+::: fragment
+For now, let's assume we know the underlying standard deviation, $\sigma$, from our distribution
+:::
+
+## The Central Limit Theorem {.smaller}
+
+For a population with a well-defined mean $\mu$ and standard deviation $\sigma$, these three properties hold for the distribution of sample mean $\bar{X}$, assuming certain conditions hold:
+
+::: incremental
+1.  The mean of the sampling distribution of the mean is identical to the population mean $\mu$.
+
+2.  The standard deviation of the distribution of the sample means is $\sigma/\sqrt{n}$.
+
+-   This is called the **standard error (SE)** of the mean.
+
+3.  For $n$ large enough, the shape of the sampling distribution of means is approximately **normally distributed**.
+:::
+
+## The normal (Gaussian) distribution {.smaller}
+
+The normal distribution is unimodal and symmetric and is described by its **density function**:
+
+::: fragment
+If a random variable $X$ follows the normal distribution, then $$f(x) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left\{ -\frac{1}{2}\frac{(x - \mu)^2}{\sigma^2} \right\}$$ where $\mu$ is the mean and $\sigma^2$ is the variance $(\sigma \text{ is the standard deviation})$
+:::
+
+::: fragment
+::: callout-warning
+We often write $N(\mu, \sigma)$ to describe this distribution.
+:::
+:::
+
+## The normal distribution (graphically)
+
+```{python}
+#| echo: false
+# Define the x range
+x = np.linspace(-3, 3, 1000)
+
+# Calculate the normal distribution density
+y = stats.norm.pdf(x)
+
+# Create the plot
+plt.figure(figsize=(10, 6))
+plt.fill_between(x, y, color='white', edgecolor='black', linewidth=1.5)
+plt.plot(x, y, color='black')
+plt.xlabel('')
+plt.ylabel('Density')
+plt.xticks(ticks=[-3, -2, -1, 0, 1, 2, 3])
+plt.grid(True, which='both', linestyle='--', linewidth=0.5)
+plt.show()
+```
+
+## Wait, *any* distribution? {.smaller}
+
+The central limit theorem tells us that **sample means** are normally distributed, if we have enough data and certain assumptions hold.
+
+::: fragment
+This is true *even if our original variables are not normally distributed*.
+:::
+
+::: fragment
+Click [here](http://onlinestatbook.com/stat_sim/sampling_dist/index.html) to see an interactive demonstration of this idea.
+:::
+
+## Conditions for CLT {.smaller}
+
+We need to check two conditions for CLT to hold: independence, sample size/distribution.
+
+::: fragment
+✅ **Independence:** The sampled observations must be independent.
+This is difficult to check, but the following are useful guidelines:
+
+::: incremental
+-   the sample must be randomly taken
+
+-   if sampling without replacement, sample size must be less than 10% of the population size
+:::
+:::
+
+::: fragment
+If samples are independent, then by definition one sample's value does not "influence" another sample's value.
+:::
+
+## Conditions for CLT {.smaller}
+
+✅ **Sample size / distribution:**
+
+::: incremental
+-   if data are numerical, usually n \> 30 is considered a large enough sample for the CLT to apply
+
+-   if we know for sure that the underlying data are normally distributed, then the distribution of sample means will also be exactly normal, regardless of the sample size
+
+-   if data are categorical, at least 10 successes and 10 failures.
+:::
+
+# Let's run our own simulation
+
+## Underlying population (not observed in real life!) {.small}
+
+```{python}
+rs_pop = pd.DataFrame({'x': np.random.beta(a=1, b=5, size=100000) * 100})
+```
+
+::: columns
+::: {.column width="50%"}
+```{python}
+#| echo: false
+
+# Plot the population distribution
+plt.figure(figsize=(8, 6))
+sns.kdeplot(rs_pop['x'], fill=True, color='skyblue', edgecolor='darkblue')
+plt.title('Population distribution')
+plt.xlabel('')
+plt.ylabel('')
+plt.yticks([])
+plt.show()
+
+
+```
+:::
+
+::: {.column width="50%"}
+**The true population parameters**
+
+```{python}
+#| echo: false
+mu = rs_pop['x'].mean()
+sigma = rs_pop['x'].std()
+mu, sigma
+```
+:::
+:::
+
+## Sampling from the population - 1 {.smaller}
+
+```{python}
+np.random.seed(1)
+samp_1 = rs_pop.sample(n=50)
+samp_1_mean = samp_1['x'].mean()
+```
+
+<br>
+
+```{python}
+samp_1_mean
+```
+
+## Sampling from the population - 2 {.smaller}
+
+```{python}
+np.random.seed(2)
+samp_2 = rs_pop.sample(n=50)
+samp_2_mean = samp_2['x'].mean()
+```
+
+<br>
+
+```{python}
+samp_2_mean
+```
+
+## Sampling from the population - 3 {.smaller}
+
+```{python}
+np.random.seed(3)
+samp_3 = rs_pop.sample(n=50)
+samp_3_mean = samp_3['x'].mean()
+```
+
+<br>
+
+```{python}
+samp_3_mean
+```
+
+::: fragment
+keep repeating...
+:::
+
+## Sampling distribution {.small}
+
+```{python}
+np.random.seed(92620)
+sampling_means = [rs_pop.sample(n=50, replace=True)['x'].mean() for _ in range(5000)]
+
+sampling_df = pd.DataFrame({'xbar': sampling_means})
+```
+
+::: columns
+::: {.column width="50%"}
+```{python}
+#| echo: false
+plt.figure(figsize=(8, 6))
+sns.histplot(sampling_df['xbar'], bins=30, color='skyblue', edgecolor='darkblue')
+plt.title('Sampling distribution of sample means')
+plt.xlabel('Sample means')
+plt.ylabel('')
+plt.yticks([])
+plt.show()
+```
+:::
+
+::: {.column width="50%"}
+**The sample statistics**
+
+```{python echo = FALSE}
+#| echo: false
+sampling_mean = sampling_df['xbar'].mean()
+sampling_se = sampling_df['xbar'].std()
+sampling_mean, sampling_se
+```
+:::
+:::
+
+##  {.smaller}
+
+::: question
+Compare the shapes, centers, and spreads of these distributions:
+:::
+
+::: columns
+::: {.column width="50%"}
+**The true population**
+
+```{python}
+#| echo: false
+population_stats = {'mu': mu, 'sigma': sigma}
+population_stats
+
+plt.figure(figsize=(4, 4))
+
+# Population distribution
+sns.histplot(rs_pop['x'], kde=True, color='skyblue', edgecolor='darkblue', bins=100)
+plt.title('Population distribution')
+plt.xlabel('')
+plt.ylabel('')
+plt.xlim(-5, 100)
+plt.yticks([])
+
+plt.tight_layout()
+plt.show()
+```
+:::
+
+::: {.column width="50%"}
+**The sample statistics**
+
+```{python}
+#| echo: false
+sampling_stats = {'mean': sampling_mean, 'se': sampling_se}
+sampling_stats
+
+# Sampling distribution
+plt.figure(figsize=(4, 4))
+sns.histplot(sampling_df['xbar'], bins=30, color='skyblue', edgecolor='darkblue')
+plt.title('Sampling distribution of sample means')
+plt.xlabel('Sample means')
+plt.ylabel('')
+plt.xlim(-5, 100)
+plt.yticks([])
+plt.tight_layout()
+plt.show()
+```
+:::
+:::
+
+## Recap {.smaller}
+
+::: incremental
+-   If certain assumptions are satisfied, regardless of the shape of the population distribution, the sampling distribution of the mean follows an approximately normal distribution.
+
+-   The center of the sampling distribution is at the center of the population distribution.
+
+-   The sampling distribution is less variable than the population distribution (and we can quantify by how much).
+:::
+
+::: fragment
+::: question
+What is the standard error, and how are the standard error and sample size related?
+What does that say about how the spread of the sampling distribution changes as $n$ increases?
+:::
+:::
+
+## Why do we care? {.smaller}
+
+Knowing the distribution of the sample statistic $\bar{X}$ can help us
+
+::: incremental
+-   Estimate a population parameter as **point estimate** $\boldsymbol{\pm}$ **margin of error**
+
+    The **margin of error** is comprised of a measure of how confident we want to be and how variable the sample statistic is
+
+<br>
+
+-   Test for a population parameter by evaluating how likely it is to obtain to observed sample statistic when assuming that the null hypothesis is true
+    -   This probability will depend on how variable the sampling distribution is
+:::
+
+# Inference based on the CLT
+
+## Inference based on the CLT {.smaller}
+
+If necessary conditions are met, we can also use inference methods based on the CLT.
+Suppose we know the true population standard deviation, $\sigma$.
+
+::: fragment
+Then the CLT tells us that $\bar{X}$ approximately has the distribution $N\left(\mu, \sigma/\sqrt{n}\right)$.
+
+That is,
+
+$$Z = \frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \sim N(0, 1)$$
+:::
+
+# What if $\sigma$ isn't known?
+
+## T distribution
+
+In practice, we never know the true value of $\sigma$, and so we estimate it from our data with $s$.
+
+We can make the following test statistic for testing a single sample's population mean, which has a **t-distribution with n-1 degrees of freedom**:
+
+::: fragment
+::: question
+$$ T = \frac{\bar{X} - \mu}{s/\sqrt{n}} \sim t_{n-1}$$
+:::
+:::
+
+## T distribution {.smaller}
+
+::: incremental
+-   The t-distribution is also unimodal and symmetric, and is centered at 0
+
+-   It has thicker tails than the normal distribution
+
+    -   This is to make up for additional variability introduced by using $s$ instead of $\sigma$ in calculation of the SE
+
+-   It is defined by the degrees of freedom
+:::
+
+## T vs Z distributions
+
+```{python}
+#| echo: false
+# Define the x range
+x = np.linspace(-5, 5, 1000)
+
+# Create a DataFrame for the distributions
+d = pd.DataFrame({
+    'x': np.tile(x, 7),
+    'dist': np.repeat(['t (df=1)', 't (df=3)', 't (df=5)', 't (df=10)', 't (df=15)', 't (df=30)', 'Z'], len(x)),
+    'd': np.concatenate([
+        stats.t.pdf(x, df=1),
+        stats.t.pdf(x, df=3),
+        stats.t.pdf(x, df=5),
+        stats.t.pdf(x, df=10),
+        stats.t.pdf(x, df=15),
+        stats.t.pdf(x, df=30),
+        stats.norm.pdf(x)
+    ])
+})
+
+# Plot the distributions
+plt.figure(figsize=(10, 6))
+for label, df in d.groupby('dist'):
+    plt.plot(df['x'], df['d'], label=label)
+
+plt.xlabel('x')
+plt.ylabel('Density')
+plt.legend(title='Distribution')
+plt.title('Comparison of t-distributions with different degrees of freedom and the standard normal distribution')
+plt.show()
+
+```
+
+## T distribution {.smaller}
+
+::: columns
+::: {.column width="50%"}
+**Finding probabilities under the t curve:**
+
+```{python}
+# P(t < -1.96) for df = 9
+p_less = stats.t.cdf(-1.96, df=9)
+p_less
+```
+
+<br>
+
+```{python}
+# P(t > -1.96) for df = 9
+p_greater = stats.t.sf(-1.96, df=9)
+p_greater
+```
+:::
+
+::: {.column width="50%"}
+**Finding cutoff values under the t curve:**
+
+```{python}
+# Find Q1 (25th percentile) for df = 9
+q1 = stats.t.ppf(0.25, df=9)
+q1
+```
+
+<br>
+
+```{python}
+# Find Q3 (75th percentile) for df = 9
+q3 = stats.t.ppf(0.75, df=9)
+q3
+```
+:::
+:::
+
+## Confidence interval for a mean {.smaller}
+
+::: callout-warning
+**General form of the confidence interval**
+
+$$point~estimate \pm critical~value \times SE$$
+:::
+
+::: fragment
+::: callout-warning
+**Confidence interval for the mean**
+
+$$\bar{x} \pm t^*_{n-1} \times \frac{s}{\sqrt{n}}$$
+:::
+:::
+
+## Durham NC Resident Satisfaction {.smaller}
+
+`durham_survey` contains resident responses to a survey given by the City of Durham in 2018.
+These are a randomly selected, representative sample of Durham residents.
+
+Questions were rated 1 - 5, with 1 being "highly dissatisfied" and 5 being "highly satisfied."
+
+## Exploratory Data Analysis
+
+::: columns
+::: {.column width="50%"}
+```{python}
+durham = pd.read_csv("data/durham_survey.csv")
+durham_filtered = durham[durham['quality_library'] != 9]
+```
+
+```{python}
+summary_stats = durham_filtered['quality_library'].agg(['mean', 'median', 'std', 'count']).rename({
+    'mean': 'x_bar',
+    'median': 'med',
+    'std': 'sd',
+    'count': 'n'
+})
+print(summary_stats)
+```
+:::
+
+::: {.column width="50%"}
+```{python}
+#| echo: false
+plt.figure(figsize=(6, 4))
+sns.histplot(durham_filtered['quality_library'], bins=int((durham_filtered['quality_library'].max() - durham_filtered['quality_library'].min()) / 0.95), color='skyblue', edgecolor='darkblue')
+plt.title("Most residents are generally satisfied with the public library system")
+plt.xlabel("Satisfaction with public library system")
+plt.ylabel("Count")
+plt.show()
+```
+:::
+:::
+
+## Calculate 95% confidence interval {.smaller}
+
+$$\bar{x} \pm t^*_{n-1} \times \frac{s}{\sqrt{n}}$$
+
+::: fragment
+```{python}
+point_est = summary_stats['x_bar'] # Point estimate
+se = summary_stats['sd'] / (summary_stats['n'] ** 0.5) # SE
+df = summary_stats['n'] - 1 # Degrees of freedom
+```
+:::
+
+::: fragment
+```{python}
+t_star = stats.t.ppf(0.975, df) # Critical value 
+```
+:::
+
+::: fragment
+```{python}
+# Confidence interval
+CI = point_est + np.array([-1, 1]) * t_star * se
+CI_rounded = np.round(CI, 2)
+CI_rounded
+```
+:::
+
+## Interpret 95% confidence interval {.smaller}
+
+The 95% confidence interval is `3.89` to `4.05`.
+
+::: fragment
+::: question
+Interpret this interval in context of the data.
+:::
+:::
+
+::: fragment
+**We are 95% confident that the true mean rating for Durham residents' satisfaction with the library system is between 3.89 and 4.05.**
+:::

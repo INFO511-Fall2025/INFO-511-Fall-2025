@@ -1,0 +1,562 @@
+---
+title: "Web scraping"
+subtitle: "Lecture 8"
+format:
+  revealjs: default
+editor_options: 
+  chunk_output_type: console
+jupyter: python3
+execute:
+  warning: false
+  error: false
+---
+
+## Setup
+
+```{python}
+#| message: false
+
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from afinn import Afinn
+import matplotlib.pyplot as plt
+import seaborn as sns
+from collections import Counter
+import numpy as np
+import ssl
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
+
+nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('punkt_tab')
+
+sns.set_style("whitegrid")
+```
+
+## Before continuing...
+
+::: nonincremental
+-   If you haven't yet done so: Install a Chrome browser and the SelectorGadget extension:
+    -   [Chrome](https://www.google.com/chrome/)
+    -   [SelectorGadget](https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb?hl=en)
+-   Go to your `ae` repo, commit any remaining changes, push, and then pull for today's application exercise.
+:::
+
+## Reading The Arizona Daily Wildcat
+
+::: question
+How often do you read The Arizona Daily Wildcat?
+
+-   Every day
+
+-   3-5 times a week
+
+-   Once a week
+
+-   Rarely
+:::
+
+## Reading The Arizona Daily Wildcat
+
+::: question
+What do you think is the most common word in the titles of The Arizona Daily Wildcat opinion pieces?
+:::
+
+## Analyzing The Arizona Daily Wildcat
+
+```{python}
+#| label: load-chronicle-data
+#| include: false
+
+wildcat = pd.read_csv('data/wildcat.csv')
+```
+
+```{python}
+#| label: wildcat-common-words
+#| echo: false
+#| message: false
+
+# Tokenize and remove stopwords
+stop_words = set(stopwords.words('english'))
+wildcat['tokens'] = wildcat['title'].apply(lambda x: [word.lower() for word in word_tokenize(x) if word.isalpha() and word.lower() not in stop_words])
+
+# Count word frequencies
+word_counts = Counter(word for title in wildcat['tokens'] for word in title)
+common_words = pd.DataFrame(word_counts.most_common(20), columns=['word', 'count'])
+
+# Plot common words
+plt.figure(figsize=(10, 5))
+sns.barplot(x='count', y='word', data=common_words, palette='viridis')
+plt.xlabel('Number of mentions')
+plt.ylabel('Word')
+plt.title('Arizona Daily Wildcat - Opinion pieces\nCommon words in the most recent opinion pieces')
+plt.show()
+```
+
+## Analyzing The Arizona Daily Wildcat
+
+```{python}
+#| echo: false
+#| eval: true
+# Tokenize and remove stopwords
+stop_words = set(stopwords.words('english'))
+wildcat['tokens'] = wildcat['title'].apply(lambda x: [word.lower() for word in word_tokenize(x) if word.isalpha() and word.lower() not in stop_words])
+
+# Initialize Afinn for sentiment analysis
+afinn = Afinn()
+
+# Apply sentiment analysis
+wildcat['sentiment'] = wildcat['title'].apply(lambda x: afinn.score(x))
+
+# Group by author and title to get the total sentiment
+author_sentiment = wildcat.groupby(['author', 'title'])['sentiment'].sum().reset_index()
+
+# Group by author to get the number of articles and average sentiment
+author_summary = author_sentiment.groupby('author').agg(n_articles=('title', 'count'), avg_sentiment=('sentiment', 'mean')).reset_index()
+
+# Filter authors with more than 1 article and remove missing authors
+author_summary = author_summary[(author_summary['n_articles'] > 1) & (author_summary['author'].notna())]
+
+# Sort by average sentiment and slice the top 10 positive and negative authors
+top_positive = author_summary.nlargest(10, 'avg_sentiment')
+top_negative = author_summary.nsmallest(10, 'avg_sentiment')
+top_authors = pd.concat([top_positive, top_negative])
+
+# Add columns for plotting
+top_authors['neg_pos'] = np.where(top_authors['avg_sentiment'] < 0, 'neg', 'pos')
+top_authors['label_position'] = np.where(top_authors['neg_pos'] == 'neg', 0.25, -0.25)
+top_authors = top_authors.sort_values(by='avg_sentiment', ascending=True)
+
+# Plotting
+plt.figure(figsize=(8, 6))
+sns.barplot(x='avg_sentiment', y='author', data=top_authors, hue='neg_pos', dodge=False, palette={'neg': '#4d4009', 'pos': '#FF4B91'})
+
+plt.xlabel('negative  ←     Average sentiment score (AFINN)     →  positive')
+plt.ylabel(None)
+plt.title('The Arizona Daily Wildcat - Opinion pieces\nAverage sentiment scores of titles by author')
+plt.legend([], [], frameon=False)
+plt.xlim(-5, 5)
+plt.grid(False)
+plt.gca().invert_yaxis()
+plt.show()
+```
+
+## All of this analysis is done in Python! {.centered}
+
+::: hand
+(mostly) with tools you already know!
+:::
+
+## Common works in The Arizona Daily Wildcat titles {.smaller}
+
+Code for the earlier plot:
+
+```{python}
+#| eval: false
+#| code-line-numbers: "|1|2|4|5|7-12"
+stop_words = set(stopwords.words('english'))
+wildcat['tokens'] = wildcat['title'].apply(lambda x: [word.lower() for word in word_tokenize(x) if word.isalpha() and word.lower() not in stop_words])
+
+word_counts = Counter(word for title in wildcat['tokens'] for word in title)
+common_words = pd.DataFrame(word_counts.most_common(20), columns=['word', 'count'])
+
+plt.figure(figsize=(10, 5))
+sns.barplot(x='count', y='word', data=common_words, palette='viridis')
+plt.xlabel('Number of mentions')
+plt.ylabel('Word')
+plt.title('Arizona Daily Wildcat - Opinion pieces\nCommon words in the most recent opinion pieces')
+plt.show()
+```
+
+## Avg sentiment scores of titles {.smaller}
+
+Code for the earlier plot:
+
+```{python}
+#| eval: false
+#| code-line-numbers: "|1,2|4|6|7|9-10|12-14|16-18|20-29"
+
+stop_words = set(stopwords.words('english'))
+wildcat['tokens'] = wildcat['title'].apply(lambda x: [word.lower() for word in word_tokenize(x) if word.isalpha() and word.lower() not in stop_words])
+
+afinn = Afinn()
+
+wildcat['sentiment'] = wildcat['title'].apply(lambda x: afinn.score(x))
+author_sentiment = wildcat.groupby(['author', 'title'])['sentiment'].sum().reset_index()
+
+author_summary = author_sentiment.groupby('author').agg(n_articles=('title', 'count'), avg_sentiment=('sentiment', 'mean')).reset_index()
+author_summary = author_summary[(author_summary['n_articles'] > 1) & (author_summary['author'].notna())]
+
+top_positive = author_summary.nlargest(10, 'avg_sentiment')
+top_negative = author_summary.nsmallest(10, 'avg_sentiment')
+top_authors = pd.concat([top_positive, top_negative])
+
+top_authors['neg_pos'] = np.where(top_authors['avg_sentiment'] < 0, 'neg', 'pos')
+top_authors['label_position'] = np.where(top_authors['neg_pos'] == 'neg', 0.25, -0.25)
+top_authors = top_authors.sort_values(by='avg_sentiment', ascending=True)
+
+plt.figure(figsize=(8, 6))
+sns.barplot(x='avg_sentiment', y='author', data=top_authors, hue='neg_pos', dodge=False, palette={'neg': '#4d4009', 'pos': '#FF4B91'})
+plt.xlabel('negative  ←     Average sentiment score (AFINN)     →  positive')
+plt.ylabel(None)
+plt.title('The Arizona Daily Wildcat - Opinion pieces\nAverage sentiment scores of titles by author')
+plt.legend([], [], frameon=False)
+plt.xlim(-5, 5)
+plt.grid(False)
+plt.gca().invert_yaxis()
+plt.show()
+```
+
+## Where is this data coming from? {.smaller}
+
+<https://wildcat.arizona.edu/category/opinions/>
+
+[![](images/daily-wildcat.png){fig-align="center" width="602"}](https://wildcat.arizona.edu/category/opinions/)
+
+## Where is this data coming from? {.smaller}
+
+::: columns
+::: {.column width="20%"}
+[![](images/daily-wildcat.png){fig-align="center" width="800"}](https://wildcat.arizona.edu/category/opinions/)
+:::
+
+::: {.column width="80%"}
+```{python}
+print(wildcat)
+```
+:::
+:::
+
+# Web scraping
+
+## Scraping the web: what? why? {.smaller}
+
+-   Increasing amount of data is available on the web
+
+-   These data are provided in an unstructured format: you can always copy&paste, but it's time-consuming and prone to errors
+
+-   Web scraping is the process of extracting this information automatically and transform it into a structured dataset
+
+-   Two different scenarios:
+
+    -   Screen scraping: extract data from source code of website, with html parser (easy) or regular expression matching (less easy).
+
+    -   Web APIs (application programming interface): website offers a set of structured http requests that return JSON or XML files.
+
+## Hypertext Markup Language {.smaller}
+
+Most of the data on the web is still largely available as HTML - while it is structured (hierarchical) it often is not available in a form useful for analysis (flat / tidy).
+
+::: small
+``` html
+<html>
+  <head>
+    <title>This is a title</title>
+  </head>
+  <body>
+    <p align="center">Hello world!</p>
+    <br/>
+    <div class="name" id="first">John</div>
+    <div class="name" id="last">Doe</div>
+    <div class="contact">
+      <div class="home">555-555-1234</div>
+      <div class="home">555-555-2345</div>
+      <div class="work">555-555-9999</div>
+      <div class="fax">555-555-8888</div>
+    </div>
+  </body>
+</html>
+```
+:::
+
+## BeautifulSoup {.smaller}
+
+::: columns
+::: {.column width="50%"}
+-   The **BeautifulSoup** package makes basic processing and manipulation of HTML data straight forward
+-   [beautiful-soup-4.readthedocs.io](https://beautiful-soup-4.readthedocs.io/en/latest/)
+
+```{python}
+#| message: false
+
+from bs4 import BeautifulSoup
+```
+:::
+
+::: {.column width="50%"}
+[![](images/beautiful-soup.jpg){fig-alt="rvest hex logo" fig-align="right"}](https://rvest.tidyverse.org/)
+:::
+:::
+
+## BeautifulSoup {.smaller}
+
+Core functions:
+
+-   `requests.get(url)` - send an HTTP GET request to a URL
+
+-   `BeautifulSoup(html, 'html.parser')` - parse HTML data from a string
+
+-   `soup.select('selector')` - select specified elements from the HTML document using CSS selectors
+
+-   `element.get_text()` - extract text content from an element
+
+-   `element['attribute']` - extract attribute value from an element
+
+## HTML, BeautifulSoup, & requests {.smaller}
+
+```{python}
+html = '''
+<html>
+  <head>
+    <title>This is a title</title>
+  </head>
+  <body>
+    <p align="center">Hello world!</p>
+    <br/>
+    <div class="name" id="first">John</div>
+    <div class="name" id="last">Doe</div>
+    <div class="contact">
+      <div class="home">555-555-1234</div>
+      <div class="home">555-555-2345</div>
+      <div class="work">555-555-9999</div>
+      <div class="fax">555-555-8888</div>
+    </div>
+  </body>
+</html>
+'''
+```
+
+. . .
+
+```{python}
+soup = BeautifulSoup(html, 'html.parser')
+```
+
+## Selecting elements
+
+```{python}
+p_elements = soup.select('p')
+print(p_elements)
+```
+
+. . .
+
+```{python}
+p_text = [p.get_text() for p in p_elements]
+print(p_text)
+```
+
+. . .
+
+```{python}
+p_names = [p.name for p in p_elements]
+print(p_names)
+```
+
+. . .
+
+```{python}
+p_attrs = [p.attrs for p in p_elements]
+print(p_attrs)
+```
+
+. . .
+
+```{python}
+p_align = [p['align'] for p in p_elements if 'align' in p.attrs]
+print(p_align)
+```
+
+## More selecting tags {.smaller}
+
+::: medium
+```{python}
+div_elements = soup.select('div')
+print(div_elements)
+```
+:::
+
+. . .
+
+::: medium
+```{python}
+div_text = [div.get_text() for div in div_elements]
+print(div_text)
+```
+:::
+
+## CSS selectors {.smaller}
+
+-   We will use a tool called SelectorGadget to help us identify the HTML elements of interest by constructing a CSS selector which can be used to subset the HTML document.
+-   Some examples of basic selector syntax is below,
+
+::: small
+| Selector            | Example         | Description                                        |
+|:------------------|:------------------|:---------------------------------|
+| .class              | `.title`        | Select all elements with class="title"             |
+| #id                 | `#name`         | Select all elements with id="name"                 |
+| element             | `p`             | Select all \<p\> elements                          |
+| element element     | `div p`         | Select all \<p\> elements inside a \<div\> element |
+| element\>element    | `div > p`       | Select all \<p\> elements with \<div\> as a parent |
+| \[attribute\]       | `[class]`       | Select all elements with a class attribute         |
+| \[attribute=value\] | `[class=title]` | Select all elements with class="title"             |
+:::
+
+## CSS classes and ids
+
+```{python}
+name_elements = soup.select('.name')
+print(name_elements)
+```
+
+. . .
+
+```{python}
+first_name = soup.select('#first')
+print(first_name)
+```
+
+## Text with `get_text()`
+
+```{python}
+html = '''
+<p>  
+  This is the first sentence in the paragraph.
+  This is the second sentence that should be on the same line as the first sentence.<br>This third sentence should start on a new line.
+</p>
+'''
+```
+
+. . .
+
+```{python}
+soup = BeautifulSoup(html, 'html.parser')
+text = soup.get_text()
+print(text)
+```
+
+## HTML tables with `read_html()` {.smaller}
+
+```{python}
+html_table = '''
+<html>
+  <head>
+    <title>This is a title</title>
+  </head>
+  <body>
+    <table>
+      <tr> <th>a</th> <th>b</th> <th>c</th> </tr>
+      <tr> <td>1</td> <td>2</td> <td>3</td> </tr>
+      <tr> <td>2</td> <td>3</td> <td>4</td> </tr>
+      <tr> <td>3</td> <td>4</td> <td>5</td> </tr>
+    </table>
+  </body>
+</html>
+'''
+```
+
+. . .
+
+```{python}
+soup = BeautifulSoup(html_table, 'html.parser')
+table = pd.read_html(str(soup.select('table')[0]))[0]
+print(table)
+```
+
+## SelectorGadget
+
+**SelectorGadget** ([selectorgadget.com](http://selectorgadget.com)) is a javascript based tool that helps you interactively build an appropriate CSS selector for the content you are interested in.
+
+![](images/selectorgadget.png){fig-align="center" width="1000"}
+
+# Application exercise
+
+## Opinion articles in The Arizona Daily Wildcat
+
+Go to <https://wildcat.arizona.edu/category/opinions/>.
+
+::: question
+How many articles are on the page?
+:::
+
+## Goal
+
+::: columns
+::: {.column width="50%"}
+-   Scrape data and organize it in a tabular format in Python
+-   Perform light text parsing to clean data
+-   Summarize and visualze the data
+:::
+
+::: {.column width="50%"}
+![](images/wildcat-data.png){fig-align="center"}
+:::
+:::
+
+## `ae-06`
+
+::: appex
+-   Open a new window in VS Code (File \> New Window) and open the project called ae.
+-   If there are any uncommitted files, commit them, and then click Pull.
+-   Open the file called `wildcat-scrape.py` and follow along.
+:::
+
+## Recap
+
+-   Use the SelectorGadget identify tags for elements you want to grab
+-   Use BeautifulSoup to first read the whole page (into Python) and then parse the object you've read in to the elements you're interested in
+-   Put the components together in a data frame and analyze it like you analyze any other data
+
+## A new Python workflow {.smaller}
+
+-   When working in a Jupyter notebook, your analysis is re-run each time you execute the notebook
+-   If web scraping in a notebook, you'd be re-scraping the data each time you run the notebook, which is undesirable (and not *nice*)!
+-   An alternative workflow:
+    -   Use a Python script to save your code
+
+    -   Saving interim data scraped using the code in the script as CSV or pickle files
+
+    -   Use the saved data in your analysis in your notebook
+
+# Web scraping considerations
+
+## Ethics: "Can you?" vs "Should you?"
+
+![](images/ok-cupid-1.png){fig-align="center" width="579"}
+
+::: aside
+Source: Brian Resnick, [Researchers just released profile data on 70,000 OkCupid users without permission](https://www.vox.com/2016/5/12/11666116/70000-okcupid-users-data-release), Vox.
+:::
+
+## "Can you?" vs "Should you?"
+
+![](images/ok-cupid-2.png){fig-align="center" width="699"}
+
+## Challenges: Unreliable formatting
+
+![](images/unreliable-formatting.png){fig-align="center" width="699"}
+
+::: aside
+[alumni.arizona.edu/celebrate-arizona/notable-alumni](https://alumni.arizona.edu/celebrate-arizona/notable-alumni)
+:::
+
+## Challenges: Data broken into many pages
+
+![](images/many-pages.png){fig-align="center"}
+
+## Workflow: Screen scraping vs. APIs
+
+Two different scenarios for web scraping:
+
+-   Screen scraping: extract data from source code of website, with html parser (easy) or regular expression matching (less easy)
+
+-   Web APIs (application programming interface): website offers a set of structured http requests that return JSON or XML files

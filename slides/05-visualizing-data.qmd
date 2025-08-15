@@ -1,0 +1,382 @@
+---
+title: "Visualizing various types of data"
+subtitle: "Lecture 5"
+format:
+  revealjs: default
+jupyter: python3
+execute: 
+  warning: false
+  error: false
+---
+
+## Setup
+
+```{python}
+# Import necessary libraries
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from palmerpenguins import load_penguins
+
+# Load the penguins dataset
+penguins = load_penguins()
+
+# Set theme
+sns.set_theme(style="whitegrid")
+```
+
+# Data Visualization
+
+## Examining data visualization {.smaller}
+
+::: columns
+::: {.column width="60%"}
+Discuss the following for the visualization in the #lecture-discussions Slack Channel.
+:::
+
+::: {.column width="40%"}
+![Source: [Twitter](https://twitter.com/reina_sabah/status/1291509085855260672)](images/female-heights.png){fig-align="center"}
+:::
+:::
+
+## Violin plots
+
+```{python}
+#| label: penguins-violin-1
+#| code-fold: true
+#| code-line-numbers: "|1|2|3"
+
+plt.figure(figsize=(8, 6))
+sns.violinplot(x="species", y="body_mass_g", data=penguins)
+plt.title('Violin Plot of Body Mass by Species')
+plt.show()
+```
+
+## Multiple geoms
+
+```{python}
+#| label: penguins-violin-2
+#| code-fold: true
+#| code-line-numbers: "3"
+
+plt.figure(figsize=(8, 6))
+sns.violinplot(x="species", y="body_mass_g", data=penguins)
+sns.stripplot(x="species", y="body_mass_g", data=penguins, jitter=False, color='black')
+plt.title('Violin Plot with Points of Body Mass by Species')
+plt.show()
+```
+
+## Multiple geoms
+
+```{python}
+#| label: penguins-violin-3
+#| code-fold: true
+#| code-line-numbers: "3"
+
+plt.figure(figsize=(8, 6))
+sns.violinplot(x="species", y="body_mass_g", data=penguins)
+sns.stripplot(x="species", y="body_mass_g", data=penguins, jitter=True, color='black')
+plt.title('Violin Plot with Points of Body Mass by Species')
+plt.show()
+```
+
+## Multiple geoms + aesthetics
+
+```{python}
+#| label: penguins-violin-4
+#| code-fold: true
+#| code-line-numbers: "3"
+
+plt.figure(figsize=(8, 6))
+sns.violinplot(x="species", y="body_mass_g", data=penguins)
+sns.stripplot(x="species", y="body_mass_g", data=penguins, jitter=True, hue='species')
+plt.title('Violin Plot with Jittered Points and Color by Species')
+plt.legend(title='Species')
+plt.show()
+
+```
+
+## Multiple geoms + aesthetics
+
+```{python}
+#| label: penguins-violin-5
+#| code-fold: true
+#| code-line-numbers: "6"
+
+plt.figure(figsize=(8, 6))
+sns.violinplot(x="species", y="body_mass_g", data=penguins)
+sns.stripplot(x="species", y="body_mass_g", data=penguins, jitter=True, hue='species')
+plt.title('Violin Plot with Jittered Points, Color by Species, and No Legend')
+plt.legend(title='Species').remove()
+plt.show()
+```
+
+## Multiple geoms + aesthetics
+
+```{python}
+#| label: penguins-violin-6
+#| code-fold: true
+#| code-line-numbers: "3"
+
+plt.figure(figsize=(8, 6))
+sns.violinplot(x="species", y="body_mass_g", data=penguins, palette='colorblind')
+sns.stripplot(x="species", y="body_mass_g", data=penguins, jitter=True, hue='species', palette='colorblind')
+plt.title('Violin Plot with Jittered Points, Color by Species, No Legend, and Colorblind Palette')
+plt.legend(title='Species').remove()
+plt.show()
+```
+
+# Visualizing various types of data
+
+## The way data is displayed matters {.smaller}
+
+::: poll
+What do these three plots show?
+:::
+
+![](images/bar-plot-meme.png){fig-align="center"}
+
+::: aside
+Source: [#barbarplots](https://cogtales.wordpress.com/2016/06/06/congratulations-barbarplots/)
+:::
+
+## Visualizing `penguins` {.smaller}
+
+::: columns
+::: {.column width="70%"}
+::: {style="font-size: 20px;"}
+```{python}
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from palmerpenguins import load_penguins
+
+penguins = load_penguins()
+
+penguins.head()
+```
+:::
+:::
+
+::: {.column width="30%"}
+![](images/penguins.png){fig-align="center"}
+:::
+:::
+
+::: aside
+Artwork by \@allison_horst.
+:::
+
+# Univariate analysis
+
+## Univariate analysis
+
+Analyzing a single variable:
+
+-   Numerical: histogram, box plot, density plot, etc.
+
+-   Categorical: bar plot, pie chart, etc.
+
+## Histogram
+
+```{python}
+#| label: penguins-histogram
+#| code-fold: true
+#| code-line-numbers: "2"
+
+plt.figure(figsize=(8, 6))
+sns.histplot(penguins['body_mass_g'], bins=30)
+plt.title('Histogram of Penguin Body Mass')
+plt.xlabel('Body Mass (g)')
+plt.ylabel('Count')
+plt.show()
+```
+
+## Boxplot
+
+```{python}
+#| label: penguins-boxplot
+#| code-fold: true
+#| code-line-numbers: "2"
+
+plt.figure(figsize=(8, 6))
+sns.boxplot(y=penguins['body_mass_g'])
+plt.title('Boxplot of Penguin Body Mass')
+plt.ylabel('Body Mass (g)')
+plt.show()
+```
+
+## Density plot
+
+```{python}
+#| label: penguins-density
+#| code-fold: true
+#| code-line-numbers: "2"
+
+plt.figure(figsize=(10, 6))
+sns.kdeplot(penguins['body_mass_g'], fill=True)
+plt.title('Density Plot of Penguin Body Mass')
+plt.xlabel('Body Mass (g)')
+plt.ylabel('Density')
+plt.show()
+```
+
+# Bivariate analysis
+
+## Bivariate analysis
+
+Analyzing the relationship between two variables:
+
+-   Numerical + numerical: scatterplot
+
+-   Numerical + categorical: side-by-side box plots, violin plots, etc.
+
+-   Categorical + categorical: stacked bar plots
+
+-   Using an aesthetic (e.g., fill, color, shape, etc.) or facets to represent the second variable in any plot
+
+## Side-by-side box plots
+
+```{python}
+#| label: penguins-boxplot-2
+#| code-fold: true
+#| code-line-numbers: "2"
+
+plt.figure(figsize=(8, 6))
+sns.boxplot(x="species", y="body_mass_g", data=penguins)
+plt.title('Side-by-side Box Plots of Body Mass by Species')
+plt.xlabel('Species')
+plt.ylabel('Body Mass (g)')
+plt.show()
+```
+
+## Density plots
+
+```{python}
+#| label: penguins-density-2
+#| code-fold: true
+#| code-line-numbers: "2"
+
+plt.figure(figsize=(8, 6))
+sns.kdeplot(data=penguins, x="body_mass_g", hue="species", fill=True)
+plt.title('Density Plot of Body Mass by Species')
+plt.xlabel('Body Mass (g)')
+plt.ylabel('Density')
+plt.show()
+
+```
+
+# Multivariate analysis
+
+## Bechdel Test {.smaller}
+
+::: columns
+::: {.column width="70%"}
+> The **Bechdel test** also known as the **Bechdel-Wallace test**, is a measure of the representation of [women](https://en.wikipedia.org/wiki/Women_in_film "Women in film") in [film](https://en.wikipedia.org/wiki/Film_industry "Film industry") and other fiction.
+> The test asks whether a work features at least two female characters who have a conversation about something other than a man.
+> Some versions of the test also require that those two female characters have names.
+:::
+
+::: {.column width="30%"}
+![](images/Alison-Bechdel.jpg){fig-align="center"}
+:::
+:::
+
+## Load Bechdel test data
+
+Load the Bechdel test data with `pd.read_csv()`
+
+```{python}
+bechdel = pd.read_csv("data/bechdel.csv")
+```
+
+`list()` the `.columns` names of the `bechdel` data:
+
+```{python}
+list(bechdel.columns)
+```
+
+## ROI by test result {.smaller}
+
+> What about this plot makes it difficult to evaluate how ROI varies by Bechdel test result?
+
+```{python}
+#| label: bechdel-1
+#| code-fold: true
+plt.figure(figsize=(8, 4))
+sns.stripplot(x='roi', y='clean_test', hue='binary', data=bechdel)
+plt.title('ROI by Bechdel Test Result')
+plt.xlabel('ROI')
+plt.ylabel('Bechdel Test Result')
+plt.legend(title='Binary')
+plt.show()
+```
+
+## Movies with high ROI {.smaller}
+
+> What are the movies with highest ROI?
+
+```{python}
+high_roi_movies = bechdel[bechdel['roi'] > 400][['title', 'roi', 'budget_2013', 'gross_2013', 'year', 'clean_test']]
+print(high_roi_movies)
+```
+
+## ROI by test result {.smaller}
+
+> **Zoom in:** What about this plot makes it difficult to evaluate how ROI varies by Bechdel test result?
+
+```{python}
+#| label: bechdel-2
+#| code-fold: true
+#| code-line-numbers: "|3"
+plt.figure(figsize=(8, 4))
+sns.boxplot(x='roi', y='clean_test', hue='binary', data=bechdel)
+plt.xlim(0, 15)
+plt.title('Zoomed in ROI by Bechdel Test Result')
+plt.xlabel('ROI')
+plt.ylabel('Bechdel Test Result')
+plt.legend(title='Binary')
+plt.show()
+```
+
+## Sneak preview...
+
+<br> <br>
+
+::: hand
+to next week's data wrangling pipelines...
+:::
+
+## Median ROI
+
+```{python}
+#| code-line-numbers: "1"
+median_roi = bechdel['roi'].median()
+print(f"Median ROI: {median_roi}")
+```
+
+## Median ROI by test result
+
+```{python}
+#| code-line-numbers: "1"
+median_roi_by_test = bechdel.groupby('clean_test')['roi'].median().reset_index()
+print(median_roi_by_test)
+```
+
+## ROI by test result with median line {.smaller}
+
+> What does this plot say about return-on-investment on movies that pass the Bechdel test?
+
+```{python}
+#| code-fold: true
+#| label: bechdel-3
+plt.figure(figsize=(8, 4))
+sns.boxplot(x='roi', y='clean_test', hue='binary', data=bechdel)
+plt.axvline(x=4.21, color='red', linestyle='--')
+plt.xlim(0, 15)
+plt.title('ROI by Bechdel Test Result with Median Line')
+plt.xlabel('ROI')
+plt.ylabel('Bechdel Test Result')
+plt.legend(title='Binary')
+plt.show()
+```

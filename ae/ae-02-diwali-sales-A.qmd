@@ -1,0 +1,116 @@
+---
+title: "AE 02: Diwali sales + EDA"
+subtitle: "Suggested answers"
+categories: 
+  - Application exercise
+  - Answers
+jupyter: python3
+execute: 
+  warning: false
+  error: false
+---
+
+## Exercise 1
+
+### Reading and Examining the Data
+
+1.  **Read in the data:**
+
+    -   Read the Diwali sales data into a Pandas DataFrame and display the first few rows.
+    -   **Hint:** use `, encoding = 'iso-8859-1'` within the `pd.___()` function.
+
+```{python}
+#| label: read-data
+
+import pandas as pd
+
+# Read in the data
+diwali = pd.read_csv('data/diwali_sales_data.csv', encoding='iso-8859-1')
+diwali.head()
+```
+
+2.  **Examine the Data:**
+    -   Display basic information about the dataset using the `.info()` method.
+
+    -   Display summary statistics for the numerical columns using the `.describe()` method.
+
+```{python}
+#| label: info-describe
+
+# Examine the data
+diwali.info()
+
+# Describe numerical columns
+diwali.describe()
+```
+
+Add narrative here...
+
+::: callout-important
+Now is a good time to render, commit, and push.
+Make sure that you commit and push all changed documents and your Git pane is completely empty before proceeding.
+:::
+
+## Exercise 2
+
+### Exploring unique levels, outliers, and missing values
+
+1.  **Exploring Unique Levels:**
+
+    -   Identify and display the unique values in each categorical column.
+
+```{python}
+#| label: unique-levels
+
+# Select categorical columns
+categorical_cols = diwali.select_dtypes(include=['object']).columns
+
+# Display unique levels for each categorical column
+for col in categorical_cols:
+    print(f"Unique levels in {col}: {diwali[col].unique()}")
+```
+
+2.  **Identifying and Visualizing Outliers:**
+
+    -   Create a box plot to visualize outliers in the 'Amount' column.
+
+    -   Identify outliers using the IQR method and count the number of outliers for each numerical column.
+
+```{python}
+#| label: outliers
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Boxplot to visualize outliers
+sns.boxplot(data=diwali, x='Amount')
+plt.show()
+
+# Identify outliers using the IQR method
+for col in diwali.select_dtypes(include='number').columns:
+    q25 = diwali[col].quantile(0.25)
+    q75 = diwali[col].quantile(0.75)
+    iqr = q75 - q25
+    lower_bound = q25 - 1.5 * iqr
+    upper_bound = q75 + 1.5 * iqr
+    outliers = diwali[(diwali[col] < lower_bound) | (diwali[col] > upper_bound)]
+    print(f"{col}: {outliers.shape[0]} outliers")
+```
+
+2.  **Handling Missing Values:**
+
+    -   Check for missing values in the dataset.
+
+```{python}
+#| label: NaNs
+
+# Check for missing values
+diwali.isnull().sum()
+```
+
+Add narrative here...
+
+::: callout-important
+Now is a good time to render, commit, and push.
+Make sure that you commit and push all changed documents and your Git pane is completely empty before proceeding.
+:::

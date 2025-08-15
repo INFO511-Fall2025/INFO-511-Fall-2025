@@ -1,0 +1,144 @@
+---
+title: "Working with Codespaces"
+categories: "Homework"
+jupyter: python3
+execute: 
+  warning: false
+  error: false
+---
+
+## Getting Started with Python on Codespaces
+
+### 1. Launching a Codespace
+
+1.  Navigate to the GitHub repository.
+
+2.  Click on the green **Code** button, and select **Codespaces**.
+
+    -   If a Codespace environment isn’t set up yet, click **Create codespace on main**.
+
+    -   This will initialize a cloud-based development environment pre-configured for this repository.
+
+### 2. Initializing the Environment
+
+Once the Codespace is launched:
+
+1.  **Verify Python Version**:
+
+-   Open the terminal in Codespaces and run:
+
+``` bash
+python3 --version
+```
+
+-   Ensure it outputs Python 3.x. If not, install Python 3 using:
+
+``` bash
+sudo apt-get install python3
+```
+
+2.  **Install Dependencies**:
+
+-   Install the required Python packages listed in `requirements.txt`:
+
+``` bash
+pip install -r requirements.txt
+```
+
+3.  **Verify the Installation**:
+
+-   Run `pip freeze` to confirm that the dependencies are installed.
+
+### 3. Running Python Code
+
+1.  **Running the Application**:
+
+-   The main script seems to be `ds.py`. You can run it with:
+
+``` bash
+python3 ds.py
+```
+
+2.  **Running Tests**:
+
+-   The test file `test_ds.py` is located in the root directory.
+
+-   Run tests using `unittest`:
+
+``` bash
+python3 -m unittest test_ds.py
+```
+
+-   Alternatively, if `pytest` is installed:
+
+``` bash
+pytest test_ds.py
+```
+
+3.  **Linting Code**:
+
+-   Use `pylint` to check the quality of `ds.py`:
+
+``` bash
+pylint ds.py
+```
+
+### 4. Editing Files
+
+1.  **Editing the Code**:
+
+-   Open files (like `ds.py` or `test_ds.py`) using the built-in VS Code editor in Codespaces.
+
+-   Make your edits and save.
+
+2.  **Adding New Files**:
+
+-   To add new scripts or test files, right-click in the file explorer panel, and select **New File**.
+
+### 5. Debugging
+
+1.  Set up breakpoints by clicking in the gutter (left margin) of your code editor.
+
+2.  Use the Debug panel to start a debugging session.
+
+### 6. Committing Changes
+
+1.  **Stage and Commit Changes**:
+
+-   Stage your changes:
+
+``` bash
+git add .
+```
+
+-   Commit the changes:
+
+``` bash
+git commit -m "Your commit message"
+```
+
+2.  **Push Changes to GitHub**:
+
+-   Push your changes to the repository:
+
+``` bash
+git push origin main
+```
+
+### 7. Closing and Reopening Codespaces
+
+1.  When finished, click **Stop Codespace** to save resources.
+
+2.  To reopen, return to the **Codespaces** tab in GitHub and select your environment.
+
+### Common Commands Summary
+
+| Task                 | Command                               |
+|----------------------|---------------------------------------|
+| Run linting          | `pylint ds.py`                        |
+| Install dependencies | `pip install -r requirements.txt`     |
+| Stage changes        | `git add .`                           |
+| Commit changes       | `git commit -m "Your commit message"` |
+| Push changes         | `git push origin main`                |
+
+This guide ensures you’re set up to write, test, and manage Python code effectively in GitHub Codespaces!

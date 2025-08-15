@@ -1,0 +1,20 @@
+institute: "University of Arizona <br> INFO 511 - Spring 2025"
+author: "Dr. Greg Chism"
+footer: "[🔗 datasciaz.netlify.app](https://datasciaz.netlify.app/)"
+logo: "images/logo.png"
+format:
+  revealjs:
+    theme: slides.scss
+    transition: fade
+    slide-number: true
+    chalkboard: true
+    highlight-style: a11y-dark
+editor: visual
+execute:
+  freeze: auto
+  echo: true
+  warning: true
+knitr:
+  opts_chunk: 
+    R.options:
+      width: 90

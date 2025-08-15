@@ -1,0 +1,12 @@
+{
+  "hash": "acc22ca1459a8254cf0d01f55acf003b",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: 'AE 02: Diwali sales + EDA'\ncategories:\n  - Application exercise\nexecute:\n  warning: false\n  error: false\n---\n\n## Exercise 1\n\n### Reading and Examining the Data\n\n1.  **Read in the data:**\n\n    -   Read the Diwali sales data into a Pandas DataFrame and display the first few rows.\n    -   **Hint:** use `, encoding = 'iso-8859-1'` within the `pd.___()` function.\n\n::: {#read-data .cell execution_count=1}\n``` {.python .cell-code}\nimport pandas as pd\n\n# add code here\n```\n:::\n\n\n2.  **Examine the Data:**\n    -   Display basic information about the dataset using the `.info()` method.\n\n    -   Display summary statistics for the numerical columns using the `.describe()` method.\n\n::: {#info-describe .cell execution_count=2}\n``` {.python .cell-code}\n# add code here\n```\n:::\n\n\n*Add narrative here.*\n\n::: callout-important\nNow is a good time to render, commit, and push.\nMake sure that you commit and push all changed documents and your Git pane is completely empty before proceeding.\n:::\n\n## Exercise 2\n\n### Exploring unique levels, outliers, and missing values\n\n1.  **Exploring Unique Levels:**\n\n    -   Identify and display the unique values in each categorical column.\n\n::: {#unique-levels .cell execution_count=3}\n``` {.python .cell-code}\n# add code here\n```\n:::\n\n\n2.  **Identifying and Visualizing Outliers:**\n\n    -   Create a box plot to visualize outliers in the `Amount` column.\n\n    -   Identify outliers using the IQR method and count the number of outliers for each numerical column.\n\n::: {#outliers .cell execution_count=4}\n``` {.python .cell-code}\n# add code here\n```\n:::\n\n\n2.  **Handling Missing Values:**\n\n    -   Check for missing values in the dataset.\n\n::: {#nans .cell execution_count=5}\n``` {.python .cell-code}\n# add code here\n```\n:::\n\n\n*Add narrative here.*\n\n::: callout-important\nNow is a good time to render, commit, and push.\nMake sure that you commit and push all changed documents and your Git pane is completely empty before proceeding.\n:::\n\n",
+    "supporting": [
+      "ae-02-diwali-sales_files/figure-html"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

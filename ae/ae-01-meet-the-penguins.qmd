@@ -1,0 +1,45 @@
+---
+title: "AE 01: Meet the penguins"
+categories: 
+  - Application exercise
+jupyter: python3
+execute: 
+  warning: false
+  error: false
+---
+
+For this application exercise, we'll use the **pandas** and **seaborn** packages.
+
+```{python}
+#| label: load-packages
+
+import pandas as pd
+import seaborn as sns
+```
+
+The dataset we will visualize is called `penguins`.
+Let's `.info()` it.
+
+-   **Your turn:** Replace `#add code here` with the code for "info"ing at the data `penguins` data frame – `penguins.info()`. Render the document and view the output.
+
+```{python}
+#| label: glimpse-penguins
+penguins = sns.load_dataset("data/penguins")
+# add code here
+```
+
+-   **Demo:** First, replace the blank below with the number of rows in the `penguins` data frame based on the output of the chunk below. Then, replace it with "inline code" and render again.
+
+```{python}
+#| label: nrow-penguins
+
+num_rows = len(penguins)
+num_rows
+```
+
+There are \_\_\_ penguins in the `penguins` data frame.
+
+```{python}
+x = 2
+x * 3
+```

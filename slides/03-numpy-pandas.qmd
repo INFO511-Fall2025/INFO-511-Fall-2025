@@ -1,0 +1,530 @@
+---
+title: "Intro to Numpy + Pandas"
+subtitle: "Lecture 3"
+format:
+  revealjs: default
+editor_options: 
+  chunk_output_type: console
+jupyter: python3
+---
+
+# Intro to NumPy {style="text-align: center;"}
+
+![](images/numpy.png){fig-align="center" width="300"}
+
+## What is NumPy?
+
+::: incremental
+-   NumPy = Numerical Python
+
+-   Foundational package for scientific computing
+
+-   High-performance multidimensional arrays
+
+-   Tools for working with arrays
+:::
+
+::: fragment
+**Start with**
+
+```{bash}
+pip install numpy
+```
+:::
+
+## Why NumPy for data science?
+
+::: incremental
+-   Essential for data processing, manipulation, and analysis.
+
+-   Underpins advanced data science algorithms implemented in Python.
+
+-   Fast and memory-efficient with powerful data structures.
+:::
+
+# NumPy Arrays
+
+## Creating arrays {.smaller}
+
+::: panel-tabset
+## Code
+
+```{python}
+import numpy as np
+
+# Creating a simple NumPy array
+arr = np.array([1, 2, 3, 4])
+
+# Multidimensional array
+multi_arr = np.array([[1, 2, 3], [4, 5, 6]])
+
+# Range of values
+range_arr = np.arange(10)
+
+# Array of zeros
+zeros_arr = np.zeros((3, 3))
+
+# Array of ones
+ones_arr = np.ones((2, 2))
+
+# Identity matrix
+identity_matrix = np.eye(3)
+```
+
+## Output
+
+```{python}
+#| echo: false
+print("arr:", arr, "\n")
+
+print("multi_arr:", multi_arr, "\n")
+
+print("range_arr:", range_arr, "\n")
+
+print("zeros_arr:", zeros_arr, "\n")
+
+print("ones_arr:", ones_arr, "\n")
+
+print("identity_matrix:", identity_matrix)
+```
+:::
+
+## Array attributes
+
+```{python}
+# Array dimensions
+print("Dimensions:", multi_arr.ndim)
+
+# Shape of array
+print("Shape:", multi_arr.shape)
+
+# Size of array
+print("Size:", multi_arr.size)
+
+# Data type of array elements
+print("Data Type:", multi_arr.dtype)
+```
+
+# Array operations
+
+## Arithmetic operations
+
+```{python}
+# Element-wise addition
+addition = arr + 2
+
+# Element-wise subtraction
+subtraction = arr - 2
+
+# Element-wise multiplication
+multiplication = arr * 2
+
+# Element-wise division
+division = arr / 2
+```
+
+```{python}
+#| echo: false
+
+print("addition:", addition, "\n")
+
+print("subtraction:", subtraction, "\n")
+
+print("multiplication:", multiplication, "\n")
+
+print("division:", division, "\n")
+```
+
+## Aside {.smaller}
+
+Why do my outputs look than different than Python?
+
+::: panel-tabset
+## Python
+
+```{python}
+print(addition)
+print(subtraction)
+print(multiplication)
+print(division)
+```
+
+## My slides
+
+```{python}
+print("addition:", addition, "\n")
+
+print("subtraction:", subtraction, "\n")
+
+print("multiplication:", multiplication, "\n")
+
+print("division:", division, "\n")
+```
+:::
+
+## Statistical operations {.smaller}
+
+```{python}
+# Sum of elements
+total = arr.sum()
+
+# Mean of elements
+mean_value = arr.mean()
+
+# Standard deviation
+std_dev = arr.std()
+
+# Correlation coefficient
+corr = np.corrcoef(multi_arr)
+```
+
+```{python}
+#| echo: false
+print("total:", total, "\n")
+
+print("mean_value:", mean_value, "\n")
+
+print("std_dev:", std_dev, "\n")
+
+print("corr:", corr, "\n")
+```
+
+# Advanced operations
+
+## Reshaping and transposing
+
+```{python}
+# Reshaping an array
+reshaped = np.reshape(range_arr, (2, 5))
+
+# Transpose of an array
+transposed = multi_arr.T
+```
+
+```{python}
+#| echo: false
+
+print("range_arr:", range_arr, "\n")
+
+print("reshaped:", reshaped, "\n")
+
+print("multi_arr:", multi_arr, "\n")
+
+print("transposed:", transposed, "\n")
+```
+
+## Indexing and slicing
+
+```{python}
+# Accessing a specific element
+element = multi_arr[0, 1]
+
+# Slicing a row
+row = multi_arr[1, :]
+
+# Slicing a column
+column = multi_arr[:, 2]
+```
+
+```{python}
+#| echo: false
+
+print("multi_arr:", multi_arr, "\n")
+
+print("element:", multi_arr, "\n")
+
+print("row:", row, "\n")
+
+print("column:", column, "\n")
+```
+
+## Broadcasting
+
+```{python}
+# Broadcasting allows arithmetic operations on arrays of different sizes
+broadcasted_addition = multi_arr + np.array([1, 0, 1])
+```
+
+```{python}
+#| echo: false
+
+print("multi_arr:", multi_arr, "\n")
+
+print("broadcasted_addition:", broadcasted_addition, "\n")
+```
+
+# Linear algebra in NumPy
+
+## Matrix operations {.smaller}
+
+**Dot product**: take two equal-length sequences and return a single number
+
+`2 • (1, 2, 3) = 2x1 = 2; 2x2 = 4; 2x3 = 6`
+
+**Matrix multiplication**:
+
+`(1, 2, 3) • (7, 9, 11) = (1×7 + 2×9 + 3×11) = 58`
+
+```{python}
+# Dot product
+dot_product = np.dot(arr, arr)
+
+# Matrix multiplication
+matrix_mul = np.dot(multi_arr, identity_matrix)
+```
+
+```{python}
+#| echo: false
+
+print("dot_product:", dot_product, "\n")
+
+print("matrix_mul:", matrix_mul, "\n")
+```
+
+## Eigenvalues and Eigenvectors
+
+```{python}
+# Eigenvalues and eigenvectors
+eigenvalues, eigenvectors = np.linalg.eig(identity_matrix)
+```
+
+```{python}
+#| echo: false
+
+print("eigenvalues:", eigenvalues, "\n")
+
+print("eigenvectors:", eigenvectors, "\n")
+```
+
+## NumPy for data science
+
+::: fragment
+**Application in Algorithms**
+
+-   NumPy arrays are used in various data science algorithms like clustering, classification, and neural networks.
+:::
+
+::: fragment
+**Performance**
+
+-   NumPy operations are implemented in C, which makes them much faster than standard Python.
+:::
+
+## Conclusion
+
+::: incremental
+-   NumPy is integral to data science and analysis in Python.
+
+-   It provides efficient and fast operations for array and matrix manipulation.
+
+-   Understanding NumPy is crucial for implementing and customizing data science algorithms.
+:::
+
+# Introduction to {style="text-align: center;"}
+
+![](images/pandas.png){fig-align="center" width="618"}
+
+## What is Pandas?
+
+::: incremental
+-   **High-Performance Library**: Pandas is a Python library for fast data manipulation.
+
+-   **Core Structures**: It introduces DataFrame and Series for data handling.
+
+-   **Data Processing**: Ideal for cleaning and analyzing datasets.
+
+-   **Versatile I/O**: Offers extensive file format compatibility for data I/O.
+:::
+
+## Why Pandas for data mining?
+
+::: incremental
+-   **Streamlines Data Prep**: Optimizes data manipulation for mining readiness.
+
+-   **Built-in Analysis**: Includes essential tools for quick data exploration.
+
+-   **Handles Large Data**: Efficiently processes and analyzes big datasets.
+:::
+
+# Pandas data structures
+
+## Series
+
+One-dimensional array-like object containing a sequence of values with an associated array of labels, its index.
+
+```{python}
+import pandas as pd
+
+# Creating a Series
+ser = pd.Series([4, 7, -5, 3], index=['d', 'b', 'a', 'c'])
+
+# Accessing elements
+print("a:", ser['a'])
+```
+
+## DataFrame {.smaller}
+
+A rectangular table of data with an ordered collection of columns
+
+```{python}
+# Creating a DataFrame
+data = {
+    'state': ['Ohio', 'Ohio', 'Ohio', 'Nevada', 'Nevada'],
+    'year': [2000, 2001, 2002, 2001, 2002],
+    'pop': [1.5, 1.7, 3.6, 2.4, 2.9]
+}
+frame = pd.DataFrame(data)
+
+# Selecting columns
+print(frame['state'])
+```
+
+## Index objects
+
+Immutable, can't be modified by a user
+
+```{python}
+# Index objects
+obj = pd.Series(range(3), index=['a', 'b', 'c'])
+index = obj.index
+
+print(index)
+```
+
+## Case study: average rent costs
+
+![](images/rent.jpeg){fig-align="center"}
+
+### 💰📈 {style="text-align: center;"}
+
+::: aside
+Source: [Zillow Public Access Data](https://www.zillow.com/research/data/)
+:::
+
+# Reading & Inspecting Data
+
+## **First, why .CSVs?**
+
+::: incremental
+-   More reproducible - can see changes on GitHub
+
+-   Simple file structure
+
+-   Standardized
+
+-   Non-proprietary (e.g., Excel)
+:::
+
+## Reading in .CSV files {.smaller}
+
+```{python}
+# Loading data from CSV
+df = pd.read_csv('data/rent_avg.csv')
+
+df
+```
+
+## Inspecting data {.smaller}
+
+**Any issues?**
+
+::: panel-tabset
+## Head
+
+```{python}
+df.head()
+```
+
+## Tail
+
+```{python}
+df.tail()
+```
+
+## Data types
+
+```{python}
+df.dtypes
+```
+
+## Describe
+
+```{python}
+df.describe()
+```
+
+## Stats
+
+We can also extract specific summary stats
+
+```{python}
+min_value = df['11/30/23'].min()
+max_value = df['11/30/23'].max()
+mean_value = df['11/30/23'].mean()
+med_value = df['11/30/23'].median()
+std_value = df['11/30/23'].std()
+count_value = df['11/30/23'].count()
+```
+
+```{python}
+#| echo: false
+print("min:", min_value)
+print("max:", max_value)
+print("mean:", mean_value)
+print("median:", med_value)
+print("st. dev:", std_value)
+print("N:", count_value)
+```
+
+## Unique values
+
+```{python}
+pd.unique(df['StateName'])
+```
+:::
+
+## Melting {.smaller}
+
+Jumping ahead slightly...
+
+```{python}
+df2 = df.melt(id_vars = df.columns[0:5], var_name = "date", value_name = "avg_price")
+df2.head()
+```
+
+## Convert to datetime {.smaller}
+
+```{python}
+#| warning: false
+df2['date'] = pd.to_datetime(df2['date'])
+df2.head()
+```
+
+# Groups
+
+## Group data {.smaller}
+
+```{python}
+grouped_df = df2.groupby('StateName')
+print(type(grouped_df))
+```
+
+## Grouped statistics {.smaller}
+
+::: panel-tabset
+## Describe
+
+```{python}
+# Summary statistics for all numeric columns by sex
+grouped_df.describe()
+```
+
+## Single stat
+
+```{python}
+# Provide the mean for each numeric column by sex
+grouped_df.mean(numeric_only = True)
+```
+:::
+
+# More wrangling soon!

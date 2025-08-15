@@ -1,0 +1,248 @@
+---
+title: "AE 12: Ultimate candy ranking"
+categories: 
+  - Application exercise
+  - Answers
+editor: visual
+editor_options: 
+  chunk_output_type: console
+jupyter: python3
+execute:
+  warning: false
+  error: false
+---
+
+#### In this application exercise, we will:
+
+1.  Load the Penguins Dataset: Import and explore the dataset to understand its structure and the features available for analysis.
+
+2.  Preprocess the Data: Clean the data by handling missing values and standardize the numerical features for PCA.
+
+3.  Perform PCA: Apply Principal Component Analysis to reduce the dimensionality of the data and extract the principal components.
+
+4.  Visualize the PCA Result: Create a scatter plot of the principal components to visualize the clustering of different penguin species.
+
+```{python}
+import pandas as pd
+import numpy as np
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+from sklearn.metrics import mean_squared_error
+import matplotlib.pyplot as plt
+import seaborn as sns
+```
+
+# Examine the data
+
+-   We will use the `candy_rankings.csv` dataset for this analysis.
+
+```{python}
+candy_rankings = pd.read_csv('data/candy_rankings.csv')
+candy_rankings.info()
+```
+
+# Exercises
+
+Use the variables:
+
+`chocolate`, `fruity`, `nougat`, `pricepercent`, `sugarpercent`, `sugarpercent*chocolate`, `pricepercent*fruity`
+
+## Exercise 1
+
+Create the full model and show the $R^2_{adj}$:
+
+```{python}
+full_model = smf.ols('winpercent ~ chocolate * sugarpercent + fruity * pricepercent + nougat + pricepercent + sugarpercent', data=candy_rankings).fit()
+print(f'Adjusted R-squared: {full_model.rsquared_adj}')
+```
+
+Is the model a good fit of the data?
+
+The model moderately fits the data (42.5% variation explained).
+
+## Exercise 2
+
+Produce all possible models removing 1 term at a time from the full model. Describe what is being removed above each code cell.
+
+```{python}
+# Blank dictionary to store new models
+models = {}
+```
+
+-   Remove `chocolate` and it's associated interaction
+
+```{python}
+model1 = smf.ols('winpercent ~ fruity * pricepercent + nougat + pricepercent + sugarpercent', data=candy_rankings).fit()
+models['model1'] = model1.rsquared_adj
+```
+
+-   Remove `fruity` and its associated interaction
+
+```{python}
+model2 = smf.ols('winpercent ~ chocolate * sugarpercent + nougat + pricepercent + sugarpercent', data=candy_rankings).fit()
+models['model2'] = model2.rsquared_adj
+```
+
+-   Remove `nougat`
+
+```{python}
+model3 = smf.ols('winpercent ~ chocolate * sugarpercent + fruity * pricepercent + pricepercent + sugarpercent', data=candy_rankings).fit()
+models['model3'] = model3.rsquared_adj
+```
+
+-   Remove `pricepercent` and its associated interactions
+
+```{python}
+model4 = smf.ols('winpercent ~ chocolate * sugarpercent + fruity + nougat + sugarpercent', data=candy_rankings).fit()
+models['model4'] = model4.rsquared_adj
+```
+
+-   Remove `sugarpercent*chocolate`
+
+```{python}
+model5 = smf.ols('winpercent ~ chocolate + fruity * pricepercent + nougat + pricepercent + sugarpercent', data=candy_rankings).fit()
+models['model5'] = model5.rsquared_adj
+```
+
+-   Remove `pricepercent*fruity`
+
+```{python}
+model6 = smf.ols('winpercent ~ chocolate * sugarpercent + fruity + nougat + pricepercent + sugarpercent', data=candy_rankings).fit()
+models['model6'] = model6.rsquared_adj
+```
+
+## Exercise 3
+
+Compare all models using the framework `best_model_step1 = max(models, key=models.get)`:
+
+```{python}
+best_model_step1 = max(models, key=models.get)
+print(f'Best model in Exercise 2: {best_model_step1} with Adjusted R-squared: {models[best_model_step1]}')
+
+```
+
+-   Which model is best:
+
+Of the models from Exercises 1 and 2, the model with the highest adjusted $R^2$ is the one with `nougat` removed. Therefore, we will go to Exercise 4 eliminating one variable at a time from that model.
+
+## Exercise 4
+
+Create all possible models removing 1 term at a time from the model selected in the previous exercise. Again, describe what is being removed above each code cell.
+
+```{python}
+# Blank dictionary to store new models
+models = {}
+```
+
+-   Remove `chocolate` and its associated interactions
+
+```{python}
+model7 = smf.ols('winpercent ~ fruity * pricepercent + pricepercent + sugarpercent', data=candy_rankings).fit()
+models['model7'] = model7.rsquared_adj
+```
+
+-   Remove `fruity` and its associated interactions
+
+```{python}
+model8 = smf.ols('winpercent ~ chocolate * sugarpercent + pricepercent + sugarpercent', data=candy_rankings).fit()
+models['model8'] = model8.rsquared_adj
+```
+
+-   Remove `pricepercent` and its associated interactions
+
+```{python}
+model9 = smf.ols('winpercent ~ chocolate * sugarpercent + fruity + sugarpercent', data=candy_rankings).fit()
+models['model9'] = model9.rsquared_adj
+```
+
+-   Remove `sugarpercent*chocolate`
+
+```{python}
+model10 = smf.ols('winpercent ~ chocolate + fruity * pricepercent + pricepercent + sugarpercent', data=candy_rankings).fit()
+models['model10'] = model10.rsquared_adj
+```
+
+-   Remove `pricepercent*fruity`
+
+```{python}
+model11 = smf.ols('winpercent ~ chocolate * sugarpercent + fruity + pricepercent + sugarpercent', data=candy_rankings).fit()
+models['model11'] = model11.rsquared_adj
+```
+
+## Exercise 5
+
+Compare all models using the framework `best_model_step2 = max(models, key=models.get)`:
+
+```{python}
+best_model_step2 = max(models, key=models.get)
+print(f'Best model in Exercise 4: {best_model_step2} with Adjusted R-squared: {models[best_model_step2]}')
+```
+
+-   Which model is best:
+
+The model with `sugarpercent*chocolate` has the highest $R^2$ of all the models we've tested so far, so we will now go to Exercise 6 eliminating one variable at a time from this model.
+
+## Exercise 6
+
+Create all possible models removing 1 term at a time from the model selected in the previous step. Again, describe what is being removed above each code cell.
+
+```{python}
+# Blank dictionary to store new models
+models = {}
+```
+
+-   `Remove chocolate`
+
+```{python}
+model12 = smf.ols('winpercent ~ fruity * pricepercent + pricepercent + sugarpercent', data=candy_rankings).fit()
+models['model12'] = model12.rsquared_adj
+```
+
+-   Remove `fruity` and its associated interactions
+
+```{python}
+model13 = smf.ols('winpercent ~ chocolate * sugarpercent + pricepercent + sugarpercent', data=candy_rankings).fit()
+models['model13'] = model13.rsquared_adj
+```
+
+-   Remove `sugarpercent`
+
+```{python}
+model14 = smf.ols('winpercent ~ chocolate + fruity * pricepercent + pricepercent + sugarpercent', data=candy_rankings).fit()
+models['model14'] = model14.rsquared_adj
+```
+
+-   Remove `pricepercent` and its associated interactions
+
+```{python}
+model15 = smf.ols('winpercent ~ chocolate + fruity + sugarpercent', data=candy_rankings).fit()
+models['model15'] = model15.rsquared_adj
+```
+
+-   Remove `pricepercent*fruity`
+
+```{python}
+model16 = smf.ols('winpercent ~ chocolate + fruity + sugarpercent + pricepercent', data=candy_rankings).fit()
+models['model16'] = model16.rsquared_adj
+```
+
+## Exercise 7
+
+Compare all models using the framework `best_model_step3 = max(models, key=models.get)`:
+
+```{python}
+best_model_step3 = max(models, key=models.get)
+print(f'Best model in Exercise 6: {best_model_step3} with Adjusted R-squared: {models[best_model_step3]}')
+```
+
+-   Which model is best:
+
+None of the models in Exercise 6 resulted in a higher adjusted $R^2_{adj}$. Therefore our final model is the one selected in Exercise 5.
+
+```{python}
+selected_model = smf.ols('winpercent ~ chocolate + fruity + sugarpercent + pricepercent + pricepercent*fruity', data=candy_rankings).fit()
+print(selected_model.summary())
+
+coefficients = selected_model.params
+print(coefficients)
+```

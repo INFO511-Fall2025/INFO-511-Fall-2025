@@ -1,0 +1,292 @@
+---
+title: "Conditional Probability"
+subtitle: "Lecture 12"
+format:
+  revealjs: default
+editor_options: 
+  chunk_output_type: console
+jupyter: python3
+execute:
+  warning: false
+  error: false
+---
+
+## Conditional probability {.smaller}
+
+The probability an event will occur *given* that another event has already occurred is a **conditional probability**.
+The conditional probability of event $A$ given event $B$ is:
+
+::: instruction
+$$P(A | B) = \frac{P(A \text{ and } B)}{P(B)}$$
+:::
+
+## Conditional probabilities {.smaller}
+
+::: instruction
+$$P(A | B) = \frac{P(A \text{ and } B)}{P(B)}$$
+:::
+
+Examples come up all the time in the real world:
+
+::: incremental
+-   *Given* that it rained yesterday, what is the probability that it will rain today?
+-   *Given* that a mammogram comes back positive, what is the probability that a woman has breast cancer?
+-   *Given* that I've already watched six episodes of How I Met Your Mother tonight, what is the probability that I'll get any work done this evening?
+:::
+
+## Coffee and mortality {.smaller}
+
+![](images/coffee.PNG){fig-align="center" width="800"}
+
++----------------------------+--------------+--------------+
+|                            | \            | \            |
+|                            | Did not die  | Died         |
++============================+=============:+=============:+
+| Does not drink coffee      | 5438         | 1039         |
++----------------------------+--------------+--------------+
+| Drinks coffee occasionally | 29712        | 4440         |
++----------------------------+--------------+--------------+
+| Drinks coffee regularly    | 24934        | 3601         |
++----------------------------+--------------+--------------+
+
+## Three probabilities {.smaller}
+
++-----------------------------+--------------+--------------+
+|                             | \            | \            |
+|                             | Did not die  | Died         |
++=============================+=============:+=============:+
+| Does not drink coffee       | 5438         | 1039         |
++-----------------------------+--------------+--------------+
+| Drinks coffee occasionally  | 29712        | 4440         |
++-----------------------------+--------------+--------------+
+| Drinks coffee regularly     | 24934        | 3601         |
++-----------------------------+--------------+--------------+
+
+::: question
+Define events $A$ = died and $B$ = non-coffee drinker.
+Calculate the following for a randomly selected person in the cohort:
+
+::: incremental
+-   Marginal probability: $P(A)$, $P(B)$
+
+-   Joint probability: $P(A \text{ and } B)$
+
+-   Conditional probability: $P(A | B)$, $P(B | A)$
+:::
+:::
+
+# Independence
+
+## The multiplicative rule {.smaller}
+
+We can write the definition of condition probability
+
+::: instruction
+$$P(A | B) = \frac{P(A \text{ and } B)}{P(B)}$$
+:::
+
+<br>
+
+::: fragment
+::: instruction
+Using the equation above, we get...
+
+$$P(B) \times P(A | B) = P(A \text{ and } B)$$
+:::
+
+**What does the multiplicative rule mean in plain English?**
+:::
+
+## Defining independence {.smaller}
+
+Events $A$ and $B$ are said to be **independent** when
+
+$$P(A | B) = P(A) \hspace{10mm} \textbf{OR} \hspace{10mm}
+P(B | A) = P(B)$$
+
+<br>
+
+::: fragment
+In other words, knowing that one event has occurred doesn't cause us to "adjust" the probability we assign to another event.
+:::
+
+## Checking independence {.smaller}
+
+We can use the multiplicative rule to see if two events are independent.
+
+::: instruction
+If events $A$ and $B$ are independent, then
+
+$$P(A \text{ and } B) = P(A) \times P(B)$$
+:::
+
+## Independent vs. disjoint events {.smaller}
+
+Since for two independent events $P(A|B) = P(A)$ and $P(B|A) = P(B)$, knowing that one event has occurred tells us nothing more about the probability of the other occurring.
+
+::: fragment
+For two disjoint events $A$ and $B$, knowing that one has occurred tells us that the other definitely has not occurred: $P(A \text{ and } B) = 0$.
+:::
+
+::: fragment
+::: instruction
+Disjoint events are <u>not</u> independent!
+:::
+:::
+
+## Checking independence {.smaller}
+
++----------------------------+--------------+--------------+
+|                            | \            | \            |
+|                            | Did not die  | Died         |
++============================+=============:+=============:+
+| Does not drink coffee      | 5438         | 1039         |
++----------------------------+--------------+--------------+
+| Drinks coffee occasionally | 29712        | 4440         |
++----------------------------+--------------+--------------+
+| Drinks coffee regularly    | 24934        | 3601         |
++----------------------------+--------------+--------------+
+
+<br>
+
+::: fragment
+::: question
+Are dying and abstaining from coffee independent events?
+How might we check?
+:::
+:::
+
+# Bayes' Rule
+
+## An example {.smaller}
+
+In an introductory statistics course, 50% of students were first years, 30% were sophomores, and 20% were upperclassmen.
+
+::: fragment
+80% of the first years didn’t get enough sleep, 40% of the sophomores didn’t get enough sleep, and 10% of the upperclassmen didn’t get enough sleep.
+:::
+
+::: fragment
+::: question
+What is the probability that a randomly selected student in this class didn’t get enough sleep?
+:::
+:::
+
+## Bayes' Rule {.smaller}
+
+As we saw before, the two conditional probabilities $P(A | B)$ and $P(B | A)$ are not the same.
+But are they related in some way?
+
+::: fragment
+Yes they are (!) using **Bayes' rule**:
+
+::: instruction
+**Bayes' rule:**
+
+$$\begin{align}P(A | B) &= \frac{P(A \text{ and } B)}{P(B)}\\[10pt]
+&= \frac{P(B | A)P(A)}{P(B)}
+\end{align}$$
+:::
+:::
+
+## Bayes' Rule (continued) {.smaller}
+
+Putting together a few rules of probability...
+
+$$\begin{align}P(A | B) &= \frac{P(A \text{ and } B)}{P(B)}\\[10pt]
+&= \frac{P(B | A)P(A)}{P(B)}\\[15pt]
+&= \frac{P(B | A)P(A)}{P(B | A)P(A) + P(B | A^c)P(A^c)}\end{align}$$
+
+Let's took at an example to see how this works.
+
+# Diagnostic Testing
+
+## Definitions {.smaller}
+
+Suppose we're interested in the performance of a diagnostic test.
+Let $D$ be the event that a patient has the disease, and let $T$ be the event that the test is positive for that disease.
+
+::: incremental
+-   **Prevalence**: $P(D)$
+-   **Sensitivity**: $P(T | D)$
+-   **Specificity**: $P(T^c | D^c)$
+-   **Positive predictive value**: $P(D | T)$
+-   **Negative predictive value**: $P(D^c | T^c)$
+:::
+
+::: fragment
+::: question
+What do these probabilities mean in plain English?
+:::
+:::
+
+## Rapid self-administered COVID-19 tests {.smaller}
+
+::: columns
+::: {.column width="50%"}
+For a Abbott BinaxNOW COVID-19 Rapid antigen tests,
+
+::: incremental
+-   **Sensitivity**, $P(T | D)$, is 64.2% in symptomatic individuals
+
+-   **Specificity**, $P(T^c | D^c)$, is 99.8%
+
+-   From CDC statistics in 2021, with 8.7% **prevalence** from Pima County, Arizona persons aged ≥10 years.
+:::
+:::
+
+::: {.column width="50%"}
+![](images/covid-19.jpg){fig-align="center"}
+:::
+:::
+
+::: fragment
+::: question
+Suppose a randomly selected American aged 13+ has a positive test result.
+What is the probability they have COVID-19?
+:::
+:::
+
+## Using Bayes' Rule {.smaller}
+
+```{=tex}
+\begin{align*}
+P(D | T) &= \frac{P(D \text{ and } T)}{P(T)}\\
+&= \frac{P(T | D)P(D)}{P(T)}\\[5pt]
+&= \frac{P(T | D)P(D)}{P(T | D)P(D) + P(T | D^c)P(D^c)}\\[5pt]
+&= \frac{P(T | D)P(D)}{P(T | D)P(D) + (1 - P(T^c | D^c))(1 - P(D))}
+\end{align*}
+```
+<br>
+
+::: fragment
+::: question
+**What does all of this mean? Let's take a look!**
+:::
+:::
+
+## `ae-08`
+
+**Given**:
+
+::: incremental
+-   **Prevalence**: $P(D)$ = 8.7% = 0.087
+-   **Sensitivity**: $P(T | D)$ = 64.2% = 0.642
+-   **Specificity**: $P(T^c | D^c)$ = 99.8% = 0.998
+:::
+
+::: fragment
+Work through `ae-08` then move on to the discussion questions
+:::
+
+## A discussion {.smaller}
+
+Think about the following questions:
+
+::: incremental
+-   Is this calculation surprising?
+-   What is the explanation?
+-   Was this calculation actually reasonable to perform?
+-   What if we tested in a different population, such as high-risk individuals?
+-   What if we were to test a random individual in a county where the prevalence of COVID-19 is approximately 25%?
+:::

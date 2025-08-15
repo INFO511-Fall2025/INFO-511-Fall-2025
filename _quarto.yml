@@ -1,0 +1,147 @@
+project:
+  type: website
+
+website:
+  page-navigation: true
+  title: "INFO 511"
+  description: "Homepage for INFO 511 - Fundamentals of Data Science at UArizona, Spring 2025."
+  favicon: /img/logo.png
+  site-url: "https://datasciaz.netlify.app"
+
+  repo-url: https://github.com/INFO-511-S25/info-511-s25
+  repo-actions: [edit, issue]
+
+  open-graph: true
+
+  sidebar:
+    background: "#0C234B" # Arizona Blue - Spring 2025
+    logo: "img/logo.png"
+    pinned: true
+    align: center
+    tools:
+      - icon: github
+        href: https://github.com/INFO-511-F25
+        text: "GitHub organization"
+
+      - icon: life-preserver
+        href: course-support.html#office-hours
+        text: "Office hours"
+      - icon: chat-dots-fill
+        href: https://info511spring2025.slack.com
+        text: "Slack"
+      - icon: camera-reels-fill
+        href: https://arizona.hosted.panopto.com/Panopto/Pages/Sessions/List.aspx?folderID=61cffeec-57c6-4caa-a60a-b1c3017974d4
+        text: "Class recordings"
+      - icon: check-square-fill
+        href: https://d2l.arizona.edu/d2l/home/1550484
+        text: "D2L"
+
+    style: docked
+    search: true
+    collapse-level: 1
+    contents:
+      - section: "Course information"
+        contents:
+          - href: course-overview.qmd
+            text: Overview
+          - href: course-syllabus.qmd
+            text: Syllabus
+          - href: course-support.qmd
+            text: Support
+          - href: course-team.qmd
+            text: Teaching team
+          - href: index.qmd
+            text: Schedule
+          - href: course-links.qmd
+            text: Useful links
+          - href: course-faq.qmd
+            text: FAQ
+          - section: Textbooks
+            contents: 
+              - text: "Data Science from Scratch"
+                href: https://arizona-ua.userservices.exlibrisgroup.com/view/action/uresolver.do?operation=resolveService&package_service_id=43729147450003843&institutionId=3843&customerId=3840
+              - text: "Python for Data Analysis"
+                href: https://wesmckinney.com/book/
+              - text: "Practical Stats for DS"
+                href: textbooks/brucePracStatsForDS.pdf
+              - text: "Intro to Statistical Learning"
+                href: textbooks/jamesISL.pdf
+              - text: "Essential Math for Data Science"
+                href: https://arizona-ua.userservices.exlibrisgroup.com/view/action/uresolver.do?operation=resolveService&package_service_id=43729147410003843&institutionId=3843&customerId=3840
+              - text: "Python Companion to Statistical Thinking in the 21st Century"
+                href: https://statsthinking21.github.io/statsthinking21-python/index.html
+            
+      - section: "Computing"
+        contents:
+          - href: computing/computing-troubleshooting.qmd
+            text: Troubleshooting
+          - href: computing/computing-cheatsheets.qmd
+            text: Cheatsheets
+          - href: computing/computing-python.qmd
+            text: Setting up Python
+          - href: computing/computing-git.qmd
+            text: Setting up Git
+      - section: "Project"
+        contents:
+          - href: project/description.qmd
+            text: Description
+          #- href: project/1-working-collaboratively.qmd
+           # text: Milestone 1
+          #- href: project/2-proposal.qmd
+           # text: Milestone 2
+          #- href: project/3-peer-review.qmd
+           # text: Milestone 3
+          #- href: project/4-writeup-presentation.qmd
+           # text: Milestone 4            
+          #- href: project/tips-resources.qmd
+            #text: Tips + resources
+      - section: "Homework"
+        contents:
+          - href: labs/lab-0.qmd
+            text: Homework 0
+          - href: labs/workflow.qmd
+            text: Computing workflow
+          - href: labs/codespaces.qmd
+            text: Codespaces
+          #- href: labs/lab-2.qmd
+           # text: Lab 2
+          #- href: labs/lab-3.qmd
+            #text: Lab 3            
+          #- href: labs/lab-4.qmd
+            #text: Lab 4
+          #- href: labs/lab-5.qmd
+            #text: Lab 5 
+          #- href: labs/lab-6.qmd
+            #text: Lab 6             
+          #- href: labs/lab-7.qmd
+          #  text: Lab 7 
+          - href: labs/ds-experience.qmd
+            text: Data Science Experience
+      - section: "Summative"
+        contents:
+          #- href: summative/midterm.qmd
+           # text: Midterm
+          #- href: summative/final.qmd
+            #text: Final
+            
+  page-footer:
+    right: 'This page is built with [{{< fa heart >}}]{style="color: #FFBE98;"} and [Quarto](https://quarto.org/).'
+    left: "&copy; Copyright 2025, Greg Chism"
+    background: "#0C234B" # Arizona Blue - Spring 2025
+
+format:
+  html:
+    theme:
+      light: [cosmo, style/info511.scss]
+      dark: [cosmo, style/info511.scss, style/dark.scss]
+    linkcolor: "#AB0520" # Arizona Red - Spring 2025
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    mainfont: "Lexend"
+    highlight-style: a11y-dark
+
+execute:
+  freeze: auto
+
+editor: visual

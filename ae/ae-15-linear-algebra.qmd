@@ -1,0 +1,97 @@
+---
+title: "AE 15: Linear algebra"
+categories: 
+  - Application exercise
+---
+
+In this exercise, we will:
+
+-   Transpose a Vector: Learn how to transpose a given vector.
+-   Transpose a Matrix: Understand the concept of matrix transposition by working with a given matrix.
+-   Determine Matrix Dimensions: Identify and write down the dimensions of given matrices.
+-   Matrix Multiplication Validity: Check the validity of matrix multiplication for given matrices and determine the dimensions of the resulting matrix if valid.
+-   Compute Matrix Product: Perform the actual computation of a matrix product for given matrices when the multiplication is valid.
+
+# Linear algebra
+
+For each exercise, show all steps clearly.
+
+## Transposition
+
+### Exercise 1
+
+Given a vector $\mathbf{y}$**:**
+
+$$
+\mathbf{y} = \begin{bmatrix} y_1 \\ y_2 \\ y_3 \end{bmatrix}
+$$
+
+Write down its transpose $\mathbf{y}^\top$
+
+**Solution:**
+
+-   The transpose of the vector $\mathbf{y}$ is:
+
+*add response here.*
+
+### Exercise 2
+
+Given the following matrix $\mathbf{N}$:
+
+$$
+\mathbf{N} = \begin{bmatrix}n_{11} & n_{12} \\n_{21} & n_{22} \\n_{31} & n_{32}\end{bmatrix}
+$$
+
+Write down its transpose, $\mathbf{N}^{\top}$
+
+**Solution:**
+
+-   The transpose of the matrix $\mathbf{N}$ is:
+
+*add response here.*
+
+## Matrix operations
+
+### Exercise 3
+
+Consider the following matrices $\mathbf{C}$ and $\mathbf{D}$:
+
+$$
+\mathbf{C} = \begin{bmatrix}c_{11} & c_{12} & c_{13} \\c_{21} & c_{22} & c_{23}\end{bmatrix}, \quad\mathbf{D} = \begin{bmatrix}d_{11} & d_{12} \\d_{21} & d_{22} \\d_{31} & d_{32}\end{bmatrix}
+$$
+
+-   What are the dimensions of $\mathbf{C}$?
+
+-   What are the dimensions of $\mathbf{D}$?
+
+-   For the matrix product $\mathbf{C} \mathbf{D}$:
+
+    1.  Determine if the product is valid, and explain why.
+
+    2.  If the product is valid, write down the dimensions of the resulting matrix without computing the product.
+
+**Solution:**
+
+*add response here.*
+
+### Exercise 4
+
+Consider the following matrices $\mathbf{E}$ and $\mathbf{F}$:
+
+$$
+\mathbf{E} = \begin{bmatrix}e_{11} & e_{12} & e_{13} & e_{14} \\e_{21} & e_{22} & e_{23} & e_{24}\end{bmatrix}, \quad\mathbf{F} = \begin{bmatrix}f_{11} & f_{12} \\f_{21} & f_{22} \\f_{31} & f_{32} \\f_{41} & f_{42}\end{bmatrix}
+$$
+
+-   What are the dimensions of $\mathbf{E}$?
+
+-   What are the dimensions of $\mathbf{F}$?
+
+-   For the matrix product $\mathbf{E} \mathbf{F}$:
+
+    1.  Determine if the product is valid, and explain why.
+
+    2.  If the product is valid, write down the dimensions of the resulting matrix without computing the product.
+
+**Solution:**
+
+*add response here.*

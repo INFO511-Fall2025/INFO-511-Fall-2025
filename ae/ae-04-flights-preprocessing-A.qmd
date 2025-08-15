@@ -1,0 +1,197 @@
+---
+title: "AE 04: NYC flights + data preprocessing"
+subtitle: "Suggested answers"
+categories: 
+  - Application exercise
+  - Answers
+jupyter: python3
+execute: 
+  warning: false
+  error: false
+---
+
+::: callout-important
+These are suggested answers.
+This document should be used as reference only, it's not designed to be an exhaustive key.
+:::
+
+```{python}
+#| label: load-packages
+#| message: false
+
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler, MaxAbsScaler, MinMaxScaler
+import numpy as np
+from nycflights13 import flights
+```
+
+## Exercise 1 - Load data
+
+Fill in the blanks:
+
+```{python}
+# Load the flights data
+df = flights
+df.info()
+```
+
+The `flights` data frame has 336776 rows.
+Each row represents a observation.
+
+## Exercise 2 - **Data cleaning**
+
+Remove rows with missing values in the `arr_delay` and `distance` columns.
+
+What are the names of the variables in `flights`.
+
+```{python}
+#| label: remove-NaNs
+
+df_clean = df.dropna(subset=['arr_delay', 'distance'])
+```
+
+## Exercise 3 - Original Data Distribution
+
+-   Plot the original distributions of `arr_delay` and `distance`.
+
+```{python}
+#| label: original-distribution
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+sns.histplot(df_clean['arr_delay'], bins=30, kde=True, ax=axes[0]).set(title='Original Arrival Delay')
+sns.histplot(df_clean['distance'], bins=30, kde=True, ax=axes[1]).set(title='Original Distance')
+plt.tight_layout()
+plt.show()
+```
+
+## Exercise 4 - Check for Skewness
+
+-   Calculate and print the skewness of `arr_delay` and `distance`.
+
+```{python}
+#| label: check-skewness
+skew_arr_delay = df_clean['arr_delay'].skew()
+skew_distance = df_clean['distance'].skew()
+print(f"Skewness of Arrival Delay: {skew_arr_delay}")
+print(f"Skewness of Distance: {skew_distance}")
+```
+
+## Exercise 5 - Scaling
+
+-   Check the summary statistics of `arr_delay` and `distance` to see if scaling is necessary.
+
+```{python}
+#| label: describe-arr_delay
+df_clean['arr_delay'].describe()
+```
+
+```{python}
+#| label:  describe-distance
+df_clean['distance'].describe()
+```
+
+-   Question: Do `arr_delay` and `distance` need to be scaled?
+
+Yes, the units are completely different.
+
+-   Apply standard scaling, maximum absolute scaling, and Min-Max Scaling to the transformed `arr_delay` and `distance`.
+
+```{python}
+#| label: standardize-data
+
+# Standard Scaling
+scaler = StandardScaler()
+df_clean.loc[:, ['arr_delay_standard', 'distance_standard']] = scaler.fit_transform(df_clean[['arr_delay', 'distance']])
+
+# Maximum Absolute Scaling
+max_abs_scaler = MaxAbsScaler()
+df_clean.loc[:, ['arr_delay_maxabs', 'distance_maxabs']] = max_abs_scaler.fit_transform(df_clean[['arr_delay', 'distance']])
+
+# Min-Max Scaling
+min_max_scaler = MinMaxScaler()
+df_clean.loc[:, ['arr_delay_minmax', 'distance_minmax']] = min_max_scaler.fit_transform(df_clean[['arr_delay', 'distance']])
+```
+
+-   Question: What are the two pros and two cons of standardizing data?
+
+#### Pros
+
+1.  **Improved Model Performance**:
+
+    -   **Consistency**: Ensures that features contribute equally to the model, enhancing performance for algorithms like linear regression and neural networks.
+
+    -   **Speed**: Helps optimization algorithms, like gradient descent, converge faster.
+
+2.  **Enhanced Interpretability**:
+
+    -   **Standardization**: Makes model coefficients easier to understand, especially in linear models.
+
+    -   **Comparison**: Simplifies comparison between features during data analysis.
+
+#### Cons
+
+1.  **Potential Loss of Interpretability**:
+
+    -   **Raw Values**: Scaled values might lose their original meaning and units.
+
+2.  **Assumption of Distribution**:
+
+    -   **Normality**: Some methods assume data is normally distributed, which may not always be true.
+
+    -   **Sensitive to Outliers**: Outliers can distort scaled values in methods like standard scaling.
+
+## Exercise 6 - Transformation
+
+-   Check the summary statistics again with your min-max standardized columns.
+
+```{python}
+df_clean['arr_delay_minmax'].describe()
+```
+
+```{python}
+df_clean['distance_minmax'].describe()
+```
+
+-   Question: Why should you use the min-max scaled data instead of a different scaling for the transformations (hint: especially log transformation)
+
+The other transformations had with negative values for `arr_delay`.
+
+-   Apply a log transformation to `arr_delay` if it is positively skewed and apply a square root transformation to `distance` if it is negatively skewed (use `if` `else` statements).
+
+-   **Hint:** Logical operators in Python:
+
+    | operator      | definition                                               |
+    |:--------------|:---------------------------------------------------------|
+    | `<`           | is less than?                                            |
+    | `<=`          | is less than or equal to?                                |
+    | `>`           | is greater than?                                         |
+    | `>=`          | is greater than or equal to?                             |
+    | `==`          | is exactly equal to?                                     |
+    | `!=`          | is not equal to?                                         |
+    | `x and y`     | is x AND y?                                              |
+    | `x or y`      | is x OR y?                                               |
+    | `pd.isna(x)`  | is x NA?                                                 |
+    | `~pd.isna(x)` | is x not NA?                                             |
+    | `x in y`      | is x in y?                                               |
+    | `x not in y`  | is x not in y?                                           |
+    | `not x`       | is not x? (only makes sense if `x` is `True` or `False`) |
+
+```{python}
+#| label: transform-data
+
+if skew_arr_delay > 0:
+    df_clean.loc[:, 'arr_delay_transformed'] = np.log1p(df_clean['arr_delay_minmax'])
+else:
+    df_clean.loc[:, 'arr_delay_transformed'] = df_clean['arr_delay_minmax']
+
+if skew_distance > 0:
+    df_clean.loc[:, 'distance_transformed'] = np.sqrt(df_clean['distance_minmax'])
+else:
+    df_clean.loc[:, 'distance_transformed'] = df_clean['distance_minmax']
+```
+
+-   Question: Why do we have to add a constant when we perform a log or square-root transformation (i.e., `np.log1p(df['column' + 1])`)?
+
+The logarithmic and square-root functions do not contain negative numbers or 0.
