@@ -2,10 +2,9 @@
 title: "Course overview"
 ---
 
-This is the homepage for INFO 511 - Fundamentals of Data Science taught by [Dr. Greg Chism](https://gregtchism.com) in Spring 2025 at The University of Arizona.
-All course materials will be posted on this site.
+This is the homepage for INFO 511 - Fundamentals of Data Science taught by [Dr. Shannon McWaters] in Fall 2025 at The University of Arizona.
+All course materials will be posted on D2l and this repository.
 
-You can find the course syllabus [here](/course-syllabus.html) and the course schedule [here](/).
 
 ## Class meetings
 
