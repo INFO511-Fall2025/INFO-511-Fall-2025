@@ -1,6 +1,6 @@
 ---
 title: "INFO 511: Fundamentals of Data Science"
-subtitle: "Dr. Greg Chism"
+subtitle: "Dr. Shannon McWaters"
 execute: 
   freeze: false
 ---
