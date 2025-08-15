@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Final Assignment – INFO 511</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="..//img/logo.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Final Assignment – INFO 511">
+<meta property="og:description" content="Homepage for INFO 511 - Fundamentals of Data Science at UArizona, Fall 2025.">
+<meta property="og:site_name" content="INFO 511">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Final Assignment</li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../img/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/shannonmcwaters/INFO-511-Fall-2025/tree/main" title="GitHub organization" class="quarto-navigation-tool px-1" aria-label="GitHub organization"><i class="bi bi-github"></i></a>
+    <a href="../course-support.html#office-hours" title="Office hours" class="quarto-navigation-tool px-1" aria-label="Office hours"><i class="bi bi-life-preserver"></i></a>
+    <a href="https://join.slack.com/t/info-511---fall-2025/shared_invite/zt-3bgbtuob6-Zh2e3n7KZOrxYBtoLz~Fug" title="Slack" class="quarto-navigation-tool px-1" aria-label="Slack"><i class="bi bi-chat-dots-fill"></i></a>
+    <a href="https://arizona.hosted.panopto.com/Panopto/Pages/Sessions/List.aspx?folderID=61cffeec-57c6-4caa-a60a-b1c3017974d4" title="Class recordings" class="quarto-navigation-tool px-1" aria-label="Class recordings"><i class="bi bi-camera-reels-fill"></i></a>
+    <a href="https://d2l.arizona.edu/d2l/home/1641996" title="D2L" class="quarto-navigation-tool px-1" aria-label="D2L"><i class="bi bi-check-square-fill"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">Course information</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../course-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../course-syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../course-support.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Support</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../course-team.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Teaching team</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Schedule</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../course-links.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Useful links</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../course-faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">FAQ</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Textbooks</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://arizona-ua.userservices.exlibrisgroup.com/view/action/uresolver.do?operation=resolveService&amp;package_service_id=43729147450003843&amp;institutionId=3843&amp;customerId=3840" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Science from Scratch</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://wesmckinney.com/book/" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python for Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../textbooks/brucePracStatsForDS.pdf" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Practical Stats for DS</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../textbooks/jamesISL.pdf" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Intro to Statistical Learning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://arizona-ua.userservices.exlibrisgroup.com/view/action/uresolver.do?operation=resolveService&amp;package_service_id=43729147410003843&amp;institutionId=3843&amp;customerId=3840" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Essential Math for Data Science</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://statsthinking21.github.io/statsthinking21-python/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python Companion to Statistical Thinking in the 21st Century</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Computing</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../computing/computing-troubleshooting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Troubleshooting</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../computing/computing-cheatsheets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cheatsheets</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../computing/computing-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Setting up Python</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../computing/computing-git.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Setting up Git</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Project</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../project/description.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Description</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Homework</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../labs/lab-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework 0</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../labs/workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Computing workflow</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../labs/codespaces.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Codespaces</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../labs/ds-experience.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Science Experience</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Summative</span></span>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#part-1---employment" id="toc-part-1---employment" class="nav-link active" data-scroll-target="#part-1---employment">Part 1 - Employment</a>
+  <ul class="collapse">
+  <li><a href="#question-1" id="toc-question-1" class="nav-link" data-scroll-target="#question-1">Question 1</a></li>
+  <li><a href="#question-2" id="toc-question-2" class="nav-link" data-scroll-target="#question-2">Question 2</a></li>
+  <li><a href="#question-3" id="toc-question-3" class="nav-link" data-scroll-target="#question-3">Question 3</a></li>
+  </ul></li>
+  <li><a href="#part-2---blizzard" id="toc-part-2---blizzard" class="nav-link" data-scroll-target="#part-2---blizzard">Part 2 - Blizzard</a>
+  <ul class="collapse">
+  <li><a href="#question-4" id="toc-question-4" class="nav-link" data-scroll-target="#question-4">Question 4</a></li>
+  <li><a href="#question-5" id="toc-question-5" class="nav-link" data-scroll-target="#question-5">Question 5</a></li>
+  <li><a href="#question-6" id="toc-question-6" class="nav-link" data-scroll-target="#question-6">Question 6</a></li>
+  <li><a href="#question-7" id="toc-question-7" class="nav-link" data-scroll-target="#question-7">Question 7</a></li>
+  <li><a href="#question-8" id="toc-question-8" class="nav-link" data-scroll-target="#question-8">Question 8</a></li>
+  <li><a href="#question-9" id="toc-question-9" class="nav-link" data-scroll-target="#question-9">Question 9</a></li>
+  <li><a href="#question-10" id="toc-question-10" class="nav-link" data-scroll-target="#question-10">Question 10</a></li>
+  <li><a href="#question-11" id="toc-question-11" class="nav-link" data-scroll-target="#question-11">Question 11</a></li>
+  </ul></li>
+  <li><a href="#part-3---calculus" id="toc-part-3---calculus" class="nav-link" data-scroll-target="#part-3---calculus">Part 3 - Calculus</a>
+  <ul class="collapse">
+  <li><a href="#question-12" id="toc-question-12" class="nav-link" data-scroll-target="#question-12">Question 12</a></li>
+  <li><a href="#question-13" id="toc-question-13" class="nav-link" data-scroll-target="#question-13">Question 13</a></li>
+  </ul></li>
+  <li><a href="#part-4---linear-algebra" id="toc-part-4---linear-algebra" class="nav-link" data-scroll-target="#part-4---linear-algebra">Part 4 - Linear algebra</a>
+  <ul class="collapse">
+  <li><a href="#question-14" id="toc-question-14" class="nav-link" data-scroll-target="#question-14">Question 14</a></li>
+  <li><a href="#question-15" id="toc-question-15" class="nav-link" data-scroll-target="#question-15">Question 15</a></li>
+  <li><a href="#question-16" id="toc-question-16" class="nav-link" data-scroll-target="#question-16">Question 16</a></li>
+  <li><a href="#question-17" id="toc-question-17" class="nav-link" data-scroll-target="#question-17">Question 17</a></li>
+  <li><a href="#bonus" id="toc-bonus" class="nav-link" data-scroll-target="#bonus">Bonus</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/shannonmcwaters/INFO-511-Fall-2025/tree/main/edit/main/summative/final.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/shannonmcwaters/INFO-511-Fall-2025/tree/main/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="final.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Final Assignment</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="part-1---employment" class="level1">
+<h1>Part 1 - Employment</h1>
+<p>A large university knows that about 70% of the full-time students are employed at least 5 hours per week. The members of the Statistics Department wonder if the same proportion of their students work at least 5 hours per week. They randomly sample 25 majors and find that 15 of the students (60%) work 5 or more hours each week.</p>
+<section id="question-1" class="level2">
+<h2 class="anchored" data-anchor-id="question-1">Question 1</h2>
+<p>Describe how you can set up a simulation to estimate the proportion of statistics majors who work 5 or more hours each week based on this sample.</p>
+</section>
+<section id="question-2" class="level2">
+<h2 class="anchored" data-anchor-id="question-2">Question 2</h2>
+<p>A bootstrap distribution with 1000 simulations is shown below. Approximate the bounds of the 95% confidence interval based on this distribution.</p>
+<p><img src="images/sim-bootstrap.png" class="img-fluid" width="667"></p>
+</section>
+<section id="question-3" class="level2">
+<h2 class="anchored" data-anchor-id="question-3">Question 3</h2>
+<p>Suppose the lower bound of the confidence interval from the previous question is L and the upper bound is U. Which of the following is correct?</p>
+<p>a. Between L to U of statistics majors work at least 5 hours per week.</p>
+<p>b. 95% of the time the true proportion of statistics majors who work at least 5 hours per week is between L and U.</p>
+<p>c. Between L and U of random samples of 25 statistics majors are expected to yield confidence intervals that contain the true proportion of statistics majors who work at least 5 hours per week.</p>
+<p>d. 95% of random samples of 25 statistics majors will yield confidence intervals between L and U.</p>
+<p>e. None of the above.</p>
+<div style="page-break-after: always;"></div>
+</section>
+</section>
+<section id="part-2---blizzard" class="level1">
+<h1>Part 2 - Blizzard</h1>
+<p>In 2020, employees of Blizzard Entertainment circulated a spreadsheet to anonymously share salaries and recent pay increases amidst rising tension in the video game industry over wage disparities and executive compensation. (Source: <a href="https://www.bloomberg.com/news/articles/2020-08-03/blizzard-workers-share-salaries-in-revolt-over-wage-disparities">Blizzard Workers Share Salaries in Revolt Over Pay</a>)</p>
+<p>The name of the data frame used for this analysis is <code>blizzard_salary</code> and the variables are:</p>
+<ul>
+<li><p><code>percent_incr</code>: Raise given in July 2020, as percent increase with values ranging from 1 (1% increase to 21.5 (21.5% increase)</p></li>
+<li><p><code>salary_type</code>: Type of salary, with levels <code>Hourly</code> and <code>Salaried</code></p></li>
+<li><p><code>annual_salary</code>: Annual salary, in USD, with values ranging from $50,939 to $216,856.</p></li>
+<li><p><code>performance_rating</code>: Most recent review performance rating, with levels <code>Poor</code>, <code>Successful</code>, <code>High</code>, and <code>Top</code>. The <code>Poor</code> level is the lowest rating and the <code>Top</code> level is the highest rating.</p></li>
+</ul>
+<p>The top ten rows of <code>blizzard_salary</code> are shown below:</p>
+<div id="c3bae4c9" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-stdout">
+<pre><code>   percent_incr salary_type  annual_salary performance_rating
+0           1.0        year            1.0               High
+1           1.0        year            1.0         Successful
+2           1.0        year            1.0               High
+3           1.0      Hourly        33987.2         Successful
+4           NaN      Hourly        34798.4               High
+5           NaN      Hourly        35360.0                NaN
+6           NaN      Hourly        37440.0                NaN
+7           0.0      Hourly        37814.4                NaN
+8           4.0      Hourly        41100.8                Top
+9           1.2      Hourly        42328.0                NaN</code></pre>
+</div>
+</div>
+<section id="question-4" class="level2">
+<h2 class="anchored" data-anchor-id="question-4">Question 4</h2>
+<p>Next, you fit a model for predicting raises (<code>percent_incr</code>) from salaries (<code>annual_salary</code>). We’ll call this model <code>raise_1_fit</code>. An output of the model is shown below.</p>
+<div id="raise-salary-fit" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-stdout">
+<pre><code>                  Coef.  Std.Err.         t     P&gt;|t|    [0.025    0.975]
+Intercept      1.869965  0.432035  4.328268  0.000019  1.020397  2.719532
+annual_salary  0.000016  0.000005  3.431459  0.000669  0.000007  0.000024</code></pre>
+</div>
+</div>
+<p>Which of the following is the best interpretation of the slope coefficient?</p>
+<ol type="a">
+<li>For every additional $1,000 of annual salary, the model predicts the raise to be higher, on average, by 1.6%.</li>
+<li>For every additional $1,000 of annual salary, the raise goes up by 0.016%.</li>
+<li>For every additional $1,000 of annual salary, the model predicts the raise to be higher, on average, by 0.016%.</li>
+<li>For every additional $1,000 of annual salary, the model predicts the raise to be higher, on average, by 1.87%.</li>
+</ol>
+</section>
+<section id="question-5" class="level2">
+<h2 class="anchored" data-anchor-id="question-5">Question 5</h2>
+<p>You then fit a model for predicting raises (<code>percent_incr</code>) from salaries (<code>annual_salary</code>) and performance ratings (<code>performance_rating</code>). We’ll call this model <code>raise_2_fit</code>. Which of the following is definitely true based on the information you have so far?</p>
+<ol type="a">
+<li>Intercept of <code>raise_2_fit</code> is higher than intercept of <code>raise_1_fit</code>.</li>
+<li>Slope of <code>raise_2_fit</code> is higher than RMSE of <code>raise_1_fit</code>.</li>
+<li>Adjusted <span class="math inline">\(R^2\)</span> of <code>raise_2_fit</code> is higher than adjusted <span class="math inline">\(R^2\)</span> of <code>raise_1_fit</code>.</li>
+<li><span class="math inline">\(R^2\)</span> of <code>raise_2_fit</code> is higher <span class="math inline">\(R^2\)</span> of <code>raise_1_fit</code>.</li>
+</ol>
+</section>
+<section id="question-6" class="level2">
+<h2 class="anchored" data-anchor-id="question-6">Question 6</h2>
+<p>The tidy model output for the <code>raise_2_fit</code> model you fit is shown below.</p>
+<div id="raise-salary-rating-fit" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-stdout">
+<pre><code>                                          Coef.  Std.Err.         t  \
+Intercept                              2.617865  0.452366  5.787046   
+performance_rating_Poor[T.True]       -3.499070  1.500230 -2.332356   
+performance_rating_Successful[T.True] -1.730554  0.361704 -4.784449   
+performance_rating_Top[T.True]         3.628454  0.730187  4.969215   
+annual_salary                          0.000013  0.000004  3.119855   
+
+                                              P&gt;|t|    [0.025    0.975]  
+Intercept                              1.543384e-08  1.728293  3.507437  
+performance_rating_Poor[T.True]        2.022505e-02 -6.449249 -0.548892  
+performance_rating_Successful[T.True]  2.493372e-06 -2.441838 -1.019269  
+performance_rating_Top[T.True]         1.035401e-06  2.192554  5.064355  
+annual_salary                          1.953363e-03  0.000005  0.000021  </code></pre>
+</div>
+</div>
+<p>When your teammate sees this model output, they remark “The coefficient for <code>performance_ratingSuccessful</code> is negative, that’s weird. I guess it means that people who get successful performance ratings get lower raises.” How would you respond to your teammate?</p>
+</section>
+<section id="question-7" class="level2">
+<h2 class="anchored" data-anchor-id="question-7">Question 7</h2>
+<p>Ultimately, your teammate decides they don’t like the negative slope coefficients in the model output you created (not that there’s anything wrong with negative slope coefficients!), does something else, and comes up with the following model output. <em>Note however that the coefficient is still negative, but this satisfies your friend…</em></p>
+<div id="f0a7e0f6" class="cell" data-execution_count="7">
+<div class="cell-output cell-output-stdout">
+<pre><code>                                          Coef.  Std.Err.         t  \
+Intercept                              1.785333  0.509233  3.505927   
+performance_rating_Successful[T.True] -0.800356  0.439216 -1.822238   
+performance_rating_High[T.True]        1.574196  0.475552  3.310248   
+performance_rating_Top[T.True]         4.569528  0.768132  5.948886   
+annual_salary                          0.000012  0.000004  2.854297   
+
+                                              P&gt;|t|    [0.025    0.975]  
+Intercept                              5.116857e-04  0.783935  2.786732  
+performance_rating_Successful[T.True]  6.923704e-02 -1.664068  0.063355  
+performance_rating_High[T.True]        1.025064e-03  0.639030  2.509362  
+performance_rating_Top[T.True]         6.327904e-09  3.059009  6.080047  
+annual_salary                          4.559386e-03  0.000004  0.000020  </code></pre>
+</div>
+</div>
+<p>Unfortunately they didn’t write their code in a Quarto document, instead just wrote some code in the Console and then lost track of their work. They remember using the <code>fct_relevel()</code> function and doing something like the following:</p>
+<div id="ad67bb7e" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>blizzard_salary[<span class="st">'performance_rating'</span>] <span class="op">=</span> pd.Categorical(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    blizzard_salary[<span class="st">'performance_rating'</span>],</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    categories<span class="op">=</span>[____],</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    ordered<span class="op">=</span><span class="va">True</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>What should they put in the blanks to get the same model output as above?</p>
+<ol type="a">
+<li>“Poor”, “Successful”, “High”, “Top”</li>
+<li>“Successful”, “High”, “Top”</li>
+<li>“Top”, “High”, “Successful”, “Poor”</li>
+<li>Poor, Successful, High, Top</li>
+</ol>
+</section>
+<section id="question-8" class="level2">
+<h2 class="anchored" data-anchor-id="question-8">Question 8</h2>
+<p>Suppose we fit a model to predict <code>percent_incr</code> from <code>annual_salary</code> and <code>salary_type</code>. A tidy output of the model is shown below.</p>
+<div id="raise-salary-type-fit" class="cell" data-execution_count="9">
+<div class="cell-output cell-output-stdout">
+<pre><code>                             Coef.  Std.Err.         t     P&gt;|t|    [0.025  \
+Intercept                 1.242597  0.570278  2.178932  0.029972  0.121174   
+salary_type_year[T.True]  0.913343  0.543715  1.679819  0.093844 -0.155845   
+annual_salary             0.000014  0.000005  2.958979  0.003287  0.000005   
+
+                            0.975]  
+Intercept                 2.364020  
+salary_type_year[T.True]  1.982532  
+annual_salary             0.000023  </code></pre>
+</div>
+</div>
+<p>Which of the following visualizations represent this model? Explain your reasoning.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div id="cell-fig-raise-salary-type" class="cell" data-execution_count="10">
+<div class="cell-output cell-output-display">
+<div id="fig-raise-salary-type" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-raise-salary-type-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="final_files/figure-html/fig-raise-salary-type-output-1.png" id="fig-raise-salary-type" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-raise-salary-type-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code></code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div id="cell-fig-raise-salary-type-2" class="cell" data-execution_count="11">
+<div class="cell-output cell-output-display">
+<div id="fig-raise-salary-type-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-raise-salary-type-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="final_files/figure-html/fig-raise-salary-type-2-output-1.png" id="fig-raise-salary-type-2" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-raise-salary-type-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div id="cell-fig-raise-salary-type-3" class="cell" data-execution_count="12">
+<div class="cell-output cell-output-display">
+<div id="fig-raise-salary-type-3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-raise-salary-type-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="final_files/figure-html/fig-raise-salary-type-3-output-1.png" id="fig-raise-salary-type-3" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-raise-salary-type-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code></code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div id="cell-fig-raise-salary-type-4" class="cell" data-execution_count="13">
+<div class="cell-output cell-output-display">
+<div id="fig-raise-salary-type-4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-raise-salary-type-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="final_files/figure-html/fig-raise-salary-type-4-output-1.png" id="fig-raise-salary-type-4" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-raise-salary-type-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code></code></pre>
+</div>
+</div>
+</div>
+</div>
+<p>Visualizations of the relationship between percent increase, annual salary, and salary type</p>
+<ol type="a">
+<li>Figure 1</li>
+<li>Figure 2</li>
+<li>Figure 3</li>
+<li>Figure 4</li>
+</ol>
+</section>
+<section id="question-9" class="level2">
+<h2 class="anchored" data-anchor-id="question-9">Question 9</h2>
+<p>Define the term parsimonious model.</p>
+<div style="page-break-after: always;"></div>
+</section>
+<section id="question-10" class="level2">
+<h2 class="anchored" data-anchor-id="question-10">Question 10</h2>
+<p>Suppose you now fit a model to predict the natural log of percent increase, <code>log(percent_incr)</code>, from performance rating. The model is called <code>raise_4_fit</code>.</p>
+<p>You’re provided the following:</p>
+<div id="2fef7523" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>raise_4_fit_coefs[<span class="st">'exp_estimate'</span>] <span class="op">=</span> np.exp(raise_4_fit_coefs[<span class="st">'estimate'</span>])</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(raise_4_fit_coefs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                            term  estimate  exp_estimate
+0                      Intercept -2.088594      0.123861
+1  performance_rating_Successful  1.872176      6.502427
+2        performance_rating_High  3.110229     22.426176
+3         performance_rating_Top  3.854360     47.198390</code></pre>
+</div>
+</div>
+<p>Based on this, which of the following is true?</p>
+<p>a. The model predicts that the percentage increase employees with Successful performance get, on average, is higher by 10.25% compared to the employees with Poor performance rating.</p>
+<p>b. The model predicts that the percentage increase employees with Successful performance get, on average, is higher by 6.93% compared to the employees with Poor performance rating.</p>
+<p>c. The model predicts that the percentage increase employees with Successful performance get, on average, is higher by a factor of 6.502427 compared to the employees with Poor performance rating.</p>
+<p>d. The model predicts that the percentage increase employees with Successful performance get, on average, is higher by a factor of 1.872176 compared to the employees with Poor performance rating.</p>
+</section>
+<section id="question-11" class="level2">
+<h2 class="anchored" data-anchor-id="question-11">Question 11</h2>
+<p>Which of the following is the definiton of a regression model? Select all that apply.</p>
+<p>a. <span class="math inline">\(\hat{y} = \beta_0 + \beta_1 X_1\)</span></p>
+<p>b. <span class="math inline">\(y = \beta_0 + \beta_1 X_1\)</span></p>
+<p>c. <span class="math inline">\(\hat{y} = \beta_0 + \beta_1 X_1 + \epsilon\)</span></p>
+<p>d. <span class="math inline">\(y = \beta_0 + \beta_1 X_1 + \epsilon\)</span></p>
+</section>
+</section>
+<section id="part-3---calculus" class="level1">
+<h1>Part 3 - Calculus</h1>
+<section id="question-12" class="level2">
+<h2 class="anchored" data-anchor-id="question-12">Question 12</h2>
+<p>Compute the derivative <span class="math inline">\(( \frac{d}{dx} )\)</span> of the following function:</p>
+<p><span class="math display">\[
+g(x) = \left( \sin(x^2) + \cos(ax) \right)^k
+\]</span></p>
+</section>
+<section id="question-13" class="level2">
+<h2 class="anchored" data-anchor-id="question-13">Question 13</h2>
+<p>Compute the following integral:</p>
+<p><span class="math display">\[
+\int_{a}^{b} \left( e^{cx} + \frac{1}{x^n} \right) dx
+\]</span></p>
+</section>
+</section>
+<section id="part-4---linear-algebra" class="level1">
+<h1>Part 4 - Linear algebra</h1>
+<section id="question-14" class="level2">
+<h2 class="anchored" data-anchor-id="question-14">Question 14</h2>
+<p>Given a vector <span class="math inline">\(x = \begin{bmatrix} x_1 \\ x_2 \\ x_3 \\ x_4 \end{bmatrix}\)</span>, write down its transpose <span class="math inline">\(x^\top\)</span>.</p>
+</section>
+<section id="question-15" class="level2">
+<h2 class="anchored" data-anchor-id="question-15">Question 15</h2>
+<p>Given the following matrix <span class="math inline">\(N\)</span>:</p>
+<p><span class="math display">\[
+N = \begin{bmatrix}
+n_{11} &amp; n_{12} \\
+n_{21} &amp; n_{22} \\
+n_{31} &amp; n_{32} \\
+n_{41} &amp; n_{42}
+\end{bmatrix}
+\]</span></p>
+<p>Write down its transpose, <span class="math inline">\(N^\top\)</span>.</p>
+</section>
+<section id="question-16" class="level2">
+<h2 class="anchored" data-anchor-id="question-16">Question 16</h2>
+<p>Consider the following matrices <span class="math inline">\(C\)</span> and <span class="math inline">\(D\)</span>:</p>
+<p><span class="math display">\[
+C =
+\begin{bmatrix}c_{11} &amp; c_{12} \\c_{21} &amp; c_{22} \\c_{31} &amp; c_{32}\end{bmatrix}, \quad
+D =
+\begin{bmatrix}d_{11} &amp; d_{12} &amp; d_{13} \\d_{21} &amp; d_{22} &amp; d_{23}\end{bmatrix}
+\]</span></p>
+<ol type="1">
+<li>What are the dimensions of <span class="math inline">\(C\)</span>?</li>
+<li>What are the dimensions of <span class="math inline">\(D\)</span>?</li>
+<li>For the matrix product <span class="math inline">\(CD\)</span>:
+<ol type="1">
+<li>Determine if the product is valid, and explain why.</li>
+<li>If the product is valid, write down the dimensions of the resulting matrix without computing the product.</li>
+</ol></li>
+</ol>
+</section>
+<section id="question-17" class="level2">
+<h2 class="anchored" data-anchor-id="question-17">Question 17</h2>
+<p>Given the matrices <span class="math inline">\(E\)</span> and <span class="math inline">\(F\)</span>:</p>
+<p><span class="math display">\[
+E = \begin{bmatrix}
+e_{11} &amp; e_{12} \\
+e_{21} &amp; e_{22} \\
+e_{31} &amp; e_{32}
+\end{bmatrix}, \quad
+F = \begin{bmatrix}
+f_{11} \\
+f_{21}
+\end{bmatrix}
+\]</span></p>
+<ol type="1">
+<li>What are the dimensions of <span class="math inline">\(E\)</span>?</li>
+<li>What are the dimensions of <span class="math inline">\(F\)</span>?</li>
+<li>For the matrix product <span class="math inline">\(EF\)</span>:
+<ol type="1">
+<li>Determine if the product is valid, and explain why.</li>
+<li>If the product is valid, compute the resulting matrix.</li>
+</ol></li>
+</ol>
+<div style="page-break-after: always;"></div>
+</section>
+<section id="bonus" class="level2">
+<h2 class="anchored" data-anchor-id="bonus">Bonus</h2>
+<p>Pick a concept we introduced in class so far that you’ve been struggling with and explain it in your own words.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/datasciaz\.netlify\.app");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2025, Greg Chism</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/shannonmcwaters/INFO-511-Fall-2025/tree/main/edit/main/summative/final.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/shannonmcwaters/INFO-511-Fall-2025/tree/main/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This page is built with <span style="color: #FFBE98;"><i class="fa-solid fa-heart" aria-label="heart"></i></span> and <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
